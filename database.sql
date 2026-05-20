@@ -79,8 +79,8 @@ CREATE TABLE products (
     system_requirements JSON,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
-    FOREIGN KEY (platform_id) REFERENCES platforms(id) ON DELETE SET NULL,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
+    FOREIGN KEY (platform_id) REFERENCES platforms(id) ON DELETE CASCADE,
     INDEX idx_popular (is_popular),
     INDEX idx_featured (is_featured),
     INDEX idx_price (price),
@@ -140,7 +140,7 @@ CREATE TABLE news (
     is_approved BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE SET NULL
+    FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Отзывы с модерацией
@@ -213,7 +213,7 @@ CREATE TABLE order_items (
     quantity INT DEFAULT 1,
     game_key VARCHAR(255),
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Таблица истории просмотров
@@ -241,11 +241,11 @@ CREATE TABLE news_ratings (
 -- Вставка тестовых данных
 
 -- Админ пользователь (пароль: admin123)
-INSERT INTO users (email, login, password, full_name, nickname, birth_date, gender, role) 
+INSERT IGNORE INTO users (email, login, password, full_name, nickname, birth_date, gender, role) 
 VALUES ('admin@gameskey.com', 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Администратор Системы', 'AdminMaster', '1990-01-01', 'male', 'admin');
 
 -- Категории
-INSERT INTO categories (name, slug, description) VALUES
+INSERT IGNORE INTO categories (name, slug, description) VALUES
 ('Экшен', 'action', 'Динамичные игры с активным геймплеем'),
 ('RPG', 'rpg', 'Ролевые игры с глубоким сюжетом'),
 ('Стратегии', 'strategy', 'Игры требующие тактического мышления'),
@@ -254,7 +254,7 @@ INSERT INTO categories (name, slug, description) VALUES
 ('Хоррор', 'horror', 'Игры ужасов');
 
 -- Платформы
-INSERT INTO platforms (name, slug) VALUES
+INSERT IGNORE INTO platforms (name, slug) VALUES
 ('Steam', 'steam'),
 ('Epic Games', 'epic'),
 ('Origin', 'origin'),
@@ -263,7 +263,7 @@ INSERT INTO platforms (name, slug) VALUES
 ('GOG', 'gog');
 
 -- Примеры игр
-INSERT INTO products (title, slug, description, short_description, category_id, platform_id, price, old_price, discount_percent, image, stock, is_popular, is_featured, rating, release_date, developer, publisher) VALUES
+INSERT IGNORE INTO products (title, slug, description, short_description, category_id, platform_id, price, old_price, discount_percent, image, stock, is_popular, is_featured, rating, release_date, developer, publisher) VALUES
 ('Cyberpunk 2077', 'cyberpunk-2077', 'Откройте для себя мир будущего в захватывающей RPG от создателей Ведьмака 3. Киберпанк 2077 - это приключение в открытом мире, действие которого происходит в Найт-Сити, мегаполисе будущего, одержимом властью, гламуром и модификациями тела.', 'Приключенческая RPG в мире будущего', 2, 1, 1499.00, 2999.00, 50, 'cyberpunk2077.jpg', 150, TRUE, TRUE, 4.50, '2020-12-10', 'CD Projekt Red', 'CD Projekt'),
 ('The Witcher 3: Wild Hunt', 'witcher-3', 'Станьте профессиональным охотником на чудовищ и отправьтесь в эпическое приключение. В открытом мире, полном торговых городов, пиратских островов, опасных горных перевалов и забытых пещер для исследования.', 'Эпическая RPG о ведьмаке Геральте', 2, 1, 899.00, 1499.00, 40, 'witcher3.jpg', 200, TRUE, TRUE, 4.90, '2015-05-19', 'CD Projekt Red', 'CD Projekt'),
 ('Red Dead Redemption 2', 'rdr2', 'Америка, 1899 год. Эпоха дикого запада подходит к концу. Приключенческий экшен в огромном открытом мире от Rockstar Games.', 'Вестерн от создателей GTA', 1, 1, 2499.00, NULL, 0, 'rdr2.jpg', 100, TRUE, FALSE, 4.80, '2019-11-05', 'Rockstar Games', 'Rockstar Games'),
@@ -272,29 +272,29 @@ INSERT INTO products (title, slug, description, short_description, category_id, 
 ('FIFA 24', 'fifa-24', 'Новейшая версия легендарного футбольного симулятора. Улучшенная графика, новые режимы игры и реалистичная физика мяча.', 'Футбольный симулятор 2024 года', 4, 2, 3499.00, NULL, 0, 'fifa24.jpg', 120, FALSE, FALSE, 4.20, '2023-09-29', 'EA Sports', 'Electronic Arts');
 
 -- Новости
-INSERT INTO news (title, slug, content, short_content, image, author_id, rating) VALUES
+INSERT IGNORE INTO news (title, slug, content, short_content, image, author_id, rating) VALUES
 ('Анонсирована новая часть GTA', 'gta-6-announced', 'Rockstar Games официально анонсировала GTA 6. Игра выйдет в 2025 году и перенесет игроков в вице-сити нового поколения...', 'Rockstar Games показала первый трейлер GTA 6', 'gta6news.jpg', 1, 4.95),
 ('Скидки до 90% в летней распродаже', 'summer-sale-2026', 'Началась грандиозная летняя распродажа! Тысячи игр со скидками до 90%. Успейте купить игры мечты по лучшей цене!', 'Летняя распродажа стартовала', 'summersale.jpg', 1, 4.50);
 
 -- Акции
-INSERT INTO promotions (title, description, discount_percent, start_date, end_date, is_active, image_url) VALUES
+INSERT IGNORE INTO promotions (title, description, discount_percent, start_date, end_date, is_active, image_url) VALUES
 ('Летняя распродажа 2026', 'Огромные скидки на лучшие игры года!', 50, '2026-06-01 00:00:00', '2026-06-30 23:59:59', TRUE, 'summer-sale.jpg'),
 ('Черная пятница', 'Не пропустите лучшие предложения года', 70, '2026-11-25 00:00:00', '2026-11-30 23:59:59', FALSE, 'black-friday.jpg');
 
 -- Услуги
-INSERT INTO services (name, description, price, duration, image_url, is_active) VALUES
+INSERT IGNORE INTO services (name, description, price, duration, image_url, is_active) VALUES
 ('Настройка игрового ПК', 'Профессиональная настройка операционной системы, драйверов и оптимизация для игр', 1500.00, 120, 'pc-setup.jpg', TRUE),
 ('Установка игр', 'Установка и настройка любых игр из ваших библиотек Steam, Epic Games и других платформ', 500.00, 60, 'game-install.jpg', TRUE),
 ('Консультация геймера', 'Индивидуальная консультация по выбору игр, прохождению сложных моментов', 800.00, 45, 'consultation.jpg', TRUE),
 ('Восстановление аккаунта', 'Помощь в восстановлении доступа к игровым аккаунтам', 1000.00, 90, 'account-recovery.jpg', TRUE);
 
 -- Тестовые данные для админки
-INSERT INTO products (title, name, slug, description, short_description, category_id, platform_id, platform, price, image, image_url, stock, is_active) VALUES
+INSERT IGNORE INTO products (title, name, slug, description, short_description, category_id, platform_id, platform, price, image, image_url, stock, is_active) VALUES
 ('Cyberpunk 2077', 'Cyberpunk 2077', 'cyberpunk-2077', 'RPG в мире будущего', 'Приключенческая RPG в мире будущего', 2, 1, 'Steam', 1499.00, 'cyberpunk2077.jpg', 'cyberpunk2077.jpg', 150, TRUE),
 ('The Witcher 3', 'The Witcher 3', 'witcher-3', 'Эпическая RPG о ведьмаке', 'Эпическая RPG о ведьмаке Геральте', 2, 1, 'Steam', 899.00, 'witcher3.jpg', 'witcher3.jpg', 200, TRUE),
 ('Elden Ring', 'Elden Ring', 'elden-ring', 'Фэнтезийная RPG от FromSoftware', 'Фэнтезийная RPG от создателей Dark Souls', 2, 1, 'Steam', 2199.00, 'eldenring.jpg', 'eldenring.jpg', 80, TRUE);
 
 -- Тестовые отзывы
-INSERT INTO reviews (product_id, user_id, rating, comment, is_approved) VALUES
+INSERT IGNORE INTO reviews (product_id, user_id, rating, comment, is_approved) VALUES
 (1, 1, 5, 'Отличная игра! Рекомендую всем.', TRUE),
 (2, 1, 4, 'Хорошая графика и сюжет.', FALSE);
