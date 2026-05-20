@@ -107,10 +107,15 @@ if (!is_array($products)) $products = [];
                     <option value="">Все категории</option>
                     <?php 
                     $stmt = $pdo->query("SELECT * FROM categories ORDER BY name");
-                    foreach ($stmt->fetchAll() as $cat): 
+                    $cats = $stmt->fetchAll();
+                    if (is_array($cats)) {
+                        foreach ($cats as $cat): 
                     ?>
-                        <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
-                    <?php endforeach; ?>
+                        <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name'] ?? 'Без названия') ?></option>
+                    <?php 
+                        endforeach;
+                    }
+                    ?>
                 </select>
                 <select class="filter-select" id="statusFilter" onchange="filterProducts()">
                     <option value="">Все статусы</option>

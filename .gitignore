@@ -1,1 +1,23 @@
-Nothing should be ignored based on the provided file changes. The modified files (`admin/index.php`, `admin/news.php`) are PHP source code files that should be tracked in version control. There are no build artifacts, dependencies, temporary files, or other items requiring exclusion in the provided change list.
+```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+
+# Dependencies
+venv/
+.venv/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+```
