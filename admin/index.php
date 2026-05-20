@@ -26,96 +26,15 @@ $stats = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Админ-панель - GamesKey</title>
     <link rel="stylesheet" href="admin-style.css">
-    <style>
-        /* Компактная верхняя навигация только для index.php */
-        .admin-nav-compact {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            padding: 15px 20px;
-            background: var(--bg-surface);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        
-        .admin-nav-compact a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            border-radius: var(--radius);
-            text-decoration: none;
-            font-size: 1.3rem;
-            transition: all var(--transition-fast);
-            background: var(--bg-surface-2);
-            border: 1px solid var(--border);
-            position: relative;
-        }
-        
-        .admin-nav-compact a:hover,
-        .admin-nav-compact a.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .admin-nav-compact a::after {
-            content: attr(title);
-            position: absolute;
-            bottom: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--text-primary);
-            color: var(--bg-surface);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity var(--transition-fast);
-            z-index: 100;
-        }
-        
-        .admin-nav-compact a:hover::after {
-            opacity: 1;
-        }
-        
-        /* Скрываем сайдбар на главной */
-        .admin-main {
-            margin-left: 0 !important;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-        
-        .admin-header {
-            margin-bottom: 20px;
-        }
-    </style>
 </head>
 <body class="admin-body">
+    <?php include 'includes/sidebar.php'; ?>
+    
     <main class="admin-main">
         <header class="admin-header">
             <h1>🛡️ Панель управления</h1>
             <?php include 'includes/theme-toggle.php'; ?>
         </header>
-        
-        <!-- Компактная навигация -->
-        <nav class="admin-nav-compact">
-            <a href="products.php" title="Товары">📦</a>
-            <a href="news.php" title="Новости">📰</a>
-            <a href="services.php" title="Услуги">🔧</a>
-            <a href="promotions.php" title="Акции">🎁</a>
-            <a href="users.php" title="Пользователи">👥</a>
-            <a href="reviews.php" title="Отзывы">💬</a>
-            <a href="orders.php" title="Заказы">🛒</a>
-        </nav>
         
         <div class="admin-grid">
             <a href="products.php" class="admin-card">
