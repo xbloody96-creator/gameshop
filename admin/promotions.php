@@ -137,14 +137,12 @@ if (!is_array($products)) $products = [];
 
             <div class="admin-form">
                 <h2>📋 Список акций</h2>
-                <table class="admin-table">
+                <table class="admin-table admin-table-compact">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Название</th>
                             <th>Скидка</th>
                             <th>Период</th>
-                            <th>Товар</th>
                             <th>Статус</th>
                             <th>Действия</th>
                         </tr>
@@ -152,25 +150,23 @@ if (!is_array($products)) $products = [];
                     <tbody>
                         <?php foreach ($promotions as $promo): ?>
                         <tr>
-                            <td>#<?= $promo['id'] ?></td>
                             <td><?= htmlspecialchars($promo['title']) ?></td>
                             <td><strong>-<?= $promo['discount'] ?>%</strong></td>
                             <td>
                                 <?= date('d.m.Y', strtotime($promo['start_date'])) ?> — 
                                 <?= date('d.m.Y', strtotime($promo['end_date'])) ?>
                             </td>
-                            <td><?= htmlspecialchars($promo['product_name'] ?? 'Все товары') ?></td>
                             <td>
-                                <span class="status status-<?= $promo['is_active'] ? 'completed' : 'cancelled' ?>">
-                                    <?= $promo['is_active'] ? 'Активна' : 'Неактивна' ?>
+                                <span class="status-badge status-badge-<?= $promo['is_active'] ? 'active' : 'inactive' ?>">
+                                    <?= $promo['is_active'] ? '✓' : '✗' ?>
                                 </span>
                             </td>
-                            <td class="actions">
-                                <button class="btn btn-sm btn-warning" onclick="editPromotion(<?= htmlspecialchars(json_encode($promo)) ?>)">✏️</button>
+                            <td class="actions actions-compact">
+                                <button class="btn-icon btn-edit" onclick="editPromotion(<?= htmlspecialchars(json_encode($promo)) ?>)">✏️</button>
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить акцию?')">
                                     <input type="hidden" name="action" value="delete_promotion">
                                     <input type="hidden" name="id" value="<?= $promo['id'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
+                                    <button type="submit" class="btn-icon btn-delete">🗑️</button>
                                 </form>
                             </td>
                         </tr>

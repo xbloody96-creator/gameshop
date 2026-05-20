@@ -125,14 +125,12 @@ if (!is_array($products)) $products = [];
             </div>
 
             <div class="admin-form" style="padding: 0; overflow: hidden;">
-                <table class="admin-table" id="productsTable">
+                <table class="admin-table admin-table-compact" id="productsTable">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Фото</th>
                             <th>Название</th>
                             <th>Категория</th>
-                            <th>Платформа</th>
                             <th>Цена</th>
                             <th>Остаток</th>
                             <th>Статус</th>
@@ -142,30 +140,28 @@ if (!is_array($products)) $products = [];
                     <tbody>
         <?php foreach ($products as $product): ?>
                         <tr data-category="<?= $product['category_id'] ?>" data-status="<?= $product['is_active'] ?>">
-                            <td>#<?= $product['id'] ?? '?' ?></td>
                             <td>
                 <?php if (!empty($product['image_url'])): ?>
-                                    <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="" class="product-thumb">
+                                    <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="" class="product-thumb product-thumb-small">
                 <?php else: ?>
-                                    <div class="no-image">No img</div>
+                                    <div class="no-image no-image-small">No img</div>
                 <?php endif; ?>
                             </td>
                             <td><strong><?= htmlspecialchars($product['name'] ?? 'Без названия') ?></strong></td>
                             <td><?= htmlspecialchars($product['category_name'] ?? 'Без категории') ?></td>
-                            <td><?= htmlspecialchars($product['platform'] ?? '-') ?></td>
                             <td><?= number_format($product['price'] ?? 0, 2) ?> ₽</td>
                             <td><?= $product['stock'] ?? 0 ?></td>
                             <td>
-                                <span class="status status-<?= $product['is_active'] ? 'active' : 'inactive' ?>">
-                                    <?= $product['is_active'] ? '✓ Активен' : '✗ Неактивен' ?>
+                                <span class="status-badge status-badge-<?= $product['is_active'] ? 'active' : 'inactive' ?>">
+                                    <?= $product['is_active'] ? '✓' : '✗' ?>
                                 </span>
                             </td>
-                            <td class="actions">
-                                <a href="product-edit.php?id=<?= $product['id'] ?>" class="btn btn-sm btn-warning" title="Редактировать">✏️</a>
+                            <td class="actions actions-compact">
+                                <a href="product-edit.php?id=<?= $product['id'] ?>" class="btn-icon btn-edit" title="Редактировать">✏️</a>
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить товар?')">
                                     <input type="hidden" name="action" value="delete_product">
                                     <input type="hidden" name="id" value="<?= $product['id'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-danger" title="Удалить">🗑️</button>
+                                    <button type="submit" class="btn-icon btn-delete" title="Удалить">🗑️</button>
                                 </form>
                             </td>
                         </tr>

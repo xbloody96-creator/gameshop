@@ -141,16 +141,13 @@ if (!is_array($users)) $users = [];
             <!-- Список пользователей -->
             <div class="admin-form">
                 <h2>📋 Пользователи (<?= count($users) ?>)</h2>
-                <table class="admin-table">
+                <table class="admin-table admin-table-compact">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Аватар</th>
                             <th>Логин</th>
                             <th>Email</th>
-                            <th>ФИО</th>
                             <th>Роль</th>
-                            <th>Дата регистрации</th>
                             <th>Статус</th>
                             <th>Действия</th>
                         </tr>
@@ -158,36 +155,33 @@ if (!is_array($users)) $users = [];
                     <tbody>
                         <?php foreach ($users as $user): ?>
                         <tr>
-                            <td>#<?= $user['id'] ?></td>
                             <td>
                                 <?php if (!empty($user['avatar'])): ?>
                                     <img src="<?= htmlspecialchars($user['avatar']) ?>" alt="" class="user-avatar-small">
                                 <?php else: ?>
-                                    <div class="user-avatar-small" style="background:#e5e7eb;display:flex;align-items:center;justify-content:center;border-radius:50%;">?</div>
+                                    <div class="user-avatar-small" style="background:var(--bg-surface-2);display:flex;align-items:center;justify-content:center;border-radius:50%;width:35px;height:35px;font-size:0.8rem;">?</div>
                                 <?php endif; ?>
                             </td>
                             <td><?= htmlspecialchars($user['login'] ?? $user['nickname'] ?? $user['email'] ?? 'Без имени') ?></td>
                             <td><?= htmlspecialchars($user['email'] ?? '-') ?></td>
-                            <td><?= htmlspecialchars($user['fullname'] ?? '-') ?></td>
                             <td>
-                                <span class="status status-<?= $user['role'] == 'admin' ? 'processing' : 'completed' ?>">
-                                    <?= $user['role'] == 'admin' ? 'Админ' : 'Пользователь' ?>
+                                <span class="status-badge status-badge-<?= $user['role'] == 'admin' ? 'active' : 'inactive' ?>">
+                                    <?= $user['role'] == 'admin' ? 'Админ' : 'Польз.' ?>
                                 </span>
                             </td>
-                            <td><?= date('d.m.Y', strtotime($user['created_at'])) ?></td>
                             <td>
-                                <span class="status status-<?= $user['is_active'] ? 'completed' : 'cancelled' ?>">
-                                    <?= $user['is_active'] ? 'Активен' : 'Неактивен' ?>
+                                <span class="status-badge status-badge-<?= $user['is_active'] ? 'active' : 'inactive' ?>">
+                                    <?= $user['is_active'] ? '✓' : '✗' ?>
                                 </span>
                             </td>
-                            <td class="actions">
-                                <button class="btn btn-sm btn-warning" onclick="editUser(<?= htmlspecialchars(json_encode($user)) ?>)">✏️</button>
-                                <button class="btn btn-sm btn-info" onclick="viewUser(<?= $user['id'] ?>)">👁️</button>
+                            <td class="actions actions-compact">
+                                <button class="btn-icon btn-edit" onclick="editUser(<?= htmlspecialchars(json_encode($user)) ?>)">✏️</button>
+                                <button class="btn-icon btn-info" style="color:var(--info);background:var(--info-bg);" onclick="viewUser(<?= $user['id'] ?>)">👁️</button>
                                 <?php if ($user['id'] != $_SESSION['user_id']): ?>
                                     <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить пользователя?')">
                                         <input type="hidden" name="action" value="delete_user">
                                         <input type="hidden" name="id" value="<?= $user['id'] ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
+                                        <button type="submit" class="btn-icon btn-delete">🗑️</button>
                                     </form>
                                 <?php endif; ?>
                             </td>

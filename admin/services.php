@@ -119,10 +119,9 @@ if (!is_array($services)) $services = [];
 
             <div class="admin-form">
                 <h2>📋 Список услуг</h2>
-                <table class="admin-table">
+                <table class="admin-table admin-table-compact">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Название</th>
                             <th>Цена</th>
                             <th>Длительность</th>
@@ -133,17 +132,16 @@ if (!is_array($services)) $services = [];
                     <tbody>
                         <?php foreach ($services as $service): ?>
                         <tr>
-                            <td>#<?= $service['id'] ?? '?' ?></td>
                             <td><?= htmlspecialchars($service['name'] ?? 'Без названия') ?></td>
                             <td><?= number_format($service['price'] ?? 0, 2) ?> ₽</td>
                             <td><?= htmlspecialchars($service['duration'] ?? 0) ?> мин</td>
                             <td>
-                                <span class="status status-<?= !empty($service['is_active']) ? 'completed' : 'cancelled' ?>">
-                                    <?= !empty($service['is_active']) ? 'Активна' : 'Неактивна' ?>
+                                <span class="status-badge status-badge-<?= !empty($service['is_active']) ? 'active' : 'inactive' ?>">
+                                    <?= !empty($service['is_active']) ? '✓' : '✗' ?>
                                 </span>
                             </td>
-                            <td class="actions">
-                                <button class="btn btn-sm btn-warning" onclick='editService({
+                            <td class="actions actions-compact">
+                                <button class="btn-icon btn-edit" onclick='editService({
                                     id: <?= $service['id'] ?? 0 ?>,
                                     name: "<?= addslashes($service['name'] ?? '') ?>",
                                     description: "<?= addslashes($service['description'] ?? '') ?>",
@@ -155,7 +153,7 @@ if (!is_array($services)) $services = [];
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить услугу?')">
                                     <input type="hidden" name="action" value="delete_service">
                                     <input type="hidden" name="id" value="<?= $service['id'] ?? '' ?>">
-                                    <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
+                                    <button type="submit" class="btn-icon btn-delete">🗑️</button>
                                 </form>
                             </td>
                         </tr>

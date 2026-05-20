@@ -111,13 +111,12 @@ if (!is_array($news_items)) $news_items = [];
 
             <div class="admin-form">
                 <h2>📋 Список новостей</h2>
-                <table class="admin-table">
+                <table class="admin-table admin-table-compact">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Заголовок</th>
                             <th>Рейтинг</th>
-                            <th>Дата публикации</th>
+                            <th>Дата</th>
                             <th>Статус</th>
                             <th>Действия</th>
                         </tr>
@@ -125,17 +124,16 @@ if (!is_array($news_items)) $news_items = [];
                     <tbody>
                         <?php foreach ($news_items as $item): ?>
                         <tr>
-                            <td>#<?= $item['id'] ?? '?' ?></td>
                             <td><?= htmlspecialchars($item['title'] ?? 'Без названия') ?></td>
                             <td>⭐ <?= number_format($item['rating'] ?? 0, 1) ?></td>
-                            <td><?= isset($item['created_at']) ? date('d.m.Y H:i', strtotime($item['created_at'])) : '-' ?></td>
+                            <td><?= isset($item['created_at']) ? date('d.m.Y', strtotime($item['created_at'])) : '-' ?></td>
                             <td>
-                                <span class="status status-<?= !empty($item['is_active']) ? 'completed' : 'cancelled' ?>">
-                                    <?= !empty($item['is_active']) ? 'Активна' : 'Неактивна' ?>
+                                <span class="status-badge status-badge-<?= !empty($item['is_active']) ? 'active' : 'inactive' ?>">
+                                    <?= !empty($item['is_active']) ? '✓' : '✗' ?>
                                 </span>
                             </td>
-                            <td class="actions">
-                                <button class="btn btn-sm btn-warning" onclick='editNews({
+                            <td class="actions actions-compact">
+                                <button class="btn-icon btn-edit" onclick='editNews({
                                     id: <?= $item['id'] ?? 0 ?>,
                                     title: "<?= addslashes($item['title'] ?? '') ?>",
                                     content: "<?= addslashes($item['content'] ?? '') ?>",
@@ -146,7 +144,7 @@ if (!is_array($news_items)) $news_items = [];
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить новость?')">
                                     <input type="hidden" name="action" value="delete_news">
                                     <input type="hidden" name="id" value="<?= $item['id'] ?? '' ?>">
-                                    <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
+                                    <button type="submit" class="btn-icon btn-delete">🗑️</button>
                                 </form>
                             </td>
                         </tr>
