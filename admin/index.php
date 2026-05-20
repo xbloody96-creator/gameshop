@@ -210,41 +210,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Получение данных для отображения
-$tab = $_GET['tab'] ?? 'products';
+$tab = $_GET['tab'] ?? 'dashboard'; // Изменили default на dashboard
 
 // Товары
-$products = $pdo->query("SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.id DESC")->fetchAll();
+$products = $pdo->query("SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.id DESC");
+$products = $products ? $products->fetchAll() : [];
+if (!is_array($products)) $products = [];
 
 // Новости
-$news = $pdo->query("SELECT * FROM news ORDER BY published_at DESC")->fetchAll();
+$news = $pdo->query("SELECT * FROM news ORDER BY published_at DESC");
+$news = $news ? $news->fetchAll() : [];
+if (!is_array($news)) $news = [];
 
 // Услуги
-$services = $pdo->query("SELECT * FROM services ORDER BY id DESC")->fetchAll();
+$services = $pdo->query("SELECT * FROM services ORDER BY id DESC");
+$services = $services ? $services->fetchAll() : [];
+if (!is_array($services)) $services = [];
 
 // Акции
-$promotions = $pdo->query("SELECT * FROM promotions ORDER BY id DESC")->fetchAll();
+$promotions = $pdo->query("SELECT * FROM promotions ORDER BY id DESC");
+$promotions = $promotions ? $promotions->fetchAll() : [];
+if (!is_array($promotions)) $promotions = [];
 
 // Пользователи
-$users = $pdo->query("SELECT * FROM users ORDER BY id DESC")->fetchAll();
+$users = $pdo->query("SELECT * FROM users ORDER BY id DESC");
+$users = $users ? $users->fetchAll() : [];
+if (!is_array($users)) $users = [];
 
 // Отзывы на модерации
-$pending_reviews = $pdo->query("SELECT r.*, u.full_name, u.nickname, p.title as product_name FROM reviews r JOIN users u ON r.user_id = u.id LEFT JOIN products p ON r.product_id = p.id WHERE r.is_approved = 0 ORDER BY r.created_at DESC")->fetchAll();
+$pending_reviews = $pdo->query("SELECT r.*, u.full_name, u.nickname, p.title as product_name FROM reviews r JOIN users u ON r.user_id = u.id LEFT JOIN products p ON r.product_id = p.id WHERE r.is_approved = 0 ORDER BY r.created_at DESC");
+$pending_reviews = $pending_reviews ? $pending_reviews->fetchAll() : [];
 if (!is_array($pending_reviews)) $pending_reviews = [];
 
 // Заказы - исправленный запрос без u.login
-$orders = $pdo->query("SELECT o.*, u.full_name, u.email, u.nickname FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC")->fetchAll();
+$orders = $pdo->query("SELECT o.*, u.full_name, u.email, u.nickname FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC");
+$orders = $orders ? $orders->fetchAll() : [];
 if (!is_array($orders)) $orders = [];
 
 // Категории
-$categories = $pdo->query("SELECT * FROM categories")->fetchAll();
+$categories = $pdo->query("SELECT * FROM categories");
+$categories = $categories ? $categories->fetchAll() : [];
 if (!is_array($categories)) $categories = [];
-
-// Проверка что все переменные - массивы
-if (!is_array($products)) $products = [];
-if (!is_array($news)) $news = [];
-if (!is_array($services)) $services = [];
-if (!is_array($promotions)) $promotions = [];
-if (!is_array($users)) $users = [];
 ?>
 <!DOCTYPE html>
 <html lang="ru">

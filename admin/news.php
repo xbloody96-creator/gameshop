@@ -125,20 +125,20 @@ if (!is_array($news_items)) $news_items = [];
                     <tbody>
                         <?php foreach ($news_items as $item): ?>
                         <tr>
-                            <td>#<?= $item['id'] ?></td>
-                            <td><?= htmlspecialchars($item['title']) ?></td>
-                            <td>⭐ <?= number_format($item['rating'], 1) ?></td>
-                            <td><?= date('d.m.Y H:i', strtotime($item['published_at'])) ?></td>
+                            <td>#<?= $item['id'] ?? '?' ?></td>
+                            <td><?= htmlspecialchars($item['title'] ?? 'Без названия') ?></td>
+                            <td>⭐ <?= number_format($item['rating'] ?? 0, 1) ?></td>
+                            <td><?= isset($item['published_at']) ? date('d.m.Y H:i', strtotime($item['published_at'])) : '-' ?></td>
                             <td>
-                                <span class="status status-<?= $item['is_active'] ? 'completed' : 'cancelled' ?>">
-                                    <?= $item['is_active'] ? 'Активна' : 'Неактивна' ?>
+                                <span class="status status-<?= !empty($item['is_active']) ? 'completed' : 'cancelled' ?>">
+                                    <?= !empty($item['is_active']) ? 'Активна' : 'Неактивна' ?>
                                 </span>
                             </td>
                             <td class="actions">
                                 <button class="btn btn-sm btn-warning" onclick="editNews(<?= htmlspecialchars(json_encode($item)) ?>)">✏️</button>
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить новость?')">
                                     <input type="hidden" name="action" value="delete_news">
-                                    <input type="hidden" name="id" value="<?= $item['id'] ?>">
+                                    <input type="hidden" name="id" value="<?= $item['id'] ?? '' ?>">
                                     <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
                                 </form>
                             </td>

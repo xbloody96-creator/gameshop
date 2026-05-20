@@ -74,10 +74,7 @@ if (!is_array($services)) $services = [];
         <main class="admin-main">
             <header class="admin-header">
                 <h1>🛠️ Управление услугами</h1>
-                <div class="admin-user-info">
-                    <span><?= htmlspecialchars($_SESSION['login']) ?></span>
-                    <a href="../logout.php" class="btn btn-danger">Выход</a>
-                </div>
+                <?php include 'includes/theme-toggle.php'; ?>
             </header>
 
             <?php if ($success): ?>
@@ -136,20 +133,20 @@ if (!is_array($services)) $services = [];
                     <tbody>
                         <?php foreach ($services as $service): ?>
                         <tr>
-                            <td>#<?= $service['id'] ?></td>
+                            <td>#<?= $service['id'] ?? '?' ?></td>
                             <td><?= htmlspecialchars($service['name'] ?? 'Без названия') ?></td>
                             <td><?= number_format($service['price'] ?? 0, 2) ?> ₽</td>
                             <td><?= htmlspecialchars($service['duration'] ?? 0) ?> мин</td>
                             <td>
-                                <span class="status status-<?= $service['is_active'] ? 'completed' : 'cancelled' ?>">
-                                    <?= $service['is_active'] ? 'Активна' : 'Неактивна' ?>
+                                <span class="status status-<?= !empty($service['is_active']) ? 'completed' : 'cancelled' ?>">
+                                    <?= !empty($service['is_active']) ? 'Активна' : 'Неактивна' ?>
                                 </span>
                             </td>
                             <td class="actions">
                                 <button class="btn btn-sm btn-warning" onclick="editService(<?= htmlspecialchars(json_encode($service)) ?>)">✏️</button>
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить услугу?')">
                                     <input type="hidden" name="action" value="delete_service">
-                                    <input type="hidden" name="id" value="<?= $service['id'] ?>">
+                                    <input type="hidden" name="id" value="<?= $service['id'] ?? '' ?>">
                                     <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
                                 </form>
                             </td>
