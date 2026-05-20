@@ -123,7 +123,8 @@ UPDATE products SET name = title WHERE name IS NULL;
 UPDATE products SET image_url = image WHERE image_url IS NULL;
 
 -- Акции (обновленная структура)
-CREATE TABLE IF NOT EXISTS promotions_new (
+DROP TABLE IF EXISTS promotions;
+CREATE TABLE promotions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
@@ -131,12 +132,10 @@ CREATE TABLE IF NOT EXISTS promotions_new (
     start_date DATETIME NOT NULL,
     end_date DATETIME NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
+    banner_image VARCHAR(255),
     image_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Добавляем недостающие поля в promotions
-ALTER TABLE promotions ADD COLUMN IF NOT EXISTS image_url VARCHAR(255) AFTER banner_image;
 
 -- Связь акций с товарами
 CREATE TABLE promotion_products (
@@ -148,18 +147,6 @@ CREATE TABLE promotion_products (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Таблица новостей (обновленная структура для админки)
-CREATE TABLE IF NOT EXISTS news_new (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-    image_url VARCHAR(255),
-    rating DECIMAL(3,2) DEFAULT 5.00,
-    is_active BOOLEAN DEFAULT TRUE,
-    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Основная таблица новостей (пересоздаем если существует для обновления структуры)
 DROP TABLE IF EXISTS news;
 CREATE TABLE news (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -173,31 +160,14 @@ CREATE TABLE news (
     views INT DEFAULT 0,
     image_url VARCHAR(255),
     is_active BOOLEAN DEFAULT TRUE,
+    is_approved BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Отзывы с модерацией (исправленная структура)
-CREATE TABLE IF NOT EXISTS reviews_new (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    product_id INT,
-    user_id INT NOT NULL,
-    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
-    comment TEXT NOT NULL,
-    is_approved BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_user_product_review (product_id, user_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Добавляем поля для отзывов в существующую таблицу news
-ALTER TABLE news ADD COLUMN IF NOT EXISTS is_approved BOOLEAN DEFAULT TRUE AFTER is_active;
-
--- Таблица отзывов о товарах
--- Таблица отзывов о товарах (дубликат для совместимости)
-CREATE TABLE IF NOT EXISTS reviews (
+-- Отзывы с модерацией
+CREATE TABLE reviews (
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
     user_id INT NOT NULL,
@@ -209,6 +179,9 @@ CREATE TABLE IF NOT EXISTS reviews (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     UNIQUE KEY unique_user_product_review (product_id, user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Удаляем дублирующиеся таблицы и запросы
+DROP TABLE IF EXISTS reviews_new;
 
 -- Таблица корзины
 CREATE TABLE cart (
