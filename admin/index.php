@@ -351,14 +351,14 @@ if (!is_array($categories)) $categories = [];
             </button>
         </div>
         
-        <nav class="admin-nav" style="margin-top: 25px;">
-            <a href="?tab=products" class="<?= $tab === 'products' ? 'active' : '' ?>">📦 Товары</a>
-            <a href="?tab=news" class="<?= $tab === 'news' ? 'active' : '' ?>">📰 Новости</a>
-            <a href="?tab=services" class="<?= $tab === 'services' ? 'active' : '' ?>">🔧 Услуги</a>
-            <a href="?tab=promotions" class="<?= $tab === 'promotions' ? 'active' : '' ?>">🎁 Акции</a>
-            <a href="?tab=users" class="<?= $tab === 'users' ? 'active' : '' ?>">👥 Пользователи</a>
-            <a href="?tab=reviews" class="<?= $tab === 'reviews' ? 'active' : '' ?>">💬 Отзывы</a>
-            <a href="?tab=orders" class="<?= $tab === 'orders' ? 'active' : '' ?>">🛒 Заказы</a>
+        <nav class="admin-nav admin-nav-compact" style="margin-top: 25px;">
+            <a href="?tab=products" class="<?= $tab === 'products' ? 'active' : '' ?>" title="Товары">📦</a>
+            <a href="?tab=news" class="<?= $tab === 'news' ? 'active' : '' ?>" title="Новости">📰</a>
+            <a href="?tab=services" class="<?= $tab === 'services' ? 'active' : '' ?>" title="Услуги">🔧</a>
+            <a href="?tab=promotions" class="<?= $tab === 'promotions' ? 'active' : '' ?>" title="Акции">🎁</a>
+            <a href="?tab=users" class="<?= $tab === 'users' ? 'active' : '' ?>" title="Пользователи">👥</a>
+            <a href="?tab=reviews" class="<?= $tab === 'reviews' ? 'active' : '' ?>" title="Отзывы">💬</a>
+            <a href="?tab=orders" class="<?= $tab === 'orders' ? 'active' : '' ?>" title="Заказы">🛒</a>
         </nav>
         
         <!-- Товары -->
@@ -369,7 +369,6 @@ if (!is_array($categories)) $categories = [];
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Фото</th>
                         <th>Название</th>
                         <th>Категория</th>
@@ -383,8 +382,7 @@ if (!is_array($categories)) $categories = [];
                 <tbody>
                     <?php foreach ($products as $product): ?>
                     <tr>
-                        <td><?= $product['id'] ?></td>
-                        <td><img src="<?= htmlspecialchars($product['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($product['name'] ?? '') ?>"></td>
+                        <td><img src="<?= htmlspecialchars($product['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($product['name'] ?? '') ?>" class="product-thumb"></td>
                         <td><?= htmlspecialchars($product['name'] ?? '') ?></td>
                         <td><?= htmlspecialchars($product['category_name'] ?? 'Без категории') ?></td>
                         <td><?= htmlspecialchars($product['platform'] ?? '-') ?></td>
@@ -396,11 +394,11 @@ if (!is_array($categories)) $categories = [];
                             </span>
                         </td>
                         <td>
-                            <button class="btn-admin btn-edit" onclick='editProduct(<?= json_encode($product, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)'>✏️</button>
+                            <button class="btn-admin btn-edit" onclick='editProduct(<?= json_encode($product, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)' title="Редактировать">✏️</button>
                             <form method="POST" style="display:inline" onsubmit="return confirm('Удалить товар?')">
                                 <input type="hidden" name="action" value="delete_product">
                                 <input type="hidden" name="id" value="<?= $product['id'] ?>">
-                                <button type="submit" class="btn-admin btn-delete">🗑️</button>
+                                <button type="submit" class="btn-admin btn-delete" title="Удалить">🗑️</button>
                             </form>
                         </td>
                     </tr>

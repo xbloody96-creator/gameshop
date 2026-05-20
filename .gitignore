@@ -1,3 +1,4 @@
+```
 # Compiled and build artifacts
 *.pyc
 __pycache__/
@@ -18,13 +19,11 @@ venv/
 .env.local
 .env.*
 
-# Build directories
-dist/
-build/
-target/
+# Logs and temp files
 *.log
 *.tmp
 *.swp
+*.swo
 
 # Editors
 .vscode/
@@ -39,6 +38,13 @@ coverage/
 htmlcov/
 .coverage
 
-# Python specific
+# Build directories
+dist/
+build/
+target/
+.gradle/
+
+# Python cache
 .mypy_cache/
 .pytest_cache/
+```

@@ -700,8 +700,8 @@
 }
 
 .admin-table .product-thumb {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
     border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
@@ -1496,4 +1496,134 @@
         box-shadow: none;
         border: 1px solid #ddd;
     }
+}
+
+/* ===== Compact Navigation (Icons Only) ===== */
+.admin-nav-compact {
+    display: flex;
+    gap: 8px;
+    padding: 10px 15px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    width: fit-content;
+}
+
+.admin-nav-compact a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: var(--radius);
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.admin-nav-compact a:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.admin-nav-compact a.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.admin-nav-compact a::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text-primary);
+    color: var(--bg-surface);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all var(--transition-fast);
+    z-index: 100;
+}
+
+.admin-nav-compact a:hover::after {
+    opacity: 1;
+    bottom: -35px;
+}
+
+/* Status Badge Styles */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: var(--radius-xl);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.status-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.status-badge.status-active {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.status-badge.status-inactive {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+/* Table Action Buttons */
+.btn-admin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+    background: transparent;
+}
+
+.btn-admin.btn-edit {
+    color: var(--info);
+    background: var(--info-bg);
+}
+
+.btn-admin.btn-edit:hover {
+    background: var(--info);
+    color: white;
+    transform: scale(1.1);
+}
+
+.btn-admin.btn-delete {
+    color: var(--danger);
+    background: var(--danger-bg);
+}
+
+.btn-admin.btn-delete:hover {
+    background: var(--danger);
+    color: white;
+    transform: scale(1.1);
 }
