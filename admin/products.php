@@ -137,9 +137,9 @@ if (!is_array($products)) $products = [];
                     <tbody>
         <?php foreach ($products as $product): ?>
                         <tr data-category="<?= $product['category_id'] ?>" data-status="<?= $product['is_active'] ?>">
-                            <td>#<?= $product['id'] ?></td>
+                            <td>#<?= $product['id'] ?? '?' ?></td>
                             <td>
-                <?php if ($product['image_url']): ?>
+                <?php if (!empty($product['image_url'])): ?>
                                     <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="" class="product-thumb">
                 <?php else: ?>
                                     <div class="no-image">No img</div>
