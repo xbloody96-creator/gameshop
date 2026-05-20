@@ -1,1 +1,1 @@
-Nothing needs to be added to .gitignore since the changes only include PHP source files (admin/index.php, admin/products.php) which are legitimate source code files that should be tracked in version control.
+Nothing needs to be added to .gitignore since the changes only include PHP source files (.php) which are legitimate code files that should be tracked in version control.
