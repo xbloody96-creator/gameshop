@@ -138,7 +138,7 @@ if (!is_array($services)) $services = [];
                         <tr>
                             <td>#<?= $service['id'] ?></td>
                             <td><?= htmlspecialchars($service['name'] ?? 'Без названия') ?></td>
-                            <td><?= number_format($service['price'], 2) ?> ₽</td>
+                            <td><?= number_format($service['price'] ?? 0, 2) ?> ₽</td>
                             <td><?= htmlspecialchars($service['duration'] ?? 0) ?> мин</td>
                             <td>
                                 <span class="status status-<?= $service['is_active'] ? 'completed' : 'cancelled' ?>">

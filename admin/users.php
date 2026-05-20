@@ -166,7 +166,7 @@ if (!is_array($users)) $users = [];
                                     <div class="user-avatar-small" style="background:#e5e7eb;display:flex;align-items:center;justify-content:center;border-radius:50%;">?</div>
                                 <?php endif; ?>
                             </td>
-                            <td><?= htmlspecialchars($user['login'] ?? $user['email'] ?? 'Без имени') ?></td>
+                            <td><?= htmlspecialchars($user['login'] ?? $user['nickname'] ?? $user['email'] ?? 'Без имени') ?></td>
                             <td><?= htmlspecialchars($user['email'] ?? '-') ?></td>
                             <td><?= htmlspecialchars($user['fullname'] ?? '-') ?></td>
                             <td>

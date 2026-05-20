@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$stmt = $pdo->query("SELECT p.* FROM promotions p ORDER BY p.created_at DESC");
+$stmt = $pdo->query("SELECT p.*, pr.name as product_name FROM promotions p LEFT JOIN products pr ON p.product_id = pr.id ORDER BY p.created_at DESC");
 $promotions = $stmt->fetchAll();
 if (!is_array($promotions)) $promotions = [];
 

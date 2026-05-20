@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Получение всех отзывов
 $filter = $_GET['filter'] ?? 'all'; // all, pending, approved
 
-$sql = "SELECT r.*, u.email, u.fullname, p.name as product_name FROM reviews r 
+$sql = "SELECT r.*, u.email, u.full_name, u.nickname, p.name as product_name FROM reviews r 
         JOIN users u ON r.user_id = u.id 
         LEFT JOIN products p ON r.product_id = p.id 
         WHERE 1";
@@ -114,7 +114,7 @@ if (!is_array($reviews)) $reviews = [];
                         <tr>
                             <td>#<?= $review['id'] ?></td>
                             <td>
-                                <?= htmlspecialchars($review['fullname'] ?? $review['email'] ?? 'Клиент') ?><br>
+                                <?= htmlspecialchars($review['full_name'] ?? $review['nickname'] ?? $review['email'] ?? 'Клиент') ?><br>
                                 <small style="color:#6b7280"><?= htmlspecialchars($review['email'] ?? '-') ?></small>
                             </td>
                             <td><?= htmlspecialchars($review['product_name'] ?? 'Удален') ?></td>
