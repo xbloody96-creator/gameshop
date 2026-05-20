@@ -7,9 +7,10 @@ define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
 
 // Настройки сайта
-define('SITE_NAME', 'GamesKey');
-define('SITE_URL', 'http://localhost/gameskey');
-define('ADMIN_EMAIL', 'admin@gameskey.com');
+define('SITE_NAME', 'JustKey');
+define('SITE_URL', 'https://justkey.ru');
+define('ADMIN_EMAIL', 'admin@justkey.ru');
+define('SITE_DOMAIN', 'justkey.ru');
 
 // Настройки безопасности
 define('SESSION_LIFETIME', 3600 * 24 * 7); // 7 дней
