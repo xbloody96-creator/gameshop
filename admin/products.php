@@ -11,52 +11,38 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $success = '';
 $error = '';
 
-// Обработка действий
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? '';
+// Проверка параметров URL
+if (isset($_GET['success'])) {
+    if ($_GET['success'] === 'added') $success = 'Товар успешно добавлен';
+    if ($_GET['success'] === 'updated') $success = 'Товар успешно обновлен';
+    if ($_GET['success'] === 'deleted') $success = 'Товар удален';
+}
+
+if (isset($_GET['error'])) {
+    if ($_GET['error'] === 'not_found') $error = 'Товар не найден';
+}
+
+// Обработка удаления
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_product') {
+    $id = intval($_POST['id']);
     
-    switch ($action) {
-        case 'add_product':
-            $name = trim($_POST['name']);
-            $description = trim($_POST['description']);
-            $price = floatval($_POST['price']);
-            $category_id = intval($_POST['category_id']);
-            $platform = trim($_POST['platform']);
-            $stock = intval($_POST['stock']);
-            $image_url = trim($_POST['image_url']);
-            
-            if ($name && $price > 0 && $category_id) {
-                $stmt = $pdo->prepare("INSERT INTO products (name, description, price, category_id, platform, stock, image_url, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, 1)");
-                $stmt->execute([$name, $description, $price, $category_id, $platform, $stock, $image_url]);
-                $success = 'Товар успешно добавлен';
-            } else {
-                $error = 'Заполните обязательные поля';
-            }
-            break;
-            
-        case 'edit_product':
-            $id = intval($_POST['id']);
-            $name = trim($_POST['name']);
-            $description = trim($_POST['description']);
-            $price = floatval($_POST['price']);
-            $category_id = intval($_POST['category_id']);
-            $platform = trim($_POST['platform']);
-            $stock = intval($_POST['stock']);
-            $image_url = trim($_POST['image_url']);
-            $is_active = isset($_POST['is_active']) ? 1 : 0;
-            
-            $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, price=?, category_id=?, platform=?, stock=?, image_url=?, is_active=? WHERE id=?");
-            $stmt->execute([$name, $description, $price, $category_id, $platform, $stock, $image_url, $is_active, $id]);
-            $success = 'Товар успешно обновлен';
-            break;
-            
-        case 'delete_product':
-            $id = intval($_POST['id']);
-            $stmt = $pdo->prepare("DELETE FROM products WHERE id=?");
-            $stmt->execute([$id]);
-            $success = 'Товар удален';
-            break;
+    // Получаем информацию о товаре для удаления изображения
+    $stmt = $pdo->prepare("SELECT image_url FROM products WHERE id = ?");
+    $stmt->execute([$id]);
+    $product = $stmt->fetch();
+    
+    // Удаляем локальное изображение если оно есть
+    if ($product && !empty($product['image_url']) && strpos($product['image_url'], '/uploads/') === 0) {
+        $old_path = '..' . $product['image_url'];
+        if (file_exists($old_path)) {
+            unlink($old_path);
+        }
     }
+    
+    $stmt = $pdo->prepare("DELETE FROM products WHERE id=?");
+    $stmt->execute([$id]);
+    header('Location: products.php?success=deleted');
+    exit;
 }
 
 // Получение списка товаров
@@ -64,10 +50,6 @@ $stmt = $pdo->query("SELECT p.*, c.name as category_name FROM products p
                      LEFT JOIN categories c ON p.category_id = c.id 
                      ORDER BY p.created_at DESC");
 $products = $stmt->fetchAll();
-
-// Получение категорий
-$stmt = $pdo->query("SELECT * FROM categories");
-$categories = $stmt->fetchAll();
 
 ?>
 <!DOCTYPE html>
@@ -97,63 +79,47 @@ $categories = $stmt->fetchAll();
                 <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
 
-            <div class="admin-form">
-                <h2>➕ Добавить товар</h2>
-                <form method="POST">
-                    <input type="hidden" name="action" value="add_product">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Название *</label>
-                            <input type="text" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Цена (₽) *</label>
-                            <input type="number" name="price" step="0.01" min="0" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Категория *</label>
-                            <select name="category_id" required>
-                                <option value="">Выберите категорию</option>
-                <?php foreach ($categories as $cat): ?>
-                                    <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
-                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Платформа</label>
-                            <select name="platform">
-                                <option value="">Любая</option>
-                                <option value="PC">PC</option>
-                                <option value="PlayStation">PlayStation</option>
-                                <option value="Xbox">Xbox</option>
-                                <option value="Nintendo">Nintendo</option>
-                                <option value="Mobile">Mobile</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Остаток на складе</label>
-                            <input type="number" name="stock" value="100" min="0">
-                        </div>
-                        <div class="form-group">
-                            <label>URL изображения</label>
-                            <input type="url" name="image_url" placeholder="https://...">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Описание</label>
-                        <textarea name="description" rows="4"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Добавить товар</button>
-                </form>
+            <!-- Панель быстрых действий -->
+            <div class="quick-actions" style="margin-bottom: 25px;">
+                <span class="quick-actions-title">Быстрые действия</span>
+                <a href="product-edit.php" class="quick-action-btn">
+                    <span class="icon">➕</span>
+                    Добавить товар
+                </a>
+                <a href="#" class="quick-action-btn" onclick="alert('Функция импорта в разработке')">
+                    <span class="icon">📥</span>
+                    Импорт CSV
+                </a>
+                <a href="#" class="quick-action-btn" onclick="alert('Функция экспорта в разработке')">
+                    <span class="icon">📤</span>
+                    Экспорт данных
+                </a>
             </div>
 
-            <div class="admin-form">
-                <h2>📦 Список товаров</h2>
-                <table class="admin-table">
+            <!-- Поиск и фильтры -->
+            <div class="search-filter-bar">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Поиск товаров..." onkeyup="filterProducts()">
+                </div>
+                <select class="filter-select" id="categoryFilter" onchange="filterProducts()">
+                    <option value="">Все категории</option>
+                    <?php 
+                    $stmt = $pdo->query("SELECT * FROM categories ORDER BY name");
+                    foreach ($stmt->fetchAll() as $cat): 
+                    ?>
+                        <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <select class="filter-select" id="statusFilter" onchange="filterProducts()">
+                    <option value="">Все статусы</option>
+                    <option value="1">Активные</option>
+                    <option value="0">Неактивные</option>
+                </select>
+            </div>
+
+            <div class="admin-form" style="padding: 0; overflow: hidden;">
+                <table class="admin-table" id="productsTable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -169,31 +135,31 @@ $categories = $stmt->fetchAll();
                     </thead>
                     <tbody>
         <?php foreach ($products as $product): ?>
-                        <tr>
+                        <tr data-category="<?= $product['category_id'] ?>" data-status="<?= $product['is_active'] ?>">
                             <td>#<?= $product['id'] ?></td>
                             <td>
                 <?php if ($product['image_url']): ?>
                                     <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="" class="product-thumb">
                 <?php else: ?>
-                                    <div class="product-thumb" style="background:#e5e7eb;display:flex;align-items:center;justify-content:center;">No img</div>
+                                    <div class="no-image">No img</div>
                 <?php endif; ?>
                             </td>
-                            <td><?= htmlspecialchars($product['name']) ?></td>
+                            <td><strong><?= htmlspecialchars($product['name']) ?></strong></td>
                             <td><?= htmlspecialchars($product['category_name'] ?? 'Без категории') ?></td>
-                            <td><?= htmlspecialchars($product['platform']) ?></td>
+                            <td><?= htmlspecialchars($product['platform'] ?? '-') ?></td>
                             <td><?= number_format($product['price'], 2) ?> ₽</td>
                             <td><?= $product['stock'] ?></td>
                             <td>
-                                <span class="status status-<?= $product['is_active'] ? 'completed' : 'cancelled' ?>">
-                                    <?= $product['is_active'] ? 'Активен' : 'Неактивен' ?>
+                                <span class="status status-<?= $product['is_active'] ? 'active' : 'inactive' ?>">
+                                    <?= $product['is_active'] ? '✓ Активен' : '✗ Неактивен' ?>
                                 </span>
                             </td>
                             <td class="actions">
-                                <button class="btn btn-sm btn-warning" onclick="editProduct(<?= htmlspecialchars(json_encode($product)) ?>)">✏️</button>
+                                <a href="product-edit.php?id=<?= $product['id'] ?>" class="btn btn-sm btn-warning" title="Редактировать">✏️</a>
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить товар?')">
                                     <input type="hidden" name="action" value="delete_product">
                                     <input type="hidden" name="id" value="<?= $product['id'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Удалить">🗑️</button>
                                 </form>
                             </td>
                         </tr>
@@ -202,101 +168,31 @@ $categories = $stmt->fetchAll();
                 </table>
             </div>
 </main>
-    </div>
 
-    <!-- Modal для редактирования -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Редактировать товар</h3>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
-            </div>
-            <form method="POST">
-                <input type="hidden" name="action" value="edit_product">
-                <input type="hidden" name="id" id="edit_id">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Название *</label>
-                        <input type="text" name="name" id="edit_name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Цена (₽) *</label>
-                        <input type="number" name="price" id="edit_price" step="0.01" min="0" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Категория *</label>
-                        <select name="category_id" id="edit_category_id" required>
-            <?php foreach ($categories as $cat): ?>
-                                <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
-            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Платформа</label>
-                        <select name="platform" id="edit_platform">
-                            <option value="">Любая</option>
-                            <option value="PC">PC</option>
-                            <option value="PlayStation">PlayStation</option>
-                            <option value="Xbox">Xbox</option>
-                            <option value="Nintendo">Nintendo</option>
-                            <option value="Mobile">Mobile</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Остаток на складе</label>
-                        <input type="number" name="stock" id="edit_stock" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label>URL изображения</label>
-                        <input type="url" name="image_url" id="edit_image_url">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Описание</label>
-                    <textarea name="description" id="edit_description" rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" name="is_active" id="edit_is_active"> Активен
-                    </label>
-                </div>
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                    <button type="button" class="btn btn-danger" onclick="closeModal()">Отмена</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        function editProduct(product) {
-            document.getElementById('edit_id').value = product.id;
-            document.getElementById('edit_name').value = product.name;
-            document.getElementById('edit_price').value = product.price;
-            document.getElementById('edit_category_id').value = product.category_id;
-            document.getElementById('edit_platform').value = product.platform;
-            document.getElementById('edit_stock').value = product.stock;
-            document.getElementById('edit_image_url').value = product.image_url || '';
-            document.getElementById('edit_description').value = product.description || '';
-            document.getElementById('edit_is_active').checked = product.is_active == 1;
-            
-            document.getElementById('editModal').classList.add('active');
-        }
+<script>
+function filterProducts() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const categoryFilter = document.getElementById('categoryFilter').value;
+    const statusFilter = document.getElementById('statusFilter').value;
+    
+    const rows = document.querySelectorAll('#productsTable tbody tr');
+    
+    rows.forEach(row => {
+        const name = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+        const categoryId = row.dataset.category;
+        const status = row.dataset.status;
         
-        function closeModal() {
-            document.getElementById('editModal').classList.remove('active');
-        }
+        const matchesSearch = name.includes(searchInput);
+        const matchesCategory = !categoryFilter || categoryId === categoryFilter;
+        const matchesStatus = !statusFilter || status === statusFilter;
         
-        // Закрытие по клику вне модального окна
-        document.getElementById('editModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
-    </script>
+        if (matchesSearch && matchesCategory && matchesStatus) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+</script>
 </body>
 </html>
