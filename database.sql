@@ -159,8 +159,9 @@ CREATE TABLE IF NOT EXISTS news_new (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Основная таблица новостей
-CREATE TABLE IF NOT EXISTS news (
+-- Основная таблица новостей (пересоздаем если существует для обновления структуры)
+DROP TABLE IF EXISTS news;
+CREATE TABLE news (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     slug VARCHAR(255) UNIQUE NOT NULL,
@@ -170,15 +171,12 @@ CREATE TABLE IF NOT EXISTS news (
     author_id INT,
     rating DECIMAL(3,2) DEFAULT 5.00,
     views INT DEFAULT 0,
+    image_url VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Добавляем недостающие поля в news
-ALTER TABLE news ADD COLUMN IF NOT EXISTS image_url VARCHAR(255) AFTER short_content;
-ALTER TABLE news ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE AFTER rating;
-UPDATE news SET image_url = image WHERE image_url IS NULL;
 
 -- Отзывы с модерацией (исправленная структура)
 CREATE TABLE IF NOT EXISTS reviews_new (
