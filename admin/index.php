@@ -212,6 +212,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Получение данных для отображения
 $tab = $_GET['tab'] ?? 'dashboard'; // Изменили default на dashboard
 
+// Вспомогательная функция для безопасного подсчета
+function safe_count($data) {
+    if (is_array($data)) return count($data);
+    if ($data instanceof Countable) return count($data);
+    return 0;
+}
+
 // Товары
 $products = $pdo->query("SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.id DESC");
 $products = $products ? $products->fetchAll() : [];
@@ -285,7 +292,7 @@ if (!is_array($categories)) $categories = [];
                     <span class="stat-trend up">↑ 12%</span>
                 </div>
                 <div class="stat-info">
-                    <h3><?= count($products) ?></h3>
+                    <h3><?= safe_count($products) ?></h3>
                     <p>Товаров в каталоге</p>
                 </div>
                 <a href="?tab=products" class="stat-link">Управление →</a>
@@ -297,7 +304,7 @@ if (!is_array($categories)) $categories = [];
                     <span class="stat-trend up">↑ 8%</span>
                 </div>
                 <div class="stat-info">
-                    <h3><?= count($orders) ?></h3>
+                    <h3><?= safe_count($orders) ?></h3>
                     <p>Всего заказов</p>
                 </div>
                 <a href="?tab=orders" class="stat-link">Просмотр →</a>
@@ -308,7 +315,7 @@ if (!is_array($categories)) $categories = [];
                     <div class="stat-icon">👥</div>
                 </div>
                 <div class="stat-info">
-                    <h3><?= count($users) ?></h3>
+                    <h3><?= safe_count($users) ?></h3>
                     <p>Зарегистрировано пользователей</p>
                 </div>
                 <a href="?tab=users" class="stat-link">Управление →</a>
@@ -317,10 +324,10 @@ if (!is_array($categories)) $categories = [];
             <div class="stat-card danger">
                 <div class="stat-card-header">
                     <div class="stat-icon">💬</div>
-                    <span class="stat-trend down"><?= count($pending_reviews) ?> новых</span>
+                    <span class="stat-trend down"><?= safe_count($pending_reviews) ?> новых</span>
                 </div>
                 <div class="stat-info">
-                    <h3><?= count($pending_reviews) ?></h3>
+                    <h3><?= safe_count($pending_reviews) ?></h3>
                     <p>Отзывов на модерации</p>
                 </div>
                 <a href="?tab=reviews" class="stat-link">Проверить →</a>

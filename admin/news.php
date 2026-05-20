@@ -193,10 +193,10 @@ if (!is_array($news_items)) $news_items = [];
     <script>
         function editNews(item) {
             document.getElementById('edit_id').value = item.id;
-            document.getElementById('edit_title').value = item.title;
+            document.getElementById('edit_title').value = item.title || '';
             document.getElementById('edit_image_url').value = item.image_url || '';
-            document.getElementById('edit_rating').value = item.rating;
-            document.getElementById('edit_content').value = item.content;
+            document.getElementById('edit_rating').value = item.rating || 0;
+            document.getElementById('edit_content').value = item.content || '';
             document.getElementById('edit_is_active').checked = item.is_active == 1;
             document.getElementById('editModal').classList.add('active');
         }
