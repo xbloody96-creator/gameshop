@@ -8,6 +8,13 @@ if (!isLoggedIn()) {
 
 $user = getCurrentUser();
 
+// Проверка корректности данных пользователя
+if (!$user || !is_array($user)) {
+    session_destroy();
+    header('Location: login.php');
+    exit;
+}
+
 // Получение истории сессий
 try {
     $stmt = $pdo->prepare("SELECT * FROM sessions WHERE user_id = ? ORDER BY login_time DESC LIMIT 10");

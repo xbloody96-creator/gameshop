@@ -48,51 +48,27 @@ CREATE TABLE platforms (
     icon VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Таблица игр/товаров
--- Таблица услуг
-CREATE TABLE services (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    duration INT DEFAULT 60,
-    image_url VARCHAR(255),
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Таблица продуктов (обновленная структура для админки)
-CREATE TABLE IF NOT EXISTS products_new (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    category_id INT,
-    platform VARCHAR(100),
-    stock INT DEFAULT 0,
-    image_url VARCHAR(255),
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Старая таблица products (для совместимости)
+-- Исправленная таблица products для админки - добавляем поля напрямую в CREATE TABLE
+DROP TABLE IF EXISTS products;
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     slug VARCHAR(255) UNIQUE NOT NULL,
     description TEXT NOT NULL,
     short_description VARCHAR(500),
     category_id INT,
     platform_id INT,
+    platform VARCHAR(100),
     price DECIMAL(10, 2) NOT NULL,
     old_price DECIMAL(10, 2) NULL,
     discount_percent INT DEFAULT 0,
     image VARCHAR(255) NOT NULL,
+    image_url VARCHAR(255),
     gallery JSON,
     stock INT DEFAULT 0,
     is_available BOOLEAN DEFAULT TRUE,
+    is_active BOOLEAN DEFAULT TRUE,
     is_popular BOOLEAN DEFAULT FALSE,
     is_featured BOOLEAN DEFAULT FALSE,
     views INT DEFAULT 0,
@@ -111,16 +87,17 @@ CREATE TABLE products (
     INDEX idx_rating (rating)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Исправленная таблица products для админки
-ALTER TABLE products ADD COLUMN IF NOT EXISTS name VARCHAR(255) AFTER title;
-ALTER TABLE products ADD COLUMN IF NOT EXISTS category_id INT AFTER name;
-ALTER TABLE products ADD COLUMN IF NOT EXISTS platform VARCHAR(100) AFTER category_id;
-ALTER TABLE products ADD COLUMN IF NOT EXISTS stock INT DEFAULT 0 AFTER platform;
-ALTER TABLE products ADD COLUMN IF NOT EXISTS image_url VARCHAR(255) AFTER stock;
-ALTER TABLE products ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE AFTER image_url;
-
-UPDATE products SET name = title WHERE name IS NULL;
-UPDATE products SET image_url = image WHERE image_url IS NULL;
+-- Таблица услуг
+CREATE TABLE services (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    duration INT DEFAULT 60,
+    image_url VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Акции (обновленная структура)
 DROP TABLE IF EXISTS promotions;
@@ -226,7 +203,7 @@ CREATE TABLE orders (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Таблица товаров в заказе
+-- Таблица товаров в заказе (перемещена после orders)
 CREATE TABLE order_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
@@ -311,16 +288,11 @@ INSERT INTO services (name, description, price, duration, image_url, is_active) 
 ('Консультация геймера', 'Индивидуальная консультация по выбору игр, прохождению сложных моментов', 800.00, 45, 'consultation.jpg', TRUE),
 ('Восстановление аккаунта', 'Помощь в восстановлении доступа к игровым аккаунтам', 1000.00, 90, 'account-recovery.jpg', TRUE);
 
--- Тестовые данные для админки (products_new)
-INSERT INTO products_new (name, description, price, category_id, platform, stock, image_url, is_active) VALUES
-('Cyberpunk 2077', 'RPG в мире будущего', 1499.00, 2, 'Steam', 150, 'cyberpunk2077.jpg', TRUE),
-('The Witcher 3', 'Эпическая RPG о ведьмаке', 899.00, 2, 'Steam', 200, 'witcher3.jpg', TRUE),
-('Elden Ring', 'Фэнтезийная RPG от FromSoftware', 2199.00, 2, 'Steam', 80, 'eldenring.jpg', TRUE);
-
--- Тестовые данные для news_new
-INSERT INTO news_new (title, content, image_url, rating, is_active) VALUES
-('Анонсирована новая часть GTA', 'Rockstar Games официально анонсировала GTA 6...', 'gta6news.jpg', 4.95, TRUE),
-('Скидки до 90% в летней распродаже', 'Началась грандиозная летняя распродажа!', 'summersale.jpg', 4.50, TRUE);
+-- Тестовые данные для админки
+INSERT INTO products (title, name, slug, description, short_description, category_id, platform_id, platform, price, image, image_url, stock, is_active) VALUES
+('Cyberpunk 2077', 'Cyberpunk 2077', 'cyberpunk-2077', 'RPG в мире будущего', 'Приключенческая RPG в мире будущего', 2, 1, 'Steam', 1499.00, 'cyberpunk2077.jpg', 'cyberpunk2077.jpg', 150, TRUE),
+('The Witcher 3', 'The Witcher 3', 'witcher-3', 'Эпическая RPG о ведьмаке', 'Эпическая RPG о ведьмаке Геральте', 2, 1, 'Steam', 899.00, 'witcher3.jpg', 'witcher3.jpg', 200, TRUE),
+('Elden Ring', 'Elden Ring', 'elden-ring', 'Фэнтезийная RPG от FromSoftware', 'Фэнтезийная RPG от создателей Dark Souls', 2, 1, 'Steam', 2199.00, 'eldenring.jpg', 'eldenring.jpg', 80, TRUE);
 
 -- Тестовые отзывы
 INSERT INTO reviews (product_id, user_id, rating, comment, is_approved) VALUES
