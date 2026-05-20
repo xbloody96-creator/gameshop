@@ -22,27 +22,23 @@ venv/
 dist/
 build/
 target/
-.coverage
-coverage/
-htmlcov/
+*.log
+*.tmp
+*.swp
 
 # Editors
 .vscode/
 .idea/
-*.swp
-*.swo
-*.tmp
-
-# Logs
-*.log
 
 # System files
 .DS_Store
 Thumbs.db
 
-# Cache directories
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Python specific
 .mypy_cache/
 .pytest_cache/
-.gradle/
-julia-*/
-zig*/
