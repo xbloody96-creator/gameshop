@@ -110,7 +110,7 @@ try {
                     <div class="news-grid">
                         <?php
                         try {
-                            $stmt = $pdo->query("SELECT * FROM news WHERE is_published = TRUE ORDER BY rating DESC LIMIT 4");
+                            $stmt = $pdo->query("SELECT * FROM news WHERE is_active = TRUE ORDER BY rating DESC LIMIT 4");
                             $recommendedNews = $stmt->fetchAll();
                             foreach ($recommendedNews as $news):
                         ?>

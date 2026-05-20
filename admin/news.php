@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $rating = floatval($_POST['rating']);
             
             if ($title && $content) {
-                $stmt = $pdo->prepare("INSERT INTO news (title, content, image_url, rating, published_at, is_active) VALUES (?, ?, ?, ?, NOW(), 1)");
+                $stmt = $pdo->prepare("INSERT INTO news (title, content, image_url, rating, is_active) VALUES (?, ?, ?, ?, 1)");
                 $stmt->execute([$title, $content, $image_url, $rating]);
                 $success = 'Новость добавлена';
             } else {
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$stmt = $pdo->query("SELECT * FROM news ORDER BY published_at DESC");
+$stmt = $pdo->query("SELECT * FROM news ORDER BY created_at DESC");
 $news_items = $stmt->fetchAll();
 if (!is_array($news_items)) $news_items = [];
 
@@ -128,7 +128,7 @@ if (!is_array($news_items)) $news_items = [];
                             <td>#<?= $item['id'] ?? '?' ?></td>
                             <td><?= htmlspecialchars($item['title'] ?? 'Без названия') ?></td>
                             <td>⭐ <?= number_format($item['rating'] ?? 0, 1) ?></td>
-                            <td><?= isset($item['published_at']) ? date('d.m.Y H:i', strtotime($item['published_at'])) : '-' ?></td>
+                            <td><?= isset($item['created_at']) ? date('d.m.Y H:i', strtotime($item['created_at'])) : '-' ?></td>
                             <td>
                                 <span class="status status-<?= !empty($item['is_active']) ? 'completed' : 'cancelled' ?>">
                                     <?= !empty($item['is_active']) ? 'Активна' : 'Неактивна' ?>

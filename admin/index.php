@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $rating = floatval($_POST['rating']);
             
             if ($title && $content) {
-                $stmt = $pdo->prepare("INSERT INTO news (title, content, image_url, rating, published_at) VALUES (?, ?, ?, ?, NOW())");
+                $stmt = $pdo->prepare("INSERT INTO news (title, content, image_url, rating, is_active) VALUES (?, ?, ?, ?, 1)");
                 $stmt->execute([$title, $content, $image_url, $rating]);
                 $success = 'Новость добавлена';
             } else {
@@ -225,7 +225,7 @@ $products = $products ? $products->fetchAll() : [];
 if (!is_array($products)) $products = [];
 
 // Новости
-$news = $pdo->query("SELECT * FROM news ORDER BY published_at DESC");
+$news = $pdo->query("SELECT * FROM news ORDER BY created_at DESC");
 $news = $news ? $news->fetchAll() : [];
 if (!is_array($news)) $news = [];
 
@@ -430,10 +430,10 @@ if (!is_array($categories)) $categories = [];
                     <?php foreach ($news as $item): ?>
                     <tr>
                         <td><?= $item['id'] ?></td>
-                        <td><img src="<?= htmlspecialchars($item['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($item['name']) ?>"></td>
-                        <td><?= htmlspecialchars($item['name']) ?></td>
-                        <td>-</td>
-                        <td><?= date('d.m.Y H:i', strtotime($item['published_at'])) ?></td>
+                        <td><img src="<?= htmlspecialchars($item['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($item['title']) ?>"></td>
+                        <td><?= htmlspecialchars($item['title']) ?></td>
+                        <td><?= number_format($item['rating'], 1) ?></td>
+                        <td><?= date('d.m.Y H:i', strtotime($item['created_at'])) ?></td>
                         <td>
                             <span class="status-badge <?= $item['is_active'] ? 'status-active' : 'status-inactive' ?>">
                                 <?= $item['is_active'] ? 'Активна' : 'Неактивна' ?>

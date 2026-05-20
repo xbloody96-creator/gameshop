@@ -27,7 +27,7 @@ try {
     $stmt = $pdo->prepare("
         SELECT id, title, 0 as price, image, 'news' as type 
         FROM news 
-        WHERE title LIKE ? AND is_published = TRUE 
+        WHERE title LIKE ? AND is_active = TRUE 
         LIMIT 3
     ");
     $stmt->execute(['%' . $query . '%']);
