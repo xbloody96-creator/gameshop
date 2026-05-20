@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Получение всех отзывов
 $filter = $_GET['filter'] ?? 'all'; // all, pending, approved
 
-$sql = "SELECT r.*, u.login, u.email, p.name as product_name FROM reviews r 
+$sql = "SELECT r.*, u.email, u.fullname, p.name as product_name FROM reviews r 
         JOIN users u ON r.user_id = u.id 
         LEFT JOIN products p ON r.product_id = p.id 
         WHERE 1";
@@ -49,6 +49,7 @@ $sql .= " ORDER BY r.created_at DESC";
 
 $stmt = $pdo->query($sql);
 $reviews = $stmt->fetchAll();
+if (!is_array($reviews)) $reviews = [];
 
 ?>
 <!DOCTYPE html>
@@ -113,8 +114,8 @@ $reviews = $stmt->fetchAll();
                         <tr>
                             <td>#<?= $review['id'] ?></td>
                             <td>
-                                <?= htmlspecialchars($review['login']) ?><br>
-                                <small style="color:#6b7280"><?= htmlspecialchars($review['email']) ?></small>
+                                <?= htmlspecialchars($review['fullname'] ?? $review['email'] ?? 'Клиент') ?><br>
+                                <small style="color:#6b7280"><?= htmlspecialchars($review['email'] ?? '-') ?></small>
                             </td>
                             <td><?= htmlspecialchars($review['product_name'] ?? 'Удален') ?></td>
                             <td>⭐ <?= $review['rating'] ?>/5</td>
