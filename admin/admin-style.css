@@ -372,7 +372,8 @@
     width: 4px;
     height: 100%;
     background: var(--primary);
-    transition: width var(--transition);
+    transition: width var(--transition), opacity var(--transition);
+    opacity: 0;
 }
 
 .stat-card:hover {
@@ -382,7 +383,7 @@
 
 .stat-card:hover::before {
     width: 100%;
-    opacity: 0.05;
+    opacity: 0.08;
 }
 
 .stat-card.primary::before { background: var(--primary); }
