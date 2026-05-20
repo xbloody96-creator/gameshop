@@ -228,10 +228,10 @@ $promotions = $pdo->query("SELECT * FROM promotions ORDER BY id DESC")->fetchAll
 $users = $pdo->query("SELECT * FROM users ORDER BY id DESC")->fetchAll();
 
 // Отзывы на модерации
-$pending_reviews = $pdo->query("SELECT r.*, u.fullname, u.nickname, p.name as product_name FROM reviews r JOIN users u ON r.user_id = u.id LEFT JOIN products p ON r.product_id = p.id WHERE r.is_approved = 0 ORDER BY r.created_at DESC")->fetchAll();
+$pending_reviews = $pdo->query("SELECT r.*, u.full_name, u.nickname, p.name as product_name FROM reviews r JOIN users u ON r.user_id = u.id LEFT JOIN products p ON r.product_id = p.id WHERE r.is_approved = 0 ORDER BY r.created_at DESC")->fetchAll();
 
 // Заказы
-$orders = $pdo->query("SELECT o.*, u.fullname, u.email FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC")->fetchAll();
+$orders = $pdo->query("SELECT o.*, u.full_name, u.email FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC")->fetchAll();
 
 // Категории
 $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
