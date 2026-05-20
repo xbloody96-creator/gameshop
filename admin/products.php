@@ -76,18 +76,18 @@ $categories = $stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Управление товарами - Админ-панель</title>
-    <link rel="stylesheet" href="../style.css">
+    
     <link rel="stylesheet" href="admin-style.css">
 </head>
 <body class="admin-body">
-    <div class="admin-container">
-        <?php include 'includes/sidebar.php'; ?>
+
+<?php include 'includes/sidebar.php'; ?>
         
-        <main class="admin-main">
-            <header class="admin-header">
-                <h1>🎮 Управление товарами</h1>
-                <?php include 'includes/theme-toggle.php'; ?>
-            </header>
+<main class="admin-main">
+<header class="admin-header">
+<h1>🎮 Управление товарами</h1>
+        <?php include 'includes/theme-toggle.php'; ?>
+</header>
 
             <?php if ($success): ?>
                 <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
@@ -116,9 +116,9 @@ $categories = $stmt->fetchAll();
                             <label>Категория *</label>
                             <select name="category_id" required>
                                 <option value="">Выберите категорию</option>
-                                <?php foreach ($categories as $cat): ?>
+                <?php foreach ($categories as $cat): ?>
                                     <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
-                                <?php endforeach; ?>
+                <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="form-group">
@@ -168,15 +168,15 @@ $categories = $stmt->fetchAll();
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($products as $product): ?>
+        <?php foreach ($products as $product): ?>
                         <tr>
                             <td>#<?= $product['id'] ?></td>
                             <td>
-                                <?php if ($product['image_url']): ?>
+                <?php if ($product['image_url']): ?>
                                     <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="" class="product-thumb">
-                                <?php else: ?>
+                <?php else: ?>
                                     <div class="product-thumb" style="background:#e5e7eb;display:flex;align-items:center;justify-content:center;">No img</div>
-                                <?php endif; ?>
+                <?php endif; ?>
                             </td>
                             <td><?= htmlspecialchars($product['name']) ?></td>
                             <td><?= htmlspecialchars($product['category_name'] ?? 'Без категории') ?></td>
@@ -197,11 +197,11 @@ $categories = $stmt->fetchAll();
                                 </form>
                             </td>
                         </tr>
-                        <?php endforeach; ?>
+        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
-        </main>
+</main>
     </div>
 
     <!-- Modal для редактирования -->
@@ -228,9 +228,9 @@ $categories = $stmt->fetchAll();
                     <div class="form-group">
                         <label>Категория *</label>
                         <select name="category_id" id="edit_category_id" required>
-                            <?php foreach ($categories as $cat): ?>
+            <?php foreach ($categories as $cat): ?>
                                 <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
-                            <?php endforeach; ?>
+            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group">
