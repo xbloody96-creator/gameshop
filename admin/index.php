@@ -249,8 +249,8 @@ $pending_reviews = $pdo->query("SELECT r.*, u.full_name, u.nickname, p.title as 
 $pending_reviews = $pending_reviews ? $pending_reviews->fetchAll() : [];
 if (!is_array($pending_reviews)) $pending_reviews = [];
 
-// Заказы - исправленный запрос без u.login
-$orders = $pdo->query("SELECT o.*, u.full_name, u.email, u.nickname FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC");
+// Заказы - исправленный запрос с LEFT JOIN для обработки заказов без пользователей
+$orders = $pdo->query("SELECT o.*, u.full_name, u.email, u.nickname FROM orders o LEFT JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC");
 $orders = $orders ? $orders->fetchAll() : [];
 if (!is_array($orders)) $orders = [];
 

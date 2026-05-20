@@ -1,8 +1,23 @@
-config.php
-.env
-logs/*.log
-static/uploads/*
-!static/uploads/.gitkeep
-vendor/
+```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+
+# Dependencies
+venv/
+.venv/
+
+# Logs and temp files
 *.log
-*.sql~
+*.tmp
+*.swp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+```

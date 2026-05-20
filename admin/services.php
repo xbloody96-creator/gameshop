@@ -143,7 +143,15 @@ if (!is_array($services)) $services = [];
                                 </span>
                             </td>
                             <td class="actions">
-                                <button class="btn btn-sm btn-warning" onclick="editService(<?= htmlspecialchars(json_encode($service)) ?>)">✏️</button>
+                                <button class="btn btn-sm btn-warning" onclick='editService({
+                                    id: <?= $service['id'] ?? 0 ?>,
+                                    name: "<?= addslashes($service['name'] ?? '') ?>",
+                                    description: "<?= addslashes($service['description'] ?? '') ?>",
+                                    price: <?= $service['price'] ?? 0 ?>,
+                                    duration: <?= $service['duration'] ?? 0 ?>,
+                                    image_url: "<?= addslashes($service['image_url'] ?? '') ?>",
+                                    is_active: <?= $service['is_active'] ?? 0 ?>
+                                })'>✏️</button>
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить услугу?')">
                                     <input type="hidden" name="action" value="delete_service">
                                     <input type="hidden" name="id" value="<?= $service['id'] ?? '' ?>">

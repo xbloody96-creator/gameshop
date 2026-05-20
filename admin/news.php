@@ -135,7 +135,14 @@ if (!is_array($news_items)) $news_items = [];
                                 </span>
                             </td>
                             <td class="actions">
-                                <button class="btn btn-sm btn-warning" onclick="editNews(<?= htmlspecialchars(json_encode($item)) ?>)">✏️</button>
+                                <button class="btn btn-sm btn-warning" onclick='editNews({
+                                    id: <?= $item['id'] ?? 0 ?>,
+                                    title: "<?= addslashes($item['title'] ?? '') ?>",
+                                    content: "<?= addslashes($item['content'] ?? '') ?>",
+                                    image_url: "<?= addslashes($item['image_url'] ?? '') ?>",
+                                    rating: <?= $item['rating'] ?? 0 ?>,
+                                    is_active: <?= $item['is_active'] ?? 0 ?>
+                                })'>✏️</button>
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить новость?')">
                                     <input type="hidden" name="action" value="delete_news">
                                     <input type="hidden" name="id" value="<?= $item['id'] ?? '' ?>">
