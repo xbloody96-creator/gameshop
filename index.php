@@ -8,7 +8,7 @@ try {
     $popularProducts = $stmt->fetchAll();
     
     // Получение новостей
-    $stmt = $pdo->prepare("SELECT * FROM news WHERE is_active = TRUE ORDER BY created_at DESC LIMIT 6");
+    $stmt = $pdo->prepare("SELECT * FROM news WHERE is_active = TRUE ORDER BY published_at DESC LIMIT 6");
     $stmt->execute();
     $news = $stmt->fetchAll();
     
