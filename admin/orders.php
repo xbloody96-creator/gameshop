@@ -93,14 +93,14 @@ if (!is_array($orders)) $orders = [];
             <!-- Список заказов -->
             <div class="admin-form">
                 <h2>📋 Заказы (<?= count($orders) ?>)</h2>
-                <table class="admin-table">
+                <table class="admin-table admin-table-compact">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Клиент</th>
                             <th>Сумма</th>
                             <th>Статус</th>
-                            <th>Дата создания</th>
+                            <th>Дата</th>
                             <th>Действия</th>
                         </tr>
                     </thead>
@@ -108,25 +108,28 @@ if (!is_array($orders)) $orders = [];
                         <?php foreach ($orders as $order): ?>
                         <tr>
                             <td>#<?= $order['id'] ?></td>
-                            <td>\n                                <?= htmlspecialchars($order['full_name'] ?? $order['nickname'] ?? $order['email'] ?? 'Клиент') ?><br>\n                                <small style="color:#6b7280"><?= htmlspecialchars($order['email'] ?? '-') ?></small>\n                            </td>
+                            <td>
+                                <?= htmlspecialchars($order['full_name'] ?? $order['nickname'] ?? $order['email'] ?? 'Клиент') ?><br>
+                                <small style="color:var(--text-muted);font-size:0.75rem;"><?= htmlspecialchars($order['email'] ?? '-') ?></small>
+                            </td>
                             <td><strong><?= number_format($order['total'], 2) ?> ₽</strong></td>
                             <td>
-                                <span class="status status-<?= $order['status'] ?>">
+                                <span class="status-badge status-badge-<?= $order['status'] == 'completed' ? 'active' : ($order['status'] == 'cancelled' ? 'inactive' : 'pending') ?>">
                                     <?php
                                     $status_names = [
-                                        'pending' => 'Ожидает',
-                                        'processing' => 'В обработке',
-                                        'completed' => 'Завершен',
-                                        'cancelled' => 'Отменен'
+                                        'pending' => '⏳ Ожидает',
+                                        'processing' => '⚙️ В обработке',
+                                        'completed' => '✓ Завершен',
+                                        'cancelled' => '✗ Отменен'
                                     ];
                                     echo $status_names[$order['status']] ?? $order['status'];
                                     ?>
                                 </span>
                             </td>
-                            <td><?= date('d.m.Y H:i', strtotime($order['created_at'])) ?></td>
-                            <td class="actions">
-                                <button class="btn btn-sm btn-warning" onclick="viewOrder(<?= $order['id'] ?>)">👁️</button>
-                                <button class="btn btn-sm btn-primary" onclick="changeStatus(<?= $order['id'] ?>)">✏️</button>
+                            <td><?= date('d.m.Y', strtotime($order['created_at'])) ?></td>
+                            <td class="actions actions-compact">
+                                <button class="btn-icon btn-info" style="color:var(--info);background:var(--info-bg);" onclick="viewOrder(<?= $order['id'] ?>)" title="Просмотр">👁️</button>
+                                <button class="btn-icon btn-edit" onclick="changeStatus(<?= $order['id'] ?>)" title="Изменить статус">✏️</button>
                             </td>
                         </tr>
                         <?php endforeach; ?>

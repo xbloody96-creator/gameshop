@@ -96,15 +96,13 @@ if (!is_array($reviews)) $reviews = [];
             <!-- Список отзывов -->
             <div class="admin-form">
                 <h2>📋 Отзывы (<?= count($reviews) ?>)</h2>
-                <table class="admin-table">
+                <table class="admin-table admin-table-compact">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Пользователь</th>
                             <th>Товар</th>
                             <th>Оценка</th>
                             <th>Отзыв</th>
-                            <th>Дата</th>
                             <th>Статус</th>
                             <th>Действия</th>
                         </tr>
@@ -112,32 +110,30 @@ if (!is_array($reviews)) $reviews = [];
                     <tbody>
                         <?php foreach ($reviews as $review): ?>
                         <tr>
-                            <td>#<?= $review['id'] ?></td>
                             <td>
                                 <?= htmlspecialchars($review['full_name'] ?? $review['nickname'] ?? $review['email'] ?? 'Клиент') ?><br>
-                                <small style="color:#6b7280"><?= htmlspecialchars($review['email'] ?? '-') ?></small>
+                                <small style="color:var(--text-muted);font-size:0.75rem;"><?= htmlspecialchars($review['email'] ?? '-') ?></small>
                             </td>
                             <td><?= htmlspecialchars($review['product_name'] ?? 'Удален') ?></td>
                             <td>⭐ <?= $review['rating'] ?>/5</td>
-                            <td><?= htmlspecialchars(mb_substr($review['comment'], 0, 100)) ?><?= mb_strlen($review['comment']) > 100 ? '...' : '' ?></td>
-                            <td><?= date('d.m.Y H:i', strtotime($review['created_at'])) ?></td>
+                            <td><?= htmlspecialchars(mb_substr($review['comment'], 0, 80)) ?><?= mb_strlen($review['comment']) > 80 ? '...' : '' ?></td>
                             <td>
-                                <span class="status status-<?= $review['approved'] ? 'completed' : 'pending' ?>">
-                                    <?= $review['approved'] ? 'Одобрен' : 'На модерации' ?>
+                                <span class="status-badge status-badge-<?= $review['approved'] ? 'active' : 'inactive' ?>">
+                                    <?= $review['approved'] ? '✓' : '⏳' ?>
                                 </span>
                             </td>
-                            <td class="actions">
+                            <td class="actions actions-compact">
                                 <?php if (!$review['approved']): ?>
                                     <form method="POST" style="display:inline;">
                                         <input type="hidden" name="action" value="approve_review">
                                         <input type="hidden" name="id" value="<?= $review['id'] ?>">
-                                        <button type="submit" class="btn btn-sm btn-success">✅</button>
+                                        <button type="submit" class="btn-icon btn-edit" title="Одобрить">✅</button>
                                     </form>
                                 <?php endif; ?>
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить отзыв?')">
                                     <input type="hidden" name="action" value="reject_review">
                                     <input type="hidden" name="id" value="<?= $review['id'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
+                                    <button type="submit" class="btn-icon btn-delete" title="Удалить">🗑️</button>
                                 </form>
                             </td>
                         </tr>

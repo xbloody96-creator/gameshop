@@ -1628,6 +1628,82 @@
     transform: scale(1.1);
 }
 
+/* ===== Compact Table Styles ===== */
+.admin-table-compact th {
+    padding: 10px 12px;
+    font-size: 0.7rem;
+}
+
+.admin-table-compact td {
+    padding: 10px 12px;
+}
+
+.admin-table-compact .product-thumb-small {
+    width: 35px;
+    height: 35px;
+}
+
+.admin-table-compact .no-image-small {
+    width: 35px;
+    height: 35px;
+    font-size: 0.65rem;
+}
+
+.actions-compact {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all var(--transition-fast);
+    background: transparent;
+    text-decoration: none;
+}
+
+.btn-icon.btn-edit {
+    color: var(--info);
+    background: var(--info-bg);
+}
+
+.btn-icon.btn-edit:hover {
+    background: var(--info);
+    color: white;
+    transform: scale(1.1);
+}
+
+.btn-icon.btn-delete {
+    color: var(--danger);
+    background: var(--danger-bg);
+}
+
+.btn-icon.btn-delete:hover {
+    background: var(--danger);
+    color: white;
+    transform: scale(1.1);
+}
+
+.btn-icon.btn-info {
+    color: var(--info);
+    background: var(--info-bg);
+}
+
+.btn-icon.btn-info:hover {
+    background: var(--info);
+    color: white;
+    transform: scale(1.1);
+}
+
 /* ===== Admin Grid Dashboard ===== */
 .admin-grid {
     display: grid;
