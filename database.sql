@@ -49,6 +49,35 @@ CREATE TABLE platforms (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Таблица игр/товаров
+-- Таблица услуг
+CREATE TABLE services (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    duration INT DEFAULT 60,
+    image_url VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Таблица продуктов (обновленная структура для админки)
+CREATE TABLE IF NOT EXISTS products_new (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    category_id INT,
+    platform VARCHAR(100),
+    stock INT DEFAULT 0,
+    image_url VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Старая таблица products (для совместимости)
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -82,8 +111,19 @@ CREATE TABLE products (
     INDEX idx_rating (rating)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Таблица акций
-CREATE TABLE promotions (
+-- Исправленная таблица products для админки
+ALTER TABLE products ADD COLUMN IF NOT EXISTS name VARCHAR(255) AFTER title;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS category_id INT AFTER name;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS platform VARCHAR(100) AFTER category_id;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS stock INT DEFAULT 0 AFTER platform;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS image_url VARCHAR(255) AFTER stock;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE AFTER image_url;
+
+UPDATE products SET name = title WHERE name IS NULL;
+UPDATE products SET image_url = image WHERE image_url IS NULL;
+
+-- Акции (обновленная структура)
+CREATE TABLE IF NOT EXISTS promotions_new (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT,
@@ -91,9 +131,12 @@ CREATE TABLE promotions (
     start_date DATETIME NOT NULL,
     end_date DATETIME NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
-    banner_image VARCHAR(255),
+    image_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Добавляем недостающие поля в promotions
+ALTER TABLE promotions ADD COLUMN IF NOT EXISTS image_url VARCHAR(255) AFTER banner_image;
 
 -- Связь акций с товарами
 CREATE TABLE promotion_products (
@@ -104,25 +147,43 @@ CREATE TABLE promotion_products (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Таблица новостей
-CREATE TABLE news (
+-- Таблица новостей (обновленная структура для админки)
+CREATE TABLE IF NOT EXISTS news_new (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    slug VARCHAR(255) UNIQUE NOT NULL,
     content TEXT NOT NULL,
-    short_content VARCHAR(500),
-    image VARCHAR(255),
-    author_id INT,
-    views INT DEFAULT 0,
-    rating DECIMAL(3, 2) DEFAULT 0.00,
-    is_published BOOLEAN DEFAULT TRUE,
+    image_url VARCHAR(255),
+    rating DECIMAL(3,2) DEFAULT 5.00,
+    is_active BOOLEAN DEFAULT TRUE,
     published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE SET NULL
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Таблица отзывов
-CREATE TABLE reviews (
+-- Добавляем недостающие поля в news
+ALTER TABLE news ADD COLUMN IF NOT EXISTS image_url VARCHAR(255) AFTER short_content;
+ALTER TABLE news ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE AFTER rating;
+UPDATE news SET image_url = image WHERE image_url IS NULL;
+
+-- Отзывы с модерацией (исправленная структура)
+CREATE TABLE IF NOT EXISTS reviews_new (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT,
+    user_id INT NOT NULL,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT NOT NULL,
+    is_approved BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_product_review (product_id, user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Добавляем поля для отзывов в существующую таблицу news
+ALTER TABLE news ADD COLUMN IF NOT EXISTS is_approved BOOLEAN DEFAULT TRUE AFTER is_active;
+
+-- Таблица отзывов о товарах
+-- Таблица отзывов о товарах (дубликат для совместимости)
+CREATE TABLE IF NOT EXISTS reviews (
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
     user_id INT NOT NULL,
@@ -252,6 +313,29 @@ INSERT INTO news (title, slug, content, short_content, image, author_id, rating)
 ('Скидки до 90% в летней распродаже', 'summer-sale-2026', 'Началась грандиозная летняя распродажа! Тысячи игр со скидками до 90%. Успейте купить игры мечты по лучшей цене!', 'Летняя распродажа стартовала', 'summersale.jpg', 1, 4.50);
 
 -- Акции
-INSERT INTO promotions (title, description, discount_percent, start_date, end_date, is_active) VALUES
-('Летняя распродажа 2026', 'Огромные скидки на лучшие игры года!', 50, '2026-06-01 00:00:00', '2026-06-30 23:59:59', TRUE),
-('Черная пятница', 'Не пропустите лучшие предложения года', 70, '2026-11-25 00:00:00', '2026-11-30 23:59:59', FALSE);
+INSERT INTO promotions (title, description, discount_percent, start_date, end_date, is_active, image_url) VALUES
+('Летняя распродажа 2026', 'Огромные скидки на лучшие игры года!', 50, '2026-06-01 00:00:00', '2026-06-30 23:59:59', TRUE, 'summer-sale.jpg'),
+('Черная пятница', 'Не пропустите лучшие предложения года', 70, '2026-11-25 00:00:00', '2026-11-30 23:59:59', FALSE, 'black-friday.jpg');
+
+-- Услуги
+INSERT INTO services (name, description, price, duration, image_url, is_active) VALUES
+('Настройка игрового ПК', 'Профессиональная настройка операционной системы, драйверов и оптимизация для игр', 1500.00, 120, 'pc-setup.jpg', TRUE),
+('Установка игр', 'Установка и настройка любых игр из ваших библиотек Steam, Epic Games и других платформ', 500.00, 60, 'game-install.jpg', TRUE),
+('Консультация геймера', 'Индивидуальная консультация по выбору игр, прохождению сложных моментов', 800.00, 45, 'consultation.jpg', TRUE),
+('Восстановление аккаунта', 'Помощь в восстановлении доступа к игровым аккаунтам', 1000.00, 90, 'account-recovery.jpg', TRUE);
+
+-- Тестовые данные для админки (products_new)
+INSERT INTO products_new (name, description, price, category_id, platform, stock, image_url, is_active) VALUES
+('Cyberpunk 2077', 'RPG в мире будущего', 1499.00, 2, 'Steam', 150, 'cyberpunk2077.jpg', TRUE),
+('The Witcher 3', 'Эпическая RPG о ведьмаке', 899.00, 2, 'Steam', 200, 'witcher3.jpg', TRUE),
+('Elden Ring', 'Фэнтезийная RPG от FromSoftware', 2199.00, 2, 'Steam', 80, 'eldenring.jpg', TRUE);
+
+-- Тестовые данные для news_new
+INSERT INTO news_new (title, content, image_url, rating, is_active) VALUES
+('Анонсирована новая часть GTA', 'Rockstar Games официально анонсировала GTA 6...', 'gta6news.jpg', 4.95, TRUE),
+('Скидки до 90% в летней распродаже', 'Началась грандиозная летняя распродажа!', 'summersale.jpg', 4.50, TRUE);
+
+-- Тестовые отзывы
+INSERT INTO reviews (product_id, user_id, rating, comment, is_approved) VALUES
+(1, 1, 5, 'Отличная игра! Рекомендую всем.', TRUE),
+(2, 1, 4, 'Хорошая графика и сюжет.', FALSE);
