@@ -89,6 +89,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) {
         $stmt = $pdo->prepare("DELETE FROM cart WHERE user_id = ?");
         $stmt->execute([$_SESSION['user_id']]);
         
+        // Инициализация оплаты через NicePay
+        require_once 'includes/nicepay.class.php';
+        
+        // Настройки NicePay (получите их в личном кабинете NicePay)
+        define('NICEPAY_MERCHANT_ID', 'your_merchant_id_here'); // Замените на ваш ID мерчанта
+        define('NICEPAY_SECRET_KEY', 'your_secret_key_here');  // Замените на ваш секретный ключ
+        
+        try {
+            $nicePay = new NicePay(null, null, false); // false = боевой режим, true = тестовый
+            $paymentUrl = $nicePay->initiatePayment($orderId, $pdo);
+            
+            // Перенаправляем пользователя на страницу оплаты NicePay
+            header('Location: ' . $paymentUrl);
+            exit;
+        } catch (Exception $e) {
+            // Если ошибка с платежкой, показываем сообщение но заказ сохраняем
+            $error = 'Заказ создан, но произошла ошибка при подключении к платежной системе: ' . $e->getMessage();
+            // Можно отправить email администратору о проблеме
+        }
+        
         // Отправка email подтверждения
         $subject = 'Подтверждение заказа #' . $orderNumber;
         $message = "
@@ -118,6 +138,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) {
         exit;
     } catch (PDOException $e) {
         $error = 'Ошибка оформления заказа';
+    } catch (Exception $e) {
+        $error = 'Ошибка: ' . $e->getMessage();
     }
 }
 
