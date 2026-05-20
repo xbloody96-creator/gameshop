@@ -34,7 +34,7 @@ $signature = $_POST['signature'] ?? '';
 $timestamp = $_POST['timestamp'] ?? '';
 
 // Секретный ключ для проверки подписи (получите его в личном кабинете NicePay)
-$secretKey = defined('NICEPAY_SECRET_KEY') ? NICEPAY_SECRET_KEY : 'your_secret_key_here';
+$secretKey = defined('NICEPAY_SECRET_KEY') ? NICEPAY_SECRET_KEY : (getenv('NICEPAY_SECRET_KEY') ?: 'your_secret_key_here');
 
 // Проверка подписи
 function verifySignature($data, $signature, $secretKey) {

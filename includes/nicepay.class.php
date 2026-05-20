@@ -20,8 +20,11 @@ class NicePay {
      * @param bool $testMode Режим тестирования
      */
     public function __construct($merchantId = null, $secretKey = null, $testMode = false) {
-        $this->merchantId = $merchantId ?: (defined('NICEPAY_MERCHANT_ID') ? NICEPAY_MERCHANT_ID : '');
-        $this->secretKey = $secretKey ?: (defined('NICEPAY_SECRET_KEY') ? NICEPAY_SECRET_KEY : '');
+        // Получаем из параметров, или из констант, или из переменных окружения
+        $this->merchantId = $merchantId ?: 
+            (defined('NICEPAY_MERCHANT_ID') ? NICEPAY_MERCHANT_ID : getenv('NICEPAY_MERCHANT_ID') ?: '');
+        $this->secretKey = $secretKey ?: 
+            (defined('NICEPAY_SECRET_KEY') ? NICEPAY_SECRET_KEY : getenv('NICEPAY_SECRET_KEY') ?: '');
         
         // URLs в зависимости от режима
         if ($testMode) {

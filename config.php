@@ -9,8 +9,10 @@ define('DB_CHARSET', 'utf8mb4');
 // Настройки сайта
 define('SITE_NAME', 'JustKey');
 define('SITE_URL', 'https://justkey.ru');
-define('ADMIN_EMAIL', 'admin@justkey.ru');
+define('ADMIN_EMAIL', 'support@justkey.ru');
 define('SITE_DOMAIN', 'justkey.ru');
+define('SUPPORT_PHONE', '+7 (999) 123-45-67');
+define('SUPPORT_EMAIL', 'support@justkey.ru');
 
 // Настройки безопасности
 define('SESSION_LIFETIME', 3600 * 24 * 7); // 7 дней

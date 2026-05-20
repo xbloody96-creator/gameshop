@@ -93,8 +93,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) {
         require_once 'includes/nicepay.class.php';
         
         // Настройки NicePay (получите их в личном кабинете NicePay)
-        define('NICEPAY_MERCHANT_ID', 'your_merchant_id_here'); // Замените на ваш ID мерчанта
-        define('NICEPAY_SECRET_KEY', 'your_secret_key_here');  // Замените на ваш секретный ключ
+        // Для продакшена замените на реальные значения
+        if (!defined('NICEPAY_MERCHANT_ID')) {
+            define('NICEPAY_MERCHANT_ID', getenv('NICEPAY_MERCHANT_ID') ?: 'your_merchant_id_here');
+        }
+        if (!defined('NICEPAY_SECRET_KEY')) {
+            define('NICEPAY_SECRET_KEY', getenv('NICEPAY_SECRET_KEY') ?: 'your_secret_key_here');
+        }
         
         try {
             $nicePay = new NicePay(null, null, false); // false = боевой режим, true = тестовый
@@ -107,6 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) {
             // Если ошибка с платежкой, показываем сообщение но заказ сохраняем
             $error = 'Заказ создан, но произошла ошибка при подключении к платежной системе: ' . $e->getMessage();
             // Можно отправить email администратору о проблеме
+            error_log('NicePay Error: ' . $e->getMessage());
         }
         
         // Отправка email подтверждения
