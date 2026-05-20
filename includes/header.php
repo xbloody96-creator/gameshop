@@ -28,6 +28,9 @@ $currentUser = isLoggedIn() ? getCurrentUser() : null;
             <button id="accessibility-toggle" class="btn-icon" title="Режим для слабовидящих">🔍</button>
             
             <?php if (isLoggedIn()): ?>
+                <?php if (isAdmin()): ?>
+                    <a href="admin/index.php" class="btn btn-outline" style="margin-right:10px;" title="Админ-панель">🛡️ Админка</a>
+                <?php endif; ?>
                 <a href="cart.php" class="btn-icon" title="Корзина">
                     🛒
                     <span id="cart-badge" class="badge" style="display: none;">0</span>

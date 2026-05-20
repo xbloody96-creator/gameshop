@@ -31,6 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     // Успешная авторизация
                     $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['role'] = $user['role'];
+                    $_SESSION['username'] = $user['login'];
                     $_SESSION['user_role'] = $user['role'];
                     $_SESSION['user_login'] = $user['login'];
                     
