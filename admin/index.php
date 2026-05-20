@@ -499,10 +499,10 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
             <a href="?tab=products" class="<?= $tab === 'products' ? 'active' : '' ?>">📦 Товары</a>
             <a href="?tab=news" class="<?= $tab === 'news' ? 'active' : '' ?>">📰 Новости</a>
             <a href="?tab=services" class="<?= $tab === 'services' ? 'active' : '' ?>">🔧 Услуги</a>
-            <a href="?tab=promotions" class="<?= $tab === 'promotions' ? 'active' : ''%">🎁 Акции</a>
-            <a href="?tab=users" class="<?= $tab === 'users' ? 'active' : ''%">👥 Пользователи</a>
-            <a href="?tab=reviews" class="<?= $tab === 'reviews' ? 'active' : ''%">💬 Отзывы</a>
-            <a href="?tab=orders" class="<?= $tab === 'orders' ? 'active' : ''%">🛒 Заказы</a>
+            <a href="?tab=promotions" class="<?= $tab === 'promotions' ? 'active' : '' ?>">🎁 Акции</a>
+            <a href="?tab=users" class="<?= $tab === 'users' ? 'active' : '' ?>">👥 Пользователи</a>
+            <a href="?tab=reviews" class="<?= $tab === 'reviews' ? 'active' : '' ?>">💬 Отзывы</a>
+            <a href="?tab=orders" class="<?= $tab === 'orders' ? 'active' : '' ?>">🛒 Заказы</a>
         </nav>
         
         <!-- Товары -->
