@@ -477,15 +477,13 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
     </style>
 </head>
 <body>
-    <div class="admin-container">
-        <div class="admin-header">
-            <h1>🛡️ Админ-панель</h1>
-            <div>
-                <span>Привет, <?= htmlspecialchars($_SESSION['username']) ?></span>
-                <a href="../index.php" class="btn btn-outline" style="margin-left: 10px;">На сайт</a>
-                <a href="../logout.php" class="btn btn-danger" style="margin-left: 10px;">Выход</a>
-            </div>
-        </div>
+        <?php include 'includes/sidebar.php'; ?>
+        
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>🛡️ Dashboard</h1>
+                <?php include 'includes/theme-toggle.php'; ?>
+            </header>
         
         <?php if ($success): ?>
             <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
@@ -495,7 +493,74 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
             <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
         
-        <nav class="admin-nav">
+        <!-- Quick Stats -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <div class="stat-card-header">
+                    <div class="stat-icon">🎮</div>
+                    <span class="stat-trend up">↑ 12%</span>
+                </div>
+                <div class="stat-info">
+                    <h3><?= count($products) ?></h3>
+                    <p>Товаров в каталоге</p>
+                </div>
+                <a href="?tab=products" class="stat-link">Управление →</a>
+            </div>
+            
+            <div class="stat-card success">
+                <div class="stat-card-header">
+                    <div class="stat-icon">💰</div>
+                    <span class="stat-trend up">↑ 8%</span>
+                </div>
+                <div class="stat-info">
+                    <h3><?= count($orders) ?></h3>
+                    <p>Всего заказов</p>
+                </div>
+                <a href="?tab=orders" class="stat-link">Просмотр →</a>
+            </div>
+            
+            <div class="stat-card warning">
+                <div class="stat-card-header">
+                    <div class="stat-icon">👥</div>
+                </div>
+                <div class="stat-info">
+                    <h3><?= count($users) ?></h3>
+                    <p>Зарегистрировано пользователей</p>
+                </div>
+                <a href="?tab=users" class="stat-link">Управление →</a>
+            </div>
+            
+            <div class="stat-card danger">
+                <div class="stat-card-header">
+                    <div class="stat-icon">💬</div>
+                    <span class="stat-trend down"><?= count($pending_reviews) ?> новых</span>
+                </div>
+                <div class="stat-info">
+                    <h3><?= count($pending_reviews) ?></h3>
+                    <p>Отзывов на модерации</p>
+                </div>
+                <a href="?tab=reviews" class="stat-link">Проверить →</a>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="quick-actions-title">⚡ Быстрые действия</div>
+            <button class="quick-action-btn" onclick="openModal('productModal')">
+                <span class="icon">➕</span> Добавить товар
+            </button>
+            <button class="quick-action-btn" onclick="openModal('newsModal')">
+                <span class="icon">📰</span> Добавить новость
+            </button>
+            <button class="quick-action-btn" onclick="openModal('promotionModal')">
+                <span class="icon">🏷️</span> Создать акцию
+            </button>
+            <button class="quick-action-btn" onclick="location.href='?tab=reviews'">
+                <span class="icon">✅</span> Модерация отзывов
+            </button>
+        </div>
+        
+        <nav class="admin-nav" style="margin-top: 25px;">
             <a href="?tab=products" class="<?= $tab === 'products' ? 'active' : '' ?>">📦 Товары</a>
             <a href="?tab=news" class="<?= $tab === 'news' ? 'active' : '' ?>">📰 Новости</a>
             <a href="?tab=services" class="<?= $tab === 'services' ? 'active' : '' ?>">🔧 Услуги</a>
@@ -1143,5 +1208,8 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
             }
         }
     </script>
+    
+    <!-- Closing tags for the new structure -->
+    </main>
 </body>
 </html>

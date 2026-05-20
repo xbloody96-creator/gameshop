@@ -86,10 +86,7 @@ $categories = $stmt->fetchAll();
         <main class="admin-main">
             <header class="admin-header">
                 <h1>🎮 Управление товарами</h1>
-                <div class="admin-user-info">
-                    <span><?= htmlspecialchars($_SESSION['login']) ?></span>
-                    <a href="../logout.php" class="btn btn-danger">Выход</a>
-                </div>
+                <?php include 'includes/theme-toggle.php'; ?>
             </header>
 
             <?php if ($success): ?>
