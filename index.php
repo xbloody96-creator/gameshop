@@ -71,9 +71,9 @@ try {
                     <?php else: ?>
                         <div class="slide active">
                             <div class="slide-overlay"></div>
-                            <img src="https://via.placeholder.com/1200x500?text=GamesKey+Store" alt="Welcome" class="slide-image">
+                            <img src="https://via.placeholder.com/1200x500?text=JustKey.ru" alt="Welcome" class="slide-image">
                             <div class="slide-content">
-                                <h2 class="slide-title">Добро пожаловать в GamesKey</h2>
+                                <h2 class="slide-title">Добро пожаловать в JustKey</h2>
                                 <p class="slide-description">Лучшие игры по лучшим ценам! Мгновенная доставка ключей.</p>
                                 <a href="products.php" class="btn btn-primary">Смотреть каталог</a>
                             </div>
@@ -158,8 +158,8 @@ try {
                 <div class="about-content">
                     <div class="about-text">
                         <h2>О нас</h2>
-                        <p>GamesKey - это современный магазин цифровых ключей для игр. Мы работаем на рынке с 2020 года и за это время заслужили доверие тысяч покупателей.</p>
-                        <p>Наша миссия - предоставить геймерам быстрый и надежный доступ к любимым играм по лучшим ценам.</p>
+                        <p><strong>JustKey</strong> — это современный магазин цифровых ключей для игр. Мы работаем на рынке с 2020 года и за это время заслужили доверие тысяч покупателей.</p>
+                        <p>Наша миссия — предоставить геймерам быстрый и надежный доступ к любимым играм по лучшим ценам.</p>
                         
                         <div class="features-grid">
                             <div class="feature-item">
@@ -180,7 +180,7 @@ try {
                                 <div class="feature-icon">💳</div>
                                 <div class="feature-text">
                                     <h4>Безопасная оплата</h4>
-                                    <p>Защищенные платежные системы</p>
+                                    <p>Платежная система NicePay</p>
                                 </div>
                             </div>
                             <div class="feature-item">
@@ -192,7 +192,7 @@ try {
                             </div>
                         </div>
                     </div>
-                    <img src="https://via.placeholder.com/600x400?text=About+Us" alt="О нас" class="about-image">
+                    <img src="https://via.placeholder.com/600x400?text=JustKey.ru" alt="О JustKey" class="about-image">
                 </div>
             </div>
         </section>
