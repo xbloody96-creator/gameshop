@@ -528,10 +528,10 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
                     <?php foreach ($products as $product): ?>
                     <tr>
                         <td><?= $product['id'] ?></td>
-                        <td><img src="<?= htmlspecialchars($product['image_url']) ?>" alt="<?= htmlspecialchars($product['name']) ?>"></td>
-                        <td><?= htmlspecialchars($product['name']) ?></td>
+                        <td><img src="<?= htmlspecialchars($product['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($product['title'] ?? '') ?>"></td>
+                        <td><?= htmlspecialchars($product['title'] ?? '') ?></td>
                         <td><?= htmlspecialchars($product['category_name'] ?? 'Без категории') ?></td>
-                        <td><?= htmlspecialchars($product['platform']) ?></td>
+                        <td><?= htmlspecialchars($product['platform'] ?? '-') ?></td>
                         <td><?= number_format($product['price'], 2) ?> ₽</td>
                         <td><?= $product['stock'] ?></td>
                         <td>
@@ -540,7 +540,7 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
                             </span>
                         </td>
                         <td>
-                            <button class="btn-admin btn-edit" onclick='editProduct(<?= json_encode($product) ?>)'>✏️</button>
+                            <button class="btn-admin btn-edit" onclick='editProduct(<?= json_encode($product, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)'>✏️</button>
                             <form method="POST" style="display:inline" onsubmit="return confirm('Удалить товар?')">
                                 <input type="hidden" name="action" value="delete_product">
                                 <input type="hidden" name="id" value="<?= $product['id'] ?>">
@@ -574,9 +574,9 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
                     <?php foreach ($news as $item): ?>
                     <tr>
                         <td><?= $item['id'] ?></td>
-                        <td><img src="<?= htmlspecialchars($item['image_url']) ?>" alt="<?= htmlspecialchars($item['title']) ?>"></td>
+                        <td><img src="<?= htmlspecialchars($item['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($item['title']) ?>"></td>
                         <td><?= htmlspecialchars($item['title']) ?></td>
-                        <td>⭐ <?= $item['rating'] ?></td>
+                        <td>-</td>
                         <td><?= date('d.m.Y H:i', strtotime($item['published_at'])) ?></td>
                         <td>
                             <span class="status-badge <?= $item['is_active'] ? 'status-active' : 'status-inactive' ?>">
@@ -584,7 +584,7 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
                             </span>
                         </td>
                         <td>
-                            <button class="btn-admin btn-edit" onclick='editNews(<?= json_encode($item) ?>)'>✏️</button>
+                            <button class="btn-admin btn-edit" onclick='editNews(<?= json_encode($item, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)'>✏️</button>
                             <form method="POST" style="display:inline" onsubmit="return confirm('Удалить новость?')">
                                 <input type="hidden" name="action" value="delete_news">
                                 <input type="hidden" name="id" value="<?= $item['id'] ?>">
@@ -618,17 +618,17 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
                     <?php foreach ($services as $service): ?>
                     <tr>
                         <td><?= $service['id'] ?></td>
-                        <td><img src="<?= htmlspecialchars($service['image_url']) ?>" alt="<?= htmlspecialchars($service['name']) ?>"></td>
-                        <td><?= htmlspecialchars($service['name']) ?></td>
+                        <td><img src="<?= htmlspecialchars($service['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($service['title'] ?? '') ?>"></td>
+                        <td><?= htmlspecialchars($service['title'] ?? '') ?></td>
                         <td><?= number_format($service['price'], 2) ?> ₽</td>
-                        <td><?= $service['duration'] ?></td>
+                        <td><?= htmlspecialchars($service['description'] ?? '-') ?></td>
                         <td>
                             <span class="status-badge <?= $service['is_active'] ? 'status-active' : 'status-inactive' ?>">
                                 <?= $service['is_active'] ? 'Активна' : 'Неактивна' ?>
                             </span>
                         </td>
                         <td>
-                            <button class="btn-admin btn-edit" onclick='editService(<?= json_encode($service) ?>)'>✏️</button>
+                            <button class="btn-admin btn-edit" onclick='editService(<?= json_encode($service, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)'>✏️</button>
                             <form method="POST" style="display:inline" onsubmit="return confirm('Удалить услугу?')">
                                 <input type="hidden" name="action" value="delete_service">
                                 <input type="hidden" name="id" value="<?= $service['id'] ?>">
@@ -706,10 +706,10 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
                     <?php foreach ($users as $user): ?>
                     <tr>
                         <td><?= $user['id'] ?></td>
-                        <td><img src="<?= htmlspecialchars($user['avatar_url']) ?>" alt="Avatar"></td>
-                        <td><?= htmlspecialchars($user['fullname']) ?></td>
+                        <td><img src="<?= htmlspecialchars($user['avatar_url'] ?? '') ?>" alt="Avatar"></td>
+                        <td><?= htmlspecialchars($user['full_name'] ?? '-') ?></td>
                         <td><?= htmlspecialchars($user['email']) ?></td>
-                        <td><?= htmlspecialchars($user['nickname']) ?></td>
+                        <td><?= htmlspecialchars($user['nickname'] ?? '-') ?></td>
                         <td><?= ucfirst($user['role']) ?></td>
                         <td>
                             <span class="status-badge <?= $user['is_active'] ? 'status-active' : 'status-inactive' ?>">
@@ -717,7 +717,7 @@ $categories = $pdo->query("SELECT * FROM categories")->fetchAll();
                             </span>
                         </td>
                         <td>
-                            <button class="btn-admin btn-edit" onclick='editUser(<?= json_encode($user) ?>)'>✏️</button>
+                            <button class="btn-admin btn-edit" onclick='editUser(<?= json_encode($user, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)'>✏️</button>
                             <?php if ($user['id'] != $_SESSION['user_id']): ?>
                             <form method="POST" style="display:inline" onsubmit="return confirm('Удалить пользователя?')">
                                 <input type="hidden" name="action" value="delete_user">
