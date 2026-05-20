@@ -145,11 +145,11 @@ if (!is_array($products)) $products = [];
                                     <div class="no-image">No img</div>
                 <?php endif; ?>
                             </td>
-                            <td><strong><?= htmlspecialchars($product['name']) ?></strong></td>
+                            <td><strong><?= htmlspecialchars($product['name'] ?? 'Без названия') ?></strong></td>
                             <td><?= htmlspecialchars($product['category_name'] ?? 'Без категории') ?></td>
                             <td><?= htmlspecialchars($product['platform'] ?? '-') ?></td>
-                            <td><?= number_format($product['price'], 2) ?> ₽</td>
-                            <td><?= $product['stock'] ?></td>
+                            <td><?= number_format($product['price'] ?? 0, 2) ?> ₽</td>
+                            <td><?= $product['stock'] ?? 0 ?></td>
                             <td>
                                 <span class="status status-<?= $product['is_active'] ? 'active' : 'inactive' ?>">
                                     <?= $product['is_active'] ? '✓ Активен' : '✗ Неактивен' ?>

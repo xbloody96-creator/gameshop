@@ -231,8 +231,8 @@ $users = $pdo->query("SELECT * FROM users ORDER BY id DESC")->fetchAll();
 $pending_reviews = $pdo->query("SELECT r.*, u.full_name, u.nickname, p.title as product_name FROM reviews r JOIN users u ON r.user_id = u.id LEFT JOIN products p ON r.product_id = p.id WHERE r.is_approved = 0 ORDER BY r.created_at DESC")->fetchAll();
 if (!is_array($pending_reviews)) $pending_reviews = [];
 
-// Заказы
-$orders = $pdo->query("SELECT o.*, u.full_name, u.email FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC")->fetchAll();
+// Заказы - исправленный запрос без u.login
+$orders = $pdo->query("SELECT o.*, u.full_name, u.email, u.nickname FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC")->fetchAll();
 if (!is_array($orders)) $orders = [];
 
 // Категории
@@ -371,12 +371,12 @@ if (!is_array($users)) $users = [];
                     <?php foreach ($products as $product): ?>
                     <tr>
                         <td><?= $product['id'] ?></td>
-                        <td><img src="<?= htmlspecialchars($product['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($product['title'] ?? '') ?>"></td>
-                        <td><?= htmlspecialchars($product['title'] ?? '') ?></td>
+                        <td><img src="<?= htmlspecialchars($product['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($product['name'] ?? '') ?>"></td>
+                        <td><?= htmlspecialchars($product['name'] ?? '') ?></td>
                         <td><?= htmlspecialchars($product['category_name'] ?? 'Без категории') ?></td>
                         <td><?= htmlspecialchars($product['platform'] ?? '-') ?></td>
                         <td><?= number_format($product['price'], 2) ?> ₽</td>
-                        <td><?= $product['stock'] ?></td>
+                        <td><?= $product['stock'] ?? 0 ?></td>
                         <td>
                             <span class="status-badge <?= $product['is_active'] ? 'status-active' : 'status-inactive' ?>">
                                 <?= $product['is_active'] ? 'Активен' : 'Неактивен' ?>
@@ -417,8 +417,8 @@ if (!is_array($users)) $users = [];
                     <?php foreach ($news as $item): ?>
                     <tr>
                         <td><?= $item['id'] ?></td>
-                        <td><img src="<?= htmlspecialchars($item['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($item['title']) ?>"></td>
-                        <td><?= htmlspecialchars($item['title']) ?></td>
+                        <td><img src="<?= htmlspecialchars($item['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($item['name']) ?>"></td>
+                        <td><?= htmlspecialchars($item['name']) ?></td>
                         <td>-</td>
                         <td><?= date('d.m.Y H:i', strtotime($item['published_at'])) ?></td>
                         <td>
@@ -461,10 +461,10 @@ if (!is_array($users)) $users = [];
                     <?php foreach ($services as $service): ?>
                     <tr>
                         <td><?= $service['id'] ?></td>
-                        <td><img src="<?= htmlspecialchars($service['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($service['title'] ?? '') ?>"></td>
-                        <td><?= htmlspecialchars($service['title'] ?? '') ?></td>
+                        <td><img src="<?= htmlspecialchars($service['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($service['name'] ?? '') ?>"></td>
+                        <td><?= htmlspecialchars($service['name'] ?? '') ?></td>
                         <td><?= number_format($service['price'], 2) ?> ₽</td>
-                        <td><?= htmlspecialchars($service['description'] ?? '-') ?></td>
+                        <td><?= htmlspecialchars($service['duration'] ?? 0 ?? '-') ?></td>
                         <td>
                             <span class="status-badge <?= $service['is_active'] ? 'status-active' : 'status-inactive' ?>">
                                 <?= $service['is_active'] ? 'Активна' : 'Неактивна' ?>
@@ -505,10 +505,10 @@ if (!is_array($users)) $users = [];
                     <?php foreach ($promotions as $promo): ?>
                     <tr>
                         <td><?= $promo['id'] ?></td>
-                        <td><img src="<?= htmlspecialchars($promo['image_url']) ?>" alt="<?= htmlspecialchars($promo['title']) ?>"></td>
-                        <td><?= htmlspecialchars($promo['title']) ?></td>
-                        <td>-<?= $promo['discount'] ?>%</td>
-                        <td><?= date('d.m.Y', strtotime($promo['start_date'])) ?> - <?= date('d.m.Y', strtotime($promo['end_date'])) ?></td>
+                        <td><img src="<?= htmlspecialchars($promo['image_url'] ?? '') ?>" alt="<?= htmlspecialchars($promo['title'] ?? 'Без названия') ?>"></td>
+                        <td><?= htmlspecialchars($promo['title'] ?? 'Без названия') ?></td>
+                        <td>-<?= $promo['discount'] ?? 0 ?>%</td>
+                        <td><?= date('d.m.Y', strtotime($promo['start_date'] ?? '')) ?> - <?= date('d.m.Y', strtotime($promo['end_date'] ?? '')) ?></td>
                         <td>
                             <span class="status-badge <?= $promo['is_active'] ? 'status-active' : 'status-inactive' ?>">
                                 <?= $promo['is_active'] ? 'Активна' : 'Неактивна' ?>
