@@ -87,6 +87,7 @@ $sql .= " ORDER BY created_at DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $users = $stmt->fetchAll();
+if (!is_array($users)) $users = [];
 
 ?>
 <!DOCTYPE html>
@@ -159,14 +160,14 @@ $users = $stmt->fetchAll();
                         <tr>
                             <td>#<?= $user['id'] ?></td>
                             <td>
-                                <?php if ($user['avatar']): ?>
+                                <?php if (!empty($user['avatar'])): ?>
                                     <img src="<?= htmlspecialchars($user['avatar']) ?>" alt="" class="user-avatar-small">
                                 <?php else: ?>
                                     <div class="user-avatar-small" style="background:#e5e7eb;display:flex;align-items:center;justify-content:center;border-radius:50%;">?</div>
                                 <?php endif; ?>
                             </td>
-                            <td><?= htmlspecialchars($user['login']) ?></td>
-                            <td><?= htmlspecialchars($user['email']) ?></td>
+                            <td><?= htmlspecialchars($user['login'] ?? $user['email'] ?? 'Без имени') ?></td>
+                            <td><?= htmlspecialchars($user['email'] ?? '-') ?></td>
                             <td><?= htmlspecialchars($user['fullname'] ?? '-') ?></td>
                             <td>
                                 <span class="status status-<?= $user['role'] == 'admin' ? 'processing' : 'completed' ?>">

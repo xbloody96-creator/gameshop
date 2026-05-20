@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Получение заказов
 $filter = $_GET['filter'] ?? 'all';
 
-$sql = "SELECT o.*, u.login, u.email FROM orders o 
+$sql = "SELECT o.*, u.email, u.fullname FROM orders o 
         JOIN users u ON o.user_id = u.id 
         WHERE 1";
 
@@ -44,6 +44,7 @@ if ($filter != 'all') {
 }
 
 $orders = $stmt->fetchAll();
+if (!is_array($orders)) $orders = [];
 
 ?>
 <!DOCTYPE html>
@@ -108,8 +109,8 @@ $orders = $stmt->fetchAll();
                         <tr>
                             <td>#<?= $order['id'] ?></td>
                             <td>
-                                <?= htmlspecialchars($order['login']) ?><br>
-                                <small style="color:#6b7280"><?= htmlspecialchars($order['email']) ?></small>
+                                <?= htmlspecialchars($order['fullname'] ?? $order['email'] ?? 'Клиент') ?><br>
+                                <small style="color:#6b7280"><?= htmlspecialchars($order['email'] ?? '-') ?></small>
                             </td>
                             <td><strong><?= number_format($order['total'], 2) ?> ₽</strong></td>
                             <td>

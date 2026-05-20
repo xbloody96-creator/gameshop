@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $stmt = $pdo->query("SELECT * FROM news ORDER BY published_at DESC");
 $news_items = $stmt->fetchAll();
+if (!is_array($news_items)) $news_items = [];
 
 ?>
 <!DOCTYPE html>
@@ -71,10 +72,7 @@ $news_items = $stmt->fetchAll();
         <main class="admin-main">
             <header class="admin-header">
                 <h1>📰 Управление новостями</h1>
-                <div class="admin-user-info">
-                    <span><?= htmlspecialchars($_SESSION['login']) ?></span>
-                    <a href="../logout.php" class="btn btn-danger">Выход</a>
-                </div>
+                <?php include 'includes/theme-toggle.php'; ?>
             </header>
 
             <?php if ($success): ?>

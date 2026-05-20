@@ -55,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $stmt = $pdo->query("SELECT * FROM services ORDER BY created_at DESC");
 $services = $stmt->fetchAll();
+if (!is_array($services)) $services = [];
 
 ?>
 <!DOCTYPE html>
@@ -136,9 +137,9 @@ $services = $stmt->fetchAll();
                         <?php foreach ($services as $service): ?>
                         <tr>
                             <td>#<?= $service['id'] ?></td>
-                            <td><?= htmlspecialchars($service['name']) ?></td>
+                            <td><?= htmlspecialchars($service['name'] ?? 'Без названия') ?></td>
                             <td><?= number_format($service['price'], 2) ?> ₽</td>
-                            <td><?= $service['duration'] ?> мин</td>
+                            <td><?= htmlspecialchars($service['duration'] ?? 0) ?> мин</td>
                             <td>
                                 <span class="status status-<?= $service['is_active'] ? 'completed' : 'cancelled' ?>">
                                     <?= $service['is_active'] ? 'Активна' : 'Неактивна' ?>
