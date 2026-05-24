@@ -738,6 +738,7 @@ const rouletteGames = [
 
 let isSpinning = false;
 let rouletteInitialized = false;
+let currentRoulettePosition = 0;
 
 function initRoulette() {
     const spinBtn = document.getElementById('spinRouletteBtn');
@@ -788,6 +789,8 @@ function setupRouletteTrack() {
     const cardWidth = 195; // 180px + 15px gap
     const cardsPerSet = rouletteGames.length;
     // Начинаем с первой позиции, чтобы карточки были видны сразу
+    currentRoulettePosition = 0;
+    track.style.transition = 'none';
     track.style.transform = `translateX(0px)`;
 }
 
@@ -813,8 +816,14 @@ function spinRoulette() {
     const cardWidth = 195; // 180px + 15px gap
     const cardsPerSet = rouletteGames.length;
     // Стартовая позиция - первый набор, целевая - третий набор с выигрышной карточкой
-    const startPosition = 0;
-    const targetPosition = -(cardsPerSet * 2 + winningIndex) * cardWidth;
+    // Добавляем случайное смещение внутри карточки для реалистичности
+    const randomOffset = Math.floor(Math.random() * 140); // 0 to 140px within card
+    const targetSet = 2; // Третий набор (индекс 2)
+    const targetPosition = -(targetSet * cardsPerSet * cardWidth) - (winningIndex * cardWidth) - randomOffset;
+    
+    // Сбрасываем transition перед установкой начальной позиции
+    track.style.transition = 'none';
+    track.style.transform = `translateX(${currentRoulettePosition}px)`;
     
     // Небольшая задержка перед анимацией для плавности
     setTimeout(() => {
@@ -824,10 +833,14 @@ function spinRoulette() {
         
         // Эффект "щёлканья" во время прокрутки
         let clickCount = 0;
+        const maxClicks = 50;
         const clickInterval = setInterval(() => {
             clickCount++;
-            if (clickCount % 5 === 0) {
-                track.style.filter = `brightness(${1 + Math.sin(clickCount) * 0.15})`;
+            if (clickCount % 5 === 0 && clickCount <= maxClicks) {
+                track.style.filter = `brightness(${1 + Math.sin(clickCount * 0.5) * 0.1})`;
+            }
+            if (clickCount > maxClicks) {
+                clearInterval(clickInterval);
             }
         }, 80);
         
@@ -835,14 +848,20 @@ function spinRoulette() {
             clearInterval(clickInterval);
             track.style.filter = 'brightness(1)';
             
-            // Показываем результат
+            // Сохраняем текущую позицию для следующего спина
+            currentRoulettePosition = targetPosition;
+            
+            // Показываем результат с правильным названием игры
+            const resultTitle = winningGame.title || "Неизвестная игра";
+            const resultGenre = winningGame.genre || "Игра";
+            
             resultDiv.innerHTML = `
                 <div class="result-card">
                     <div class="result-emoji">🎉</div>
-                    <h3>Вам выпала:</h3>
-                    <div class="result-game">${winningGame.title}</div>
-                    <div class="result-genre">${winningGame.genre} проект</div>
-                    <a href="products.php?search=${encodeURIComponent(winningGame.title)}" class="btn btn-primary">Купить сейчас</a>
+                    <h3 style="color: #2d3748; margin-bottom: 10px;">Вам выпала:</h3>
+                    <div class="result-game">${escapeHtml(resultTitle)}</div>
+                    <div class="result-genre">${escapeHtml(resultGenre)} проект</div>
+                    <a href="products.php?search=${encodeURIComponent(resultTitle)}" class="btn btn-primary">Купить сейчас</a>
                 </div>
             `;
             
@@ -850,8 +869,21 @@ function spinRoulette() {
             spinBtn.textContent = '🎲 Испытать удачу ещё раз!';
             isSpinning = false;
             
-        }, 4000);
+        }, 4100);
     }, 100);
+}
+
+// Функция для экранирования HTML
+function escapeHtml(text) {
+    if (!text) return '';
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, m => map[m]);
 }
 
 // Экспорт функций для глобального использования
