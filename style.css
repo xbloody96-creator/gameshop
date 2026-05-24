@@ -333,6 +333,20 @@ a:hover {
     color: white;
 }
 
+.btn-danger {
+    background: #ef4444;
+    border: 2px solid #ef4444;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
 /* Hero Section */
 .hero {
     padding: 4rem 0;

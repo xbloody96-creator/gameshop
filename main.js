@@ -370,14 +370,27 @@ async function toggleFavorite(productId, type = 'product') {
         const data = await response.json();
         
         if (data.success) {
-            const btn = document.querySelector(`[data-favorite="${productId}"]`);
+            // Ищем кнопку по нескольким возможным селекторам
+            const btn = document.querySelector(`[data-favorite="${productId}"]`) || 
+                        document.querySelector(`button[onclick*="toggleFavorite(${productId})"]`) ||
+                        event?.target?.closest('button');
             if (btn) {
-                btn.innerHTML = data.is_favorite ? '❤️' : '🤍';
+                // Обновляем текст кнопки или иконку
+                if (data.is_favorite) {
+                    btn.innerHTML = '❤️ В избранном';
+                    btn.classList.add('active');
+                } else {
+                    btn.innerHTML = '🤍 В избранное';
+                    btn.classList.remove('active');
+                }
             }
             showNotification(data.message, 'success');
+        } else {
+            showNotification(data.message || 'Ошибка', 'error');
         }
     } catch (error) {
         console.error('Ошибка:', error);
+        showNotification('Ошибка соединения с сервером', 'error');
     }
 }
 
