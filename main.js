@@ -815,25 +815,31 @@ function spinRoulette() {
     const winningIndex = Math.floor(Math.random() * rouletteGames.length);
     const winningGame = rouletteGames[winningIndex];
 
-    // Позиция остановки (карточка в третьем повторении массива)
+    // Параметры карточек
     const cardWidth = 195; // 180px + 15px gap
     const cardsPerSet = rouletteGames.length;
     
-    // Вычисляем позицию так, чтобы выигрышная карточка оказалась ровно по центру
-    // Индикатор находится по центру окна, поэтому нужно сместить трек так,
-    // чтобы выигрышная карточка была по центру
-    const randomOffset = Math.floor(Math.random() * 80) - 40; // -40 to 40px within card
-    const targetSet = 2; // Третий набор (индекс 2)
+    // Выбираем набор для остановки (третий набор - индекс 2, чтобы было место для разгона)
+    const targetSet = 2;
     
-    // Позиция для остановки: хотим чтобы winningIndex карточка была по центру
-    // Центр окна = половина ширины видимой области
-    // Позиция карточки = targetSet * cardsPerSet * cardWidth + winningIndex * cardWidth
-    // Нужно сместить трек влево на эту позицию минус половина экрана
-    const targetPosition = -(targetSet * cardsPerSet * cardWidth) - (winningIndex * cardWidth) + randomOffset;
+    // Вычисляем позицию так, чтобы выигрышная карточка оказалась ровно по центру контейнера
+    // Индикатор находится по центру видимой области рулетки
+    // Добавляем небольшое случайное смещение внутри карточки для реалистичности (-40 to 40px)
+    const randomOffset = Math.floor(Math.random() * 80) - 40;
+    
+    // Позиция начала выигрышной карточки в треке
+    const winningCardPosition = (targetSet * cardsPerSet + winningIndex) * cardWidth;
+    
+    // Получаем ширину видимой области контейнера
+    const containerWidth = track.parentElement.offsetWidth;
+    
+    // Вычисляем позицию трека: смещаем так, чтобы центр карточки совпал с центром контейнера
+    // translateX должен быть отрицательным, чтобы сдвинуть трек влево
+    const targetPosition = -(winningCardPosition - (containerWidth / 2) + (cardWidth / 2) + randomOffset);
 
-    // Сбрасываем transition и позицию перед анимацией
+    // Сбрасываем transition и позицию перед анимацией (возвращаемся к началу для плавности)
     track.style.transition = 'none';
-    track.style.transform = `translateX(${currentRoulettePosition}px)`;
+    track.style.transform = `translateX(0px)`;
 
     // Принудительно вызываем reflow для применения стилей
     void track.offsetWidth;
@@ -863,7 +869,7 @@ function spinRoulette() {
 
             // Сохраняем текущую позицию для следующего спина (сбрасываем на первый набор)
             // Вычисляем эквивалентную позицию в первом наборе
-            const normalizedPosition = -(winningIndex * cardWidth) + randomOffset;
+            const normalizedPosition = -(winningIndex * cardWidth) + (containerWidth / 2) - (cardWidth / 2) + randomOffset;
             currentRoulettePosition = normalizedPosition;
             
             // Сбрасываем позицию без анимации для следующего спина
