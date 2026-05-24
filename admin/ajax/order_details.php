@@ -26,8 +26,7 @@ if (!$order) {
 }
 
 // Получаем товары заказа
-$stmt = $pdo->prepare("SELECT oi.*, p.name as product_name FROM order_items oi 
-                       LEFT JOIN products p ON oi.product_id = p.id 
+$stmt = $pdo->prepare("SELECT oi.*, oi.product_title as product_name FROM order_items oi 
                        WHERE oi.order_id = ?");
 $stmt->execute([$order_id]);
 $items = $stmt->fetchAll();

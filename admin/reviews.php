@@ -55,7 +55,7 @@ if (isset($_GET['error']) && $_GET['error']) {
 // Получение всех отзывов
 $filter = $_GET['filter'] ?? 'all'; // all, pending, approved
 
-$sql = "SELECT r.*, u.email, u.full_name, u.nickname, p.name as product_name FROM reviews r 
+$sql = "SELECT r.*, u.email, u.full_name, u.nickname, COALESCE(p.name, 'Товар удален') as product_name FROM reviews r 
         JOIN users u ON r.user_id = u.id 
         LEFT JOIN products p ON r.product_id = p.id 
         WHERE 1";
