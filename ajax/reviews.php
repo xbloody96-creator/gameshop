@@ -80,7 +80,7 @@ if ($action === 'add') {
         }
         
         // Обновляем отзыв (сбрасываем статус модерации)
-        $stmt = $pdo->prepare("UPDATE reviews SET rating = ?, comment = ?, is_approved = FALSE, updated_at = NOW() WHERE id = ?");
+        $stmt = $pdo->prepare("UPDATE reviews SET rating = ?, comment = ?, is_approved = FALSE WHERE id = ?");
         $result = $stmt->execute([$rating, $comment, $reviewId]);
         
         if ($result) {

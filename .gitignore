@@ -1,1 +1,1 @@
-Nothing needs to be added to .gitignore since the only modified file is 'ajax/reviews.php', which appears to be a source code file and not a build artifact, dependency, or temporary file.
+Nothing needs to be added to .gitignore since only a PHP source file (`ajax/reviews.php`) was modified and no build artifacts, dependencies, or temporary files were detected in the changes.
