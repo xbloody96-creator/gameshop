@@ -23,8 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $product_id = intval($_POST['product_id']) ?: null;
             
             if ($title && $discount > 0 && $start_date && $end_date) {
-                $stmt = $pdo->prepare("INSERT INTO promotions (title, description, discount, start_date, end_date, product_id, is_active) VALUES (?, ?, ?, ?, ?, ?, 1)");
-                $stmt->execute([$title, $description, $discount, $start_date, $end_date, $product_id]);
+                $stmt = $pdo->prepare("INSERT INTO promotions (title, description, discount_percent, start_date, end_date, is_active) VALUES (?, ?, ?, ?, ?, 1)");
+                $stmt->execute([$title, $description, $discount, $start_date, $end_date]);
                 $success = 'Акция добавлена';
             } else {
                 $error = 'Заполните обязательные поля';
@@ -38,11 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $discount = floatval($_POST['discount']);
             $start_date = $_POST['start_date'];
             $end_date = $_POST['end_date'];
-            $product_id = intval($_POST['product_id']) ?: null;
             $is_active = isset($_POST['is_active']) ? 1 : 0;
             
-            $stmt = $pdo->prepare("UPDATE promotions SET title=?, description=?, discount=?, start_date=?, end_date=?, product_id=?, is_active=? WHERE id=?");
-            $stmt->execute([$title, $description, $discount, $start_date, $end_date, $product_id, $is_active, $id]);
+            $stmt = $pdo->prepare("UPDATE promotions SET title=?, description=?, discount_percent=?, start_date=?, end_date=?, is_active=? WHERE id=?");
+            $stmt->execute([$title, $description, $discount, $start_date, $end_date, $is_active, $id]);
             $success = 'Акция обновлена';
             break;
             
@@ -55,13 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$stmt = $pdo->query("SELECT p.*, pr.name as product_name FROM promotions p LEFT JOIN products pr ON p.product_id = pr.id ORDER BY p.created_at DESC");
+$stmt = $pdo->query("SELECT * FROM promotions ORDER BY created_at DESC");
 $promotions = $stmt->fetchAll();
 if (!is_array($promotions)) $promotions = [];
-
-$stmt = $pdo->query("SELECT id, name FROM products");
-$products = $stmt->fetchAll();
-if (!is_array($products)) $products = [];
 
 ?>
 <!DOCTYPE html>
@@ -114,15 +109,6 @@ if (!is_array($products)) $products = [];
                             <label>Дата окончания *</label>
                             <input type="date" name="end_date" required>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Товар (необязательно)</label>
-                        <select name="product_id">
-                            <option value="">Все товары</option>
-                            <?php foreach ($products as $prod): ?>
-                                <option value="<?= $prod['id'] ?>"><?= htmlspecialchars($prod['name']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
                     </div>
                     <div class="form-group">
                         <label>Описание</label>
@@ -204,15 +190,6 @@ if (!is_array($products)) $products = [];
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Товар (необязательно)</label>
-                    <select name="product_id" id="edit_product_id">
-                        <option value="">Все товары</option>
-                        <?php foreach ($products as $prod): ?>
-                            <option value="<?= $prod['id'] ?>"><?= htmlspecialchars($prod['name']) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="form-group">
                     <label>Описание</label>
                     <textarea name="description" id="edit_description" rows="4"></textarea>
                 </div>
@@ -236,7 +213,6 @@ if (!is_array($products)) $products = [];
             document.getElementById('edit_discount').value = promo.discount;
             document.getElementById('edit_start_date').value = promo.start_date;
             document.getElementById('edit_end_date').value = promo.end_date;
-            document.getElementById('edit_product_id').value = promo.product_id || '';
             document.getElementById('edit_description').value = promo.description || '';
             document.getElementById('edit_is_active').checked = promo.is_active == 1;
             document.getElementById('editModal').classList.add('active');
