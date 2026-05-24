@@ -818,11 +818,18 @@ function spinRoulette() {
     // Позиция остановки (карточка в третьем повторении массива)
     const cardWidth = 195; // 180px + 15px gap
     const cardsPerSet = rouletteGames.length;
-    // Стартовая позиция - первый набор, целевая - третий набор с выигрышной карточкой
-    // Добавляем случайное смещение внутри карточки для реалистичности
-    const randomOffset = Math.floor(Math.random() * 140); // 0 to 140px within card
+    
+    // Вычисляем позицию так, чтобы выигрышная карточка оказалась ровно по центру
+    // Индикатор находится по центру окна, поэтому нужно сместить трек так,
+    // чтобы выигрышная карточка была по центру
+    const randomOffset = Math.floor(Math.random() * 80) - 40; // -40 to 40px within card
     const targetSet = 2; // Третий набор (индекс 2)
-    const targetPosition = -(targetSet * cardsPerSet * cardWidth) - (winningIndex * cardWidth) - randomOffset;
+    
+    // Позиция для остановки: хотим чтобы winningIndex карточка была по центру
+    // Центр окна = половина ширины видимой области
+    // Позиция карточки = targetSet * cardsPerSet * cardWidth + winningIndex * cardWidth
+    // Нужно сместить трек влево на эту позицию минус половина экрана
+    const targetPosition = -(targetSet * cardsPerSet * cardWidth) - (winningIndex * cardWidth) + randomOffset;
 
     // Сбрасываем transition и позицию перед анимацией
     track.style.transition = 'none';
@@ -856,7 +863,7 @@ function spinRoulette() {
 
             // Сохраняем текущую позицию для следующего спина (сбрасываем на первый набор)
             // Вычисляем эквивалентную позицию в первом наборе
-            const normalizedPosition = -(winningIndex * cardWidth) - randomOffset;
+            const normalizedPosition = -(winningIndex * cardWidth) + randomOffset;
             currentRoulettePosition = normalizedPosition;
             
             // Сбрасываем позицию без анимации для следующего спина
@@ -873,9 +880,9 @@ function spinRoulette() {
                 <div class="result-card">
                     <div class="result-emoji">🎉</div>
                     <h3 style="color: #2d3748; margin-bottom: 10px;">Вам выпала:</h3>
-                    <div class="result-game" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">${escapeHtml(resultTitle)}</div>
+                    <div class="result-game" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 1.5rem; font-weight: bold;">${escapeHtml(resultTitle)}</div>
                     <div class="result-genre">${escapeHtml(resultGenre)} проект</div>
-                    <a href="products.php?search=${encodeURIComponent(resultTitle)}" class="btn btn-primary">Купить сейчас</a>
+                    <a href="products.php?search=${encodeURIComponent(resultTitle)}" class="btn btn-primary" style="margin-top: 15px;">Купить сейчас</a>
                 </div>
             `;
 
