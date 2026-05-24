@@ -133,49 +133,20 @@
 }
 
 /* Hide toggle button inside logo when collapsed */
-.admin-sidebar.collapsed .admin-logo .sidebar-toggle {
+.admin-sidebar.collapsed .admin-logo .sidebar-toggle-top {
     display: none;
 }
 
 .admin-sidebar.collapsed .admin-logo {
     text-align: center;
-    padding: 25px 10px;
+    padding: 20px 10px;
 }
 
 .admin-sidebar.collapsed .admin-logo h2 {
     justify-content: center;
 }
 
-/* Show expand button on the left edge when collapsed */
-.sidebar-expand-btn {
-    display: none;
-    position: fixed;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--sidebar-bg);
-    border: none;
-    width: 20px;
-    height: 60px;
-    border-radius: 0 8px 8px 0;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    z-index: 99;
-    box-shadow: var(--shadow-md);
-    transition: all var(--transition-fast);
-}
-
-.sidebar-expand-btn:hover {
-    width: 25px;
-    background: var(--primary);
-}
-
-.sidebar-expand-btn span {
-    color: var(--sidebar-text);
-    font-size: 0.7rem;
-}
-
+/* Menu items in collapsed state */
 .admin-sidebar.collapsed .admin-menu a {
     justify-content: center;
     padding: 14px 10px;
@@ -185,16 +156,16 @@
     margin: 0;
 }
 
-/* Sidebar toggle button */
-.sidebar-toggle {
+/* Sidebar toggle button - positioned at top right of logo */
+.sidebar-toggle-top {
     position: absolute;
     top: 50%;
-    right: 10px;
+    right: 15px;
     transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.1);
     border: none;
-    width: 30px;
-    height: 60px;
+    width: 32px;
+    height: 32px;
     border-radius: 8px;
     cursor: pointer;
     display: flex;
@@ -204,17 +175,18 @@
     z-index: 10;
 }
 
-.sidebar-toggle:hover {
+.sidebar-toggle-top:hover {
     background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%) rotate(180deg);
 }
 
-.sidebar-toggle .toggle-icon {
-    font-size: 0.8rem;
+.sidebar-toggle-top .toggle-icon-top {
+    font-size: 1rem;
     color: var(--sidebar-text);
     transition: transform var(--transition-fast);
 }
 
-.admin-sidebar.collapsed .sidebar-toggle .toggle-icon {
+.admin-sidebar.collapsed .sidebar-toggle-top .toggle-icon-top {
     transform: rotate(180deg);
 }
 
