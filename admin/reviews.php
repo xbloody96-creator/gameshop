@@ -136,12 +136,13 @@ if (!is_array($reviews)) $reviews = [];
                             <td>⭐ <?= $review['rating'] ?>/5</td>
                             <td><?= htmlspecialchars(mb_substr($review['comment'], 0, 80)) ?><?= mb_strlen($review['comment']) > 80 ? '...' : '' ?></td>
                             <td>
-                                <span class="status-badge status-badge-<?= $review['approved'] ? 'active' : 'inactive' ?>">
-                                    <?= $review['approved'] ? '✓' : '⏳' ?>
+                                <?php $isApproved = isset($review['approved']) && $review['approved'] == 1; ?>
+                                <span class="status-badge status-badge-<?= $isApproved ? 'active' : 'inactive' ?>">
+                                    <?= $isApproved ? '✓' : '⏳' ?>
                                 </span>
                             </td>
                             <td class="actions actions-compact">
-                                <?php if (!$review['approved']): ?>
+                                <?php if (!$isApproved): ?>
                                     <form method="POST" style="display:inline;">
                                         <input type="hidden" name="action" value="approve_review">
                                         <input type="hidden" name="id" value="<?= $review['id'] ?>">
