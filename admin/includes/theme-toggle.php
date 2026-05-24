@@ -193,6 +193,7 @@ function toggleSidebarDesktop() {
     const sidebar = document.getElementById('sidebar');
     const main = document.querySelector('.admin-main');
     const toggleBtn = document.getElementById('sidebarToggle');
+    const expandBtn = document.getElementById('sidebarExpandBtn');
     
     if (sidebar) {
         sidebar.classList.toggle('collapsed');
@@ -213,6 +214,15 @@ function toggleSidebarDesktop() {
                 icon.textContent = isCollapsed ? '▶' : '◀';
             }
         }
+        
+        // Handle expand button visibility via JS as backup
+        if (expandBtn) {
+            if (isCollapsed) {
+                expandBtn.style.display = 'flex';
+            } else {
+                expandBtn.style.display = 'none';
+            }
+        }
     }
 }
 
@@ -221,6 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const main = document.querySelector('.admin-main');
     const toggleBtn = document.getElementById('sidebarToggle');
+    const expandBtn = document.getElementById('sidebarExpandBtn');
     
     if (sidebar && window.innerWidth > 768) {
         const isCollapsed = localStorage.getItem('sidebar_collapsed') === 'true';
@@ -234,6 +245,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (icon) {
                     icon.textContent = '▶';
                 }
+            }
+            // Show expand button if sidebar is collapsed on load
+            if (expandBtn) {
+                expandBtn.style.display = 'flex';
             }
         }
     }
