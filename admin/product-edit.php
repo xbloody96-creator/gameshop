@@ -79,11 +79,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($is_edit) {
                 $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, price=?, category_id=?, platform=?, stock=?, image_url=?, is_active=? WHERE id=?");
                 $stmt->execute([$name, $description, $price, $category_id, $platform, $stock, $image_url, $is_active, $id]);
-                $success = 'Товар успешно обновлен';
+                header('Location: products.php?success=updated');
+                exit;
             } else {
                 $stmt = $pdo->prepare("INSERT INTO products (name, description, price, category_id, platform, stock, image_url, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, 1)");
                 $stmt->execute([$name, $description, $price, $category_id, $platform, $stock, $image_url]);
-                $success = 'Товар успешно добавлен';
                 header('Location: products.php?success=added');
                 exit;
             }
