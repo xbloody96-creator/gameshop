@@ -119,9 +119,18 @@ try {
                     <a href="products.php?sort=popular" class="btn btn-link">Смотреть все →</a>
                 </div>
                 
+                <?php 
+                // Если нет популярных товаров, берем просто последние добавленные
+                if (empty($popularProducts)) {
+                    $stmt = $pdo->prepare("SELECT * FROM products WHERE is_available = TRUE ORDER BY created_at DESC LIMIT 8");
+                    $stmt->execute();
+                    $popularProducts = $stmt->fetchAll();
+                }
+                ?>
+                
                 <?php if (!empty($popularProducts)): ?>
                     <div class="products-grid-modern">
-                        <?php foreach (array_slice($popularProducts, 0, 4) as $product): ?>
+                        <?php foreach (array_slice($popularProducts, 0, 8) as $product): ?>
                             <?php 
                             $discount = calculateDiscount($product['price'], $product['old_price']);
                             ?>
@@ -169,11 +178,32 @@ try {
                 <?php else: ?>
                     <div class="empty-state">
                         <span class="empty-icon">📦</span>
-                        <h3>Популярные товары скоро появятся</h3>
+                        <h3>Товары скоро появятся</h3>
                         <p>Заходите позже, мы постоянно обновляем ассортимент!</p>
                         <a href="products.php" class="btn btn-primary">Смотреть все товары</a>
                     </div>
                 <?php endif; ?>
+            </div>
+        </section>
+        
+        <!-- Game Roulette Section -->
+        <section class="section section-roulette">
+            <div class="container">
+                <div class="section-header-modern">
+                    <h2 class="section-title">🎰 Испытай удачу!</h2>
+                    <p class="section-subtitle">Крути рулетку и получи случайную игру со скидкой</p>
+                </div>
+                
+                <div class="roulette-container">
+                    <div class="roulette-window">
+                        <div class="roulette-track" id="rouletteTrack">
+                            <!-- Игры будут добавлены через JS -->
+                        </div>
+                    </div>
+                    <div class="roulette-indicator"></div>
+                    <button class="btn btn-primary btn-roulette" id="spinRouletteBtn">🎲 Крутить рулетку!</button>
+                    <div class="roulette-result" id="rouletteResult"></div>
+                </div>
             </div>
         </section>
         

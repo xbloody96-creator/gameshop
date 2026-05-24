@@ -689,6 +689,143 @@ function debounce(func, wait) {
     };
 }
 
+// ===========================
+// Рулетка игр
+// ===========================
+const rouletteGames = [
+    { id: 1, title: "Cyberpunk 2077", genre: "AAA", image: "cyberpunk.jpg" },
+    { id: 2, title: "The Witcher 3", genre: "AAA", image: "witcher3.jpg" },
+    { id: 3, title: "Red Dead Redemption 2", genre: "AAA", image: "rdr2.jpg" },
+    { id: 4, title: "Elden Ring", genre: "AAA", image: "eldenring.jpg" },
+    { id: 5, title: "God of War", genre: "AAA", image: "gow.jpg" },
+    { id: 6, title: "Horizon Zero Dawn", genre: "AAA", image: "horizon.jpg" },
+    { id: 7, title: "Ghost of Tsushima", genre: "AAA", image: "ghost.jpg" },
+    { id: 8, title: "Spider-Man Remastered", genre: "AAA", image: "spiderman.jpg" },
+    { id: 9, title: "Assassin's Creed Valhalla", genre: "AAA", image: "acv.jpg" },
+    { id: 10, title: "Call of Duty: MW2", genre: "AAA", image: "cod.jpg" },
+    { id: 11, title: "FIFA 24", genre: "AAA", image: "fifa.jpg" },
+    { id: 12, title: "Forza Horizon 5", genre: "AAA", image: "forza.jpg" },
+    { id: 13, title: "Halo Infinite", genre: "AAA", image: "halo.jpg" },
+    { id: 14, title: "Gears 5", genre: "AAA", image: "gears.jpg" },
+    { id: 15, title: "Sea of Thieves", genre: "AAA", image: "sot.jpg" },
+    { id: 16, title: "Minecraft", genre: "Indie", image: "minecraft.jpg" },
+    { id: 17, title: "Terraria", genre: "Indie", image: "terraria.jpg" },
+    { id: 18, title: "Stardew Valley", genre: "Indie", image: "stardew.jpg" },
+    { id: 19, title: "Hollow Knight", genre: "Indie", image: "hollow.jpg" },
+    { id: 20, title: "Celeste", genre: "Indie", image: "celeste.jpg" },
+    { id: 21, title: "Hades", genre: "Indie", image: "hades.jpg" },
+    { id: 22, title: "Dead Cells", genre: "Indie", image: "deadcells.jpg" },
+    { id: 23, title: "Cuphead", genre: "Indie", image: "cuphead.jpg" },
+    { id: 24, title: "Ori and the Blind Forest", genre: "Indie", image: "ori.jpg" },
+    { id: 25, title: "Undertale", genre: "Indie", image: "undertale.jpg" },
+    { id: 26, title: "Among Us", genre: "Indie", image: "amongus.jpg" },
+    { id: 27, title: "Fall Guys", genre: "Indie", image: "fallguys.jpg" },
+    { id: 28, title: "Valheim", genre: "Indie", image: "valheim.jpg" },
+    { id: 29, title: "Subnautica", genre: "Indie", image: "subnautica.jpg" },
+    { id: 30, title: "The Forest", genre: "Indie", image: "forest.jpg" },
+    { id: 31, title: "Grand Theft Auto V", genre: "AAA", image: "gtav.jpg" },
+    { id: 32, title: "Dark Souls III", genre: "AAA", image: "ds3.jpg" },
+    { id: 33, title: "Bloodborne", genre: "AAA", image: "bloodborne.jpg" },
+    { id: 34, title: "Sekiro", genre: "AAA", image: "sekiro.jpg" },
+    { id: 35, title: "Resident Evil 4", genre: "AAA", image: "re4.jpg" },
+    { id: 36, title: "Devil May Cry 5", genre: "AAA", image: "dmc5.jpg" },
+    { id: 37, title: "Monster Hunter World", genre: "AAA", image: "mhw.jpg" },
+    { id: 38, title: "Final Fantasy VII", genre: "AAA", image: "ff7.jpg" },
+    { id: 39, title: "Street Fighter 6", genre: "AAA", image: "sf6.jpg" },
+    { id: 40, title: "Tekken 8", genre: "AAA", image: "tekken8.jpg" }
+];
+
+let isSpinning = false;
+
+function initRoulette() {
+    const track = document.getElementById('rouletteTrack');
+    const spinBtn = document.getElementById('spinRouletteBtn');
+    
+    if (!track || !spinBtn) return;
+    
+    // Заполняем рулетку играми (дублируем для бесконечного эффекта)
+    let html = '';
+    for (let i = 0; i < 5; i++) {
+        rouletteGames.forEach(game => {
+            html += `
+                <div class="roulette-card" data-id="${game.id}">
+                    <div class="roulette-card-image">🎮</div>
+                    <div class="roulette-card-title">${game.title}</div>
+                    <div class="roulette-card-genre">${game.genre}</div>
+                </div>
+            `;
+        });
+    }
+    track.innerHTML = html;
+    
+    spinBtn.addEventListener('click', spinRoulette);
+}
+
+function spinRoulette() {
+    if (isSpinning) return;
+    isSpinning = true;
+    
+    const track = document.getElementById('rouletteTrack');
+    const resultDiv = document.getElementById('rouletteResult');
+    const spinBtn = document.getElementById('spinRouletteBtn');
+    
+    if (!track || !resultDiv) return;
+    
+    resultDiv.innerHTML = '';
+    spinBtn.disabled = true;
+    
+    // Случайный выбор игры
+    const winningIndex = Math.floor(Math.random() * rouletteGames.length);
+    const winningGame = rouletteGames[winningIndex];
+    
+    // Позиция остановки (карточка в третьем повторении массива)
+    const cardWidth = 200; // ширина карточки + отступ
+    const cardsPerSet = rouletteGames.length;
+    const targetPosition = -(cardsPerSet * 2 + winningIndex) * cardWidth;
+    
+    // Анимация прокрутки
+    track.style.transition = 'transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)';
+    track.style.transform = `translateX(${targetPosition}px)`;
+    
+    // Звук прокрутки (опционально)
+    let clickCount = 0;
+    const clickInterval = setInterval(() => {
+        clickCount++;
+        track.style.filter = `brightness(${1 + Math.sin(clickCount) * 0.1})`;
+    }, 100);
+    
+    setTimeout(() => {
+        clearInterval(clickInterval);
+        track.style.filter = 'brightness(1)';
+        
+        // Показываем результат
+        resultDiv.innerHTML = `
+            <div class="result-card">
+                <div class="result-emoji">🎉</div>
+                <h3>Выпала игра:</h3>
+                <div class="result-game">${winningGame.title}</div>
+                <div class="result-genre">${winningGame.genre}</div>
+                <a href="products.php?q=${encodeURIComponent(winningGame.title)}" class="btn btn-primary">Купить сейчас</a>
+            </div>
+        `;
+        
+        spinBtn.disabled = false;
+        isSpinning = false;
+        
+        // Сброс позиции через небольшую задержку
+        setTimeout(() => {
+            track.style.transition = 'none';
+            track.style.transform = `translateX(${-winningIndex * cardWidth}px)`;
+        }, 1000);
+        
+    }, 4000);
+}
+
+// Инициализация рулетки при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    initRoulette();
+});
+
 // Экспорт функций для глобального использования
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
