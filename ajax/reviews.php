@@ -81,12 +81,20 @@ if ($action === 'add') {
         
         // Обновляем отзыв (сбрасываем статус модерации)
         $stmt = $pdo->prepare("UPDATE reviews SET rating = ?, comment = ?, is_approved = FALSE, updated_at = NOW() WHERE id = ?");
-        $stmt->execute([$rating, $comment, $reviewId]);
+        $result = $stmt->execute([$rating, $comment, $reviewId]);
         
-        $response['success'] = true;
-        $response['message'] = 'Отзыв обновлен и отправлен на повторную модерацию';
+        if ($result) {
+            $response['success'] = true;
+            $response['message'] = 'Отзыв обновлен и отправлен на повторную модерацию';
+        } else {
+            $response['message'] = 'Не удалось обновить отзыв в базе данных';
+        }
     } catch (PDOException $e) {
-        $response['message'] = 'Ошибка обновления отзыва';
+        error_log('Ошибка обновления отзыва: ' . $e->getMessage());
+        $response['message'] = 'Ошибка обновления отзыва: ' . $e->getMessage();
+    } catch (Exception $e) {
+        error_log('Общая ошибка обновления отзыва: ' . $e->getMessage());
+        $response['message'] = 'Общая ошибка: ' . $e->getMessage();
     }
 } elseif ($action === 'get') {
     $productId = $_GET['product_id'] ?? 0;
