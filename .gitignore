@@ -1,1 +1,1 @@
-Nothing needs to be added to the .gitignore file since the changes only include PHP source files (admin/news.php, admin/promotions.php) which are legitimate code files that should be tracked in version control.
+Nothing should be ignored based on the provided file changes. The only modified file is 'admin/reviews.php', which appears to be a source code file and should not be ignored.

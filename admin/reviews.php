@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 require_once '../config.php';
 
@@ -17,18 +20,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     switch ($action) {
         case 'approve_review':
             $id = intval($_POST['id']);
-            $stmt = $pdo->prepare("UPDATE reviews SET approved = 1 WHERE id = ?");
-            $stmt->execute([$id]);
-            $success = 'Отзыв одобрен';
-            break;
+            try {
+                $stmt = $pdo->prepare("UPDATE reviews SET approved = 1 WHERE id = ?");
+                $stmt->execute([$id]);
+                $success = 'Отзыв одобрен';
+            } catch (PDOException $e) {
+                $error = 'Ошибка при одобрении отзыва: ' . $e->getMessage();
+            }
+            header('Location: reviews.php?success=' . urlencode($success) . '&error=' . urlencode($error));
+            exit;
             
         case 'reject_review':
             $id = intval($_POST['id']);
-            $stmt = $pdo->prepare("DELETE FROM reviews WHERE id = ?");
-            $stmt->execute([$id]);
-            $success = 'Отзыв удален';
-            break;
+            try {
+                $stmt = $pdo->prepare("DELETE FROM reviews WHERE id = ?");
+                $stmt->execute([$id]);
+                $success = 'Отзыв удален';
+            } catch (PDOException $e) {
+                $error = 'Ошибка при удалении отзыва: ' . $e->getMessage();
+            }
+            header('Location: reviews.php?success=' . urlencode($success) . '&error=' . urlencode($error));
+            exit;
     }
+}
+
+// Получение сообщений об успехе/ошибке из GET параметров
+if (isset($_GET['success']) && $_GET['success']) {
+    $success = $_GET['success'];
+}
+if (isset($_GET['error']) && $_GET['error']) {
+    $error = $_GET['error'];
 }
 
 // Получение всех отзывов
