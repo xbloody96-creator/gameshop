@@ -56,16 +56,21 @@ try {
     $stmt->execute([$user['id']]);
     $favorites = $stmt->fetchAll();
     
-    // Получение истории просмотров
+    // Получение истории просмотров - только 3 элемента
     $stmt = $pdo->prepare("
         SELECT p.*, vh.viewed_at FROM view_history vh 
         JOIN products p ON vh.product_id = p.id 
         WHERE vh.user_id = ? 
         ORDER BY vh.viewed_at DESC 
-        LIMIT 10
+        LIMIT 3
     ");
     $stmt->execute([$user['id']]);
     $viewHistory = $stmt->fetchAll();
+    
+    // Получение общего количества просмотров для кнопки "показать все"
+    $stmt = $pdo->prepare("SELECT COUNT(*) as total FROM view_history WHERE user_id = ?");
+    $stmt->execute([$user['id']]);
+    $viewHistoryTotal = $stmt->fetch()['total'];
 } catch (PDOException $e) {
     $sessions = [];
     $currentOrders = [];
@@ -176,7 +181,7 @@ try {
                         <div class="view-history-list">
                             <?php foreach ($viewHistory as $product): ?>
                                 <div class="view-item">
-                                    <img src="images/uploads/<?= escape($product['image']) ?>" alt="<?= escape($product['title']) ?>" onerror="this.src='https://via.placeholder.com/60x60?text=<?= urlencode($product['title']) ?>'">
+                                    <img src="images/uploads/<?= escape($product['image']) ?>" alt="<?= escape($product['title']) ?>" onerror="this.src='https://via.placeholder.com/50x50?text=<?= urlencode($product['title']) ?>'">
                                     <div class="view-info">
                                         <a href="product.php?id=<?= $product['id'] ?>"><?= escape($product['title']) ?></a>
                                         <span class="view-time"><?= timeAgo($product['viewed_at']) ?></span>
@@ -184,6 +189,61 @@ try {
                                 </div>
                             <?php endforeach; ?>
                         </div>
+                        <?php if ($viewHistoryTotal > 3): ?>
+                            <div style="margin-top: 1rem; text-align: center;">
+                                <button class="btn btn-outline" onclick="toggleViewHistory()" id="toggle-history-btn">
+                                    Показать все (<?= $viewHistoryTotal - 3 ?> еще)
+                                </button>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <script>
+                        async function toggleViewHistory() {
+                            const btn = document.getElementById('toggle-history-btn');
+                            const container = document.querySelector('.view-history-list');
+                            
+                            if (btn.dataset.expanded === 'true') {
+                                // Свернуть - загрузить только 3
+                                try {
+                                    const response = await fetch('ajax/profile.php?action=view_history&limit=3');
+                                    const data = await response.json();
+                                    if (data.success) {
+                                        renderViewHistory(data.items);
+                                        btn.textContent = `Показать все (${<?= $viewHistoryTotal - 3 ?>} еще)`;
+                                        btn.dataset.expanded = 'false';
+                                    }
+                                } catch (e) { location.reload(); }
+                            } else {
+                                // Развернуть - показать все
+                                try {
+                                    const response = await fetch('ajax/profile.php?action=view_history&limit=<?= $viewHistoryTotal ?>');
+                                    const data = await response.json();
+                                    if (data.success) {
+                                        renderViewHistory(data.items);
+                                        btn.textContent = 'Свернуть';
+                                        btn.dataset.expanded = 'true';
+                                    }
+                                } catch (e) { location.reload(); }
+                            }
+                        }
+                        
+                        function renderViewHistory(items) {
+                            const container = document.querySelector('.view-history-list');
+                            let html = '';
+                            items.forEach(product => {
+                                html += `
+                                    <div class="view-item">
+                                        <img src="images/uploads/${product.image}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/50x50?text=${encodeURIComponent(product.title)}'">
+                                        <div class="view-info">
+                                            <a href="product.php?id=${product.id}">${product.title}</a>
+                                            <span class="view-time">${product.viewed_ago}</span>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            container.innerHTML = html;
+                        }
+                        </script>
                     <?php else: ?>
                         <p class="no-data">Вы еще ничего не смотрели</p>
                     <?php endif; ?>
