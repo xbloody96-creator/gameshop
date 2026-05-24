@@ -742,34 +742,40 @@ let currentRoulettePosition = 0;
 
 function initRoulette() {
     const spinBtn = document.getElementById('spinRouletteBtn');
-    
+
     if (!spinBtn) return;
-    
+
     spinBtn.addEventListener('click', function() {
-        // Показываем контейнер рулетки
+        if (isSpinning) return;
+        
+        // Показываем контейнер рулетки с плавной анимацией
         const container = document.getElementById('rouletteContainer');
         if (container) {
-            container.style.opacity = '1';
-            container.style.visibility = 'visible';
+            container.style.display = 'block';
+            
+            // Небольшая задержка для применения display перед opacity
+            setTimeout(() => {
+                container.style.opacity = '1';
+                
+                // Инициализируем дорожку с карточками если еще не инициализирована
+                if (!rouletteInitialized) {
+                    setupRouletteTrack();
+                    rouletteInitialized = true;
+                }
+                
+                // Запускаем прокрутку после появления
+                setTimeout(() => {
+                    spinRoulette();
+                }, 600);
+            }, 50);
         }
-        
-        // Инициализируем дорожку с карточками если еще не инициализирована
-        if (!rouletteInitialized) {
-            setupRouletteTrack();
-            rouletteInitialized = true;
-        }
-        
-        // Запускаем прокрутку с небольшой задержкой после появления
-        setTimeout(() => {
-            spinRoulette();
-        }, 600);
     });
 }
 
 function setupRouletteTrack() {
     const track = document.getElementById('rouletteTrack');
     if (!track) return;
-    
+
     // Заполняем рулетку играми (дублируем для бесконечного эффекта)
     let html = '';
     for (let i = 0; i < 5; i++) {
@@ -784,11 +790,8 @@ function setupRouletteTrack() {
         });
     }
     track.innerHTML = html;
-    
+
     // Устанавливаем начальную позицию - первый набор игр
-    const cardWidth = 195; // 180px + 15px gap
-    const cardsPerSet = rouletteGames.length;
-    // Начинаем с первой позиции, чтобы карточки были видны сразу
     currentRoulettePosition = 0;
     track.style.transition = 'none';
     track.style.transform = `translateX(0px)`;
@@ -797,21 +800,21 @@ function setupRouletteTrack() {
 function spinRoulette() {
     if (isSpinning) return;
     isSpinning = true;
-    
+
     const track = document.getElementById('rouletteTrack');
     const resultDiv = document.getElementById('rouletteResult');
     const spinBtn = document.getElementById('spinRouletteBtn');
-    
+
     if (!track || !resultDiv) return;
-    
+
     resultDiv.innerHTML = '';
     spinBtn.disabled = true;
     spinBtn.textContent = '🎲 Прокрутка...';
-    
+
     // Случайный выбор игры
     const winningIndex = Math.floor(Math.random() * rouletteGames.length);
     const winningGame = rouletteGames[winningIndex];
-    
+
     // Позиция остановки (карточка в третьем повторении массива)
     const cardWidth = 195; // 180px + 15px gap
     const cardsPerSet = rouletteGames.length;
@@ -820,17 +823,20 @@ function spinRoulette() {
     const randomOffset = Math.floor(Math.random() * 140); // 0 to 140px within card
     const targetSet = 2; // Третий набор (индекс 2)
     const targetPosition = -(targetSet * cardsPerSet * cardWidth) - (winningIndex * cardWidth) - randomOffset;
-    
-    // Сбрасываем transition перед установкой начальной позиции
+
+    // Сбрасываем transition и позицию перед анимацией
     track.style.transition = 'none';
     track.style.transform = `translateX(${currentRoulettePosition}px)`;
-    
+
+    // Принудительно вызываем reflow для применения стилей
+    void track.offsetWidth;
+
     // Небольшая задержка перед анимацией для плавности
     setTimeout(() => {
         // Анимация прокрутки
         track.style.transition = 'transform 4s cubic-bezier(0.15, 0, 0.2, 1)';
         track.style.transform = `translateX(${targetPosition}px)`;
-        
+
         // Эффект "щёлканья" во время прокрутки
         let clickCount = 0;
         const maxClicks = 50;
@@ -843,34 +849,42 @@ function spinRoulette() {
                 clearInterval(clickInterval);
             }
         }, 80);
-        
+
         setTimeout(() => {
             clearInterval(clickInterval);
             track.style.filter = 'brightness(1)';
+
+            // Сохраняем текущую позицию для следующего спина (сбрасываем на первый набор)
+            // Вычисляем эквивалентную позицию в первом наборе
+            const normalizedPosition = -(winningIndex * cardWidth) - randomOffset;
+            currentRoulettePosition = normalizedPosition;
             
-            // Сохраняем текущую позицию для следующего спина
-            currentRoulettePosition = targetPosition;
-            
+            // Сбрасываем позицию без анимации для следующего спина
+            setTimeout(() => {
+                track.style.transition = 'none';
+                track.style.transform = `translateX(${normalizedPosition}px)`;
+            }, 50);
+
             // Показываем результат с правильным названием игры
             const resultTitle = winningGame.title || "Неизвестная игра";
             const resultGenre = winningGame.genre || "Игра";
-            
+
             resultDiv.innerHTML = `
                 <div class="result-card">
                     <div class="result-emoji">🎉</div>
                     <h3 style="color: #2d3748; margin-bottom: 10px;">Вам выпала:</h3>
-                    <div class="result-game">${escapeHtml(resultTitle)}</div>
+                    <div class="result-game" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">${escapeHtml(resultTitle)}</div>
                     <div class="result-genre">${escapeHtml(resultGenre)} проект</div>
                     <a href="products.php?search=${encodeURIComponent(resultTitle)}" class="btn btn-primary">Купить сейчас</a>
                 </div>
             `;
-            
+
             spinBtn.disabled = false;
             spinBtn.textContent = '🎲 Испытать удачу ещё раз!';
             isSpinning = false;
-            
+
         }, 4100);
-    }, 100);
+    }, 50);
 }
 
 // Функция для экранирования HTML
