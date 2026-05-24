@@ -1,1 +1,1 @@
-Nothing should be ignored in this case, as the only change is a modified PHP source file (`admin/product-edit.php`) which is not a build artifact, dependency, or temporary file.
+Nothing should be ignored based on the provided file changes. The only modified file is 'admin/product-edit.php', which is a source code file and should not be added to .gitignore.
