@@ -366,24 +366,116 @@ $categories = $stmt->fetchAll();
 
 <script>
 function previewImage(input) {
+    console.log('Файл выбран:', input.files ? input.files.length : 0);
+    
     if (input.files && input.files[0]) {
+        const file = input.files[0];
+        console.log('Имя файла:', file.name, 'Тип:', file.type, 'Размер:', file.size);
+        
         const reader = new FileReader();
+        
         reader.onload = function(e) {
-            document.getElementById('preview-img').src = e.target.result;
-            document.getElementById('image-preview').style.display = 'block';
-            document.querySelector('.upload-area').style.display = 'none';
-            document.querySelector('.current-image')?.style.display = 'none';
+            console.log('Файл загружен в FileReader');
+            const previewImg = document.getElementById('preview-img');
+            const imagePreview = document.getElementById('image-preview');
+            const uploadArea = document.querySelector('.upload-area');
+            const currentImage = document.querySelector('.current-image');
+            
+            if (previewImg && imagePreview && uploadArea) {
+                previewImg.src = e.target.result;
+                imagePreview.style.display = 'block';
+                uploadArea.style.display = 'none';
+                
+                if (currentImage) {
+                    currentImage.style.display = 'none';
+                }
+                
+                console.log('Предпросмотр отображен');
+            } else {
+                console.error('Не найдены элементы для предпросмотра');
+            }
         };
-        reader.readAsDataURL(input.files[0]);
+        
+        reader.onerror = function(error) {
+            console.error('Ошибка чтения файла:', error);
+            alert('Ошибка при чтении файла');
+        };
+        
+        reader.readAsDataURL(file);
+    } else {
+        console.warn('Файл не выбран или файлы недоступны');
     }
 }
 
 function clearPreview() {
-    document.getElementById('image-upload').value = '';
-    document.getElementById('image-preview').style.display = 'none';
-    document.querySelector('.upload-area').style.display = 'block';
-    document.querySelector('.current-image')?.style.display = 'block';
+    console.log('Очистка предпросмотра');
+    
+    const imageUpload = document.getElementById('image-upload');
+    const imagePreview = document.getElementById('image-preview');
+    const uploadArea = document.querySelector('.upload-area');
+    const currentImage = document.querySelector('.current-image');
+    
+    if (imageUpload) {
+        imageUpload.value = '';
+    }
+    
+    if (imagePreview) {
+        imagePreview.style.display = 'none';
+    }
+    
+    if (uploadArea) {
+        uploadArea.style.display = 'block';
+    }
+    
+    if (currentImage) {
+        currentImage.style.display = 'block';
+    }
+    
+    console.log('Предпросмотр очищен');
 }
+
+// Дополнительный обработчик для drag-and-drop
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadArea = document.querySelector('.upload-area');
+    const imageUpload = document.getElementById('image-upload');
+    
+    if (uploadArea && imageUpload) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => {
+                uploadArea.style.borderColor = 'var(--primary)';
+                uploadArea.style.background = 'var(--primary-light)';
+            }, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => {
+                uploadArea.style.borderColor = 'var(--border)';
+                uploadArea.style.background = 'var(--bg-surface-2)';
+            }, false);
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files && files[0]) {
+                imageUpload.files = files;
+                previewImage(imageUpload);
+            }
+        }, false);
+        
+        console.log('Обработчики drag-and-drop инициализированы');
+    }
+});
 </script>
 
 </body>
