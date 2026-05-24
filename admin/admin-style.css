@@ -127,41 +127,23 @@
 }
 
 .admin-sidebar.collapsed .admin-logo h2 .logo-text,
-.admin-sidebar.collapsed .admin-menu a:not(.active) span:not(.menu-icon),
+.admin-sidebar.collapsed .admin-menu span:not(.menu-icon),
 .admin-sidebar.collapsed .admin-menu .badge {
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* Hide toggle button inside logo when collapsed */
-.admin-sidebar.collapsed .admin-logo .sidebar-toggle-top {
-    display: none;
+/* Main content adjustment when sidebar collapsed */
+.admin-main.sidebar-collapsed {
+    margin-left: 70px;
 }
 
-.admin-sidebar.collapsed .admin-logo {
-    text-align: center;
-    padding: 20px 10px;
-}
-
-.admin-sidebar.collapsed .admin-logo h2 {
-    justify-content: center;
-}
-
-/* Menu items in collapsed state */
-.admin-sidebar.collapsed .admin-menu a {
-    justify-content: center;
-    padding: 14px 10px;
-}
-
-.admin-sidebar.collapsed .admin-menu a .menu-icon {
-    margin: 0;
-}
-
-/* Sidebar toggle button - positioned at top right of logo */
+/* Sidebar toggle button - positioned at top right of sidebar */
 .sidebar-toggle-top {
     position: absolute;
-    top: 50%;
+    top: 15px;
     right: 15px;
-    transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.1);
     border: none;
     width: 32px;
@@ -177,7 +159,7 @@
 
 .sidebar-toggle-top:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-50%) rotate(180deg);
+    transform: rotate(180deg);
 }
 
 .sidebar-toggle-top .toggle-icon-top {
@@ -190,9 +172,23 @@
     transform: rotate(180deg);
 }
 
-/* Main content adjustment when sidebar collapsed */
-.admin-main.sidebar-collapsed {
-    margin-left: 70px;
+/* Menu items in collapsed state */
+.admin-sidebar.collapsed .admin-menu a {
+    justify-content: center;
+    padding: 14px 10px;
+}
+
+.admin-sidebar.collapsed .admin-menu a .menu-icon {
+    margin: 0;
+}
+
+.admin-sidebar.collapsed .admin-logo {
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.admin-sidebar.collapsed .admin-logo h2 {
+    justify-content: center;
 }
 
 .admin-sidebar::-webkit-scrollbar {
