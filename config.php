@@ -1,9 +1,9 @@
 <?php
 // Конфигурация базы данных
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'gameskey_store');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_NAME', 'gameskey_store'); // Имя твоей базы данных
+define('DB_USER', 'gameshop');       // Пользователь БД
+define('DB_PASS', 'My_Password123');
 define('DB_CHARSET', 'utf8mb4');
 
 // Настройки сайта
