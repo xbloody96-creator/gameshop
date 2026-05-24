@@ -737,16 +737,35 @@ const rouletteGames = [
 ];
 
 let isSpinning = false;
+let rouletteInitialized = false;
 
 function initRoulette() {
-    const track = document.getElementById('rouletteTrack');
     const spinBtn = document.getElementById('spinRouletteBtn');
     
-    if (!track || !spinBtn) return;
+    if (!spinBtn) return;
     
-    // Скрываем трек до первого спина (игры не видны списком)
-    track.style.display = 'flex';
-    track.style.overflow = 'hidden';
+    spinBtn.addEventListener('click', function() {
+        // Если рулетка еще не инициализирована, показываем контейнер
+        if (!rouletteInitialized) {
+            const container = document.getElementById('rouletteContainer');
+            if (container) {
+                container.style.opacity = '1';
+                container.style.visibility = 'visible';
+            }
+            rouletteInitialized = true;
+            setupRouletteTrack();
+        }
+        
+        // Запускаем прокрутку с небольшой задержкой после появления
+        setTimeout(() => {
+            spinRoulette();
+        }, 500);
+    });
+}
+
+function setupRouletteTrack() {
+    const track = document.getElementById('rouletteTrack');
+    if (!track) return;
     
     // Заполняем рулетку играми (дублируем для бесконечного эффекта)
     let html = '';
@@ -767,8 +786,6 @@ function initRoulette() {
     const cardWidth = 195; // 180px + 15px gap
     const cardsPerSet = rouletteGames.length;
     track.style.transform = `translateX(${-cardsPerSet * cardWidth}px)`;
-    
-    spinBtn.addEventListener('click', spinRoulette);
 }
 
 function spinRoulette() {
