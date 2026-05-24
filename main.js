@@ -462,24 +462,55 @@ window.updateReview = function(reviewId, productId) {
     formData.append('rating', rating.value);
     formData.append('comment', comment.value.trim());
     
+    // Показываем индикатор загрузки
+    const submitBtn = document.querySelector('#edit-form-container button[type="submit"]');
+    const originalText = submitBtn ? submitBtn.textContent : '';
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Сохранение...';
+    }
+    
     fetch('ajax/reviews.php', {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Ошибка сети: ' + response.status);
+        }
+        return response.json();
+    })
     .then(data => {
         console.log('Ответ сервера:', data);
+        
+        // Возвращаем кнопку в исходное состояние
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
+        
         if (data.success) {
             showNotification('Отзыв обновлен и отправлен на повторную модерацию', 'success');
-            // Перезагрузить страницу через 1 секунду
-            setTimeout(() => location.reload(), 1000);
+            // Скрываем форму редактирования
+            hideEditForm();
+            // Перезагружаем страницу через 1.5 секунды
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
         } else {
             showNotification(data.message || 'Ошибка обновления отзыва', 'error');
         }
     })
     .catch(error => {
         console.error('Ошибка:', error);
-        showNotification('Ошибка обновления отзыва', 'error');
+        
+        // Возвращаем кнопку в исходное состояние
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
+        
+        showNotification('Ошибка обновления отзыва: ' + error.message, 'error');
     });
 };
 
