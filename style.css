@@ -348,8 +348,8 @@ a:hover {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at 20% 50%, rgba(220, 38, 38, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(153, 27, 27, 0.15) 0%, transparent 50%);
+    background: radial-gradient(circle at 20% 50%, rgba(41, 128, 185, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(52, 152, 219, 0.15) 0%, transparent 50%);
     pointer-events: none;
 }
 
@@ -717,7 +717,7 @@ a:hover {
 .search-input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15);
+    box-shadow: 0 0 0 4px rgba(41, 128, 185, 0.15);
 }
 
 .search-icon {
@@ -1108,7 +1108,7 @@ a:hover {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15);
+    box-shadow: 0 0 0 4px rgba(41, 128, 185, 0.15);
 }
 
 .btn-block {
@@ -2183,6 +2183,11 @@ a:hover {
     font-size: 1.1rem;
 }
 
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
 .hero-stats {
     display: flex;
     gap: 3rem;
@@ -2329,6 +2334,11 @@ a:hover {
     color: var(--text-primary);
 }
 
+/* Section Popular */
+.section-popular {
+    background: var(--bg-primary);
+}
+
 /* Section Header Modern */
 .section-header-modern {
     text-align: center;
@@ -2343,6 +2353,13 @@ a:hover {
     transform: translateY(-50%);
     color: var(--primary-color);
     font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.section-header-modern .btn-link:hover {
+    background: var(--bg-secondary);
 }
 
 /* Products Grid Modern */
@@ -2482,6 +2499,18 @@ a:hover {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+}
+
+.price-current {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.price-old {
+    font-size: 1rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
 }
 
 /* Empty State */
