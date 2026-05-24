@@ -86,6 +86,7 @@ if ($action === 'count') {
 } else {
     // Получение содержимого корзины
     try {
+        // Получение содержимого корзины
         $stmt = $pdo->prepare("
             SELECT c.*, p.title, p.price, p.old_price, p.image, p.slug 
             FROM cart c 
@@ -105,7 +106,7 @@ if ($action === 'count') {
         $response['items'] = $items;
         $response['total'] = $total;
     } catch (PDOException $e) {
-        $response['message'] = 'Ошибка получения корзины';
+        $response['message'] = 'Ошибка получения корзины: ' . $e->getMessage();
     }
 }
 

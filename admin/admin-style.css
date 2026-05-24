@@ -5,11 +5,11 @@
 
 /* ===== CSS Variables & Theming ===== */
 :root {
-    /* Light Theme Colors - Red Gaming Theme (Soft) */
-    --primary: #c0392b;
-    --primary-hover: #a93226;
-    --primary-light: #fadbd8;
-    --secondary: #922b21;
+    /* Light Theme Colors - Blue Gaming Theme (Soft) */
+    --primary: #2980b9;
+    --primary-hover: #1f6aa5;
+    --primary-light: #d4e6f1;
+    --secondary: #1a5276;
     --success: #27ae60;
     --success-bg: #d5f5e3;
     --danger: #c0392b;
@@ -20,10 +20,10 @@
     --info-bg: #d4e6f1;
     
     /* Background Colors */
-    --bg-body: #fdf5f5;
+    --bg-body: #f5f9fc;
     --bg-surface: #ffffff;
-    --bg-surface-2: #fceceb;
-    --bg-hover: #fadbd8;
+    --bg-surface-2: #ebf5fb;
+    --bg-hover: #d4e6f1;
     
     /* Text Colors */
     --text-primary: #1a1a1a;
@@ -32,21 +32,21 @@
     --text-inverse: #ffffff;
     
     /* Border Colors */
-    --border: #fadbd8;
-    --border-light: #fceceb;
+    --border: #d4e6f1;
+    --border-light: #ebf5fb;
     
     /* Shadows */
-    --shadow-sm: 0 1px 2px rgba(192, 57, 43, 0.06);
-    --shadow: 0 1px 3px rgba(192, 57, 43, 0.08), 0 1px 2px rgba(192, 57, 43, 0.04);
-    --shadow-md: 0 4px 6px rgba(192, 57, 43, 0.1), 0 2px 4px rgba(192, 57, 43, 0.06);
-    --shadow-lg: 0 10px 15px rgba(192, 57, 43, 0.1), 0 4px 6px rgba(192, 57, 43, 0.05);
-    --shadow-xl: 0 20px 25px rgba(192, 57, 43, 0.12), 0 10px 10px rgba(192, 57, 43, 0.04);
+    --shadow-sm: 0 1px 2px rgba(41, 128, 185, 0.06);
+    --shadow: 0 1px 3px rgba(41, 128, 185, 0.08), 0 1px 2px rgba(41, 128, 185, 0.04);
+    --shadow-md: 0 4px 6px rgba(41, 128, 185, 0.1), 0 2px 4px rgba(41, 128, 185, 0.06);
+    --shadow-lg: 0 10px 15px rgba(41, 128, 185, 0.1), 0 4px 6px rgba(41, 128, 185, 0.05);
+    --shadow-xl: 0 20px 25px rgba(41, 128, 185, 0.12), 0 10px 10px rgba(41, 128, 185, 0.04);
     
     /* Sidebar */
     --sidebar-width: 280px;
-    --sidebar-bg: linear-gradient(180deg, #641e16 0%, #78281f 50%, #922b21 100%);
-    --sidebar-text: #fadbd8;
-    --sidebar-active: rgba(192, 57, 43, 0.2);
+    --sidebar-bg: linear-gradient(180deg, #1a5276 0%, #1e5f8a 50%, #2980b9 100%);
+    --sidebar-text: #d4e6f1;
+    --sidebar-active: rgba(41, 128, 185, 0.2);
     
     /* Transitions */
     --transition-fast: 0.15s ease;
@@ -74,19 +74,19 @@
     --border: #4a4a4a;
     --border-light: #2d2d2d;
     
-    --primary-light: rgba(231, 76, 60, 0.15);
+    --primary-light: rgba(41, 128, 185, 0.15);
     --success-bg: rgba(39, 174, 96, 0.15);
     --danger-bg: rgba(192, 57, 43, 0.15);
     --warning-bg: rgba(214, 137, 16, 0.15);
     --info-bg: rgba(41, 128, 185, 0.15);
     
-    --shadow-sm: 0 1px 2px rgba(231, 76, 60, 0.2);
-    --shadow: 0 1px 3px rgba(231, 76, 60, 0.25), 0 1px 2px rgba(231, 76, 60, 0.15);
-    --shadow-md: 0 4px 6px rgba(231, 76, 60, 0.25), 0 2px 4px rgba(231, 76, 60, 0.15);
-    --shadow-lg: 0 10px 15px rgba(231, 76, 60, 0.3), 0 4px 6px rgba(231, 76, 60, 0.2);
-    --shadow-xl: 0 20px 25px rgba(231, 76, 60, 0.35), 0 10px 10px rgba(231, 76, 60, 0.25);
+    --shadow-sm: 0 1px 2px rgba(41, 128, 185, 0.2);
+    --shadow: 0 1px 3px rgba(41, 128, 185, 0.25), 0 1px 2px rgba(41, 128, 185, 0.15);
+    --shadow-md: 0 4px 6px rgba(41, 128, 185, 0.25), 0 2px 4px rgba(41, 128, 185, 0.15);
+    --shadow-lg: 0 10px 15px rgba(41, 128, 185, 0.3), 0 4px 6px rgba(41, 128, 185, 0.2);
+    --shadow-xl: 0 20px 25px rgba(41, 128, 185, 0.35), 0 10px 10px rgba(41, 128, 185, 0.25);
     
-    --sidebar-bg: linear-gradient(180deg, #1a1a1a 0%, #641e16 50%, #78281f 100%);
+    --sidebar-bg: linear-gradient(180deg, #1a1a1a 0%, #1a5276 50%, #2980b9 100%);
 }
 
 /* ===== Base Styles ===== */
