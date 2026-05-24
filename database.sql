@@ -1,6 +1,6 @@
--- База данных GamesKey Store
-CREATE DATABASE IF NOT EXISTS gameskey_store CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE gameskey_store;
+-- База данных JustKey Store
+CREATE DATABASE IF NOT EXISTS justkey_store CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE justkey_store;
 
 -- Таблица пользователей
 CREATE TABLE users (
