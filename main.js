@@ -408,17 +408,15 @@ async function submitReview(productId) {
     }
     
     try {
+        const formData = new FormData();
+        formData.append('action', 'add');
+        formData.append('product_id', productId);
+        formData.append('rating', rating.value);
+        formData.append('comment', comment.value.trim());
+        
         const response = await fetch('ajax/reviews.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                action: 'add',
-                product_id: productId,
-                rating: rating.value,
-                comment: comment.value
-            })
+            body: formData
         });
         
         const data = await response.json();
@@ -426,7 +424,10 @@ async function submitReview(productId) {
         if (data.success) {
             showNotification('Отзыв отправлен на модерацию', 'success');
             comment.value = '';
-            rating.checked = false;
+            // Снять выделение со звезд
+            document.querySelectorAll('input[name="rating"]').forEach(input => input.checked = false);
+            // Перезагрузить страницу через 1 секунду
+            setTimeout(() => location.reload(), 1000);
         } else {
             showNotification(data.message || 'Ошибка отправки отзыва', 'error');
         }

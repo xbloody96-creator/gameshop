@@ -14,10 +14,9 @@ if (!isLoggedIn()) {
 $action = $_POST['action'] ?? '';
 
 if ($action === 'add') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    $productId = $data['product_id'] ?? 0;
-    $rating = $data['rating'] ?? 0;
-    $comment = trim($data['comment'] ?? '');
+    $productId = $_POST['product_id'] ?? 0;
+    $rating = $_POST['rating'] ?? 0;
+    $comment = trim($_POST['comment'] ?? '');
     
     if (!$productId || !$rating || !$comment) {
         $response['message'] = 'Заполните все поля';
