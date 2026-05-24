@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'approve_review':
             $id = intval($_POST['id']);
             try {
-                $stmt = $pdo->prepare("UPDATE reviews SET approved = 1 WHERE id = ?");
+                $stmt = $pdo->prepare("UPDATE reviews SET is_approved = 1 WHERE id = ?");
                 $stmt->execute([$id]);
                 $success = 'Отзыв одобрен';
             } catch (PDOException $e) {
@@ -61,9 +61,9 @@ $sql = "SELECT r.*, u.email, u.full_name, u.nickname, p.name as product_name FRO
         WHERE 1";
 
 if ($filter == 'pending') {
-    $sql .= " AND r.approved = 0";
+    $sql .= " AND r.is_approved = 0";
 } elseif ($filter == 'approved') {
-    $sql .= " AND r.approved = 1";
+    $sql .= " AND r.is_approved = 1";
 }
 
 $sql .= " ORDER BY r.created_at DESC";
@@ -136,7 +136,7 @@ if (!is_array($reviews)) $reviews = [];
                             <td>⭐ <?= $review['rating'] ?>/5</td>
                             <td><?= htmlspecialchars(mb_substr($review['comment'], 0, 80)) ?><?= mb_strlen($review['comment']) > 80 ? '...' : '' ?></td>
                             <td>
-                                <?php $isApproved = isset($review['approved']) && $review['approved'] == 1; ?>
+                                <?php $isApproved = isset($review['is_approved']) && $review['is_approved'] == 1; ?>
                                 <span class="status-badge status-badge-<?= $isApproved ? 'active' : 'inactive' ?>">
                                     <?= $isApproved ? '✓' : '⏳' ?>
                                 </span>
