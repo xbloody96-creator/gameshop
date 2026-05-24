@@ -1,7 +1,11 @@
 <nav class="admin-sidebar" id="sidebar">
     <div class="admin-logo">
-        <h2><span class="logo-icon">🎮</span> JustKey Admin</h2>
+        <h2><span class="logo-icon">🎮</span> <span class="logo-text">JustKey Admin</span></h2>
     </div>
+    
+    <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebarDesktop()" title="Свернуть/развернуть меню">
+        <span class="toggle-icon">◀</span>
+    </button>
     
     <ul class="admin-menu">
         <li>

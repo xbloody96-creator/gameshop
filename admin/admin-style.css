@@ -118,7 +118,85 @@
     overflow-y: auto;
     z-index: 100;
     box-shadow: var(--shadow-lg);
-    transition: transform var(--transition);
+    transition: width var(--transition), transform var(--transition);
+}
+
+/* Collapsed sidebar state */
+.admin-sidebar.collapsed {
+    width: 70px;
+}
+
+.admin-sidebar.collapsed .admin-logo h2 .logo-text,
+.admin-sidebar.collapsed .admin-menu a:not(.active) span:not(.menu-icon),
+.admin-sidebar.collapsed .admin-menu .badge,
+.admin-sidebar.collapsed .sidebar-toggle .toggle-icon {
+    display: none;
+}
+
+.admin-sidebar.collapsed .admin-logo {
+    text-align: center;
+    padding: 25px 10px;
+}
+
+.admin-sidebar.collapsed .admin-logo h2 {
+    justify-content: center;
+}
+
+.admin-sidebar.collapsed .sidebar-toggle {
+    right: 50%;
+    transform: translateX(50%);
+}
+
+.admin-sidebar.collapsed .sidebar-toggle .toggle-icon {
+    display: inline-block;
+    transform: rotate(180deg);
+}
+
+.admin-sidebar.collapsed .admin-menu a {
+    justify-content: center;
+    padding: 14px 10px;
+}
+
+.admin-sidebar.collapsed .admin-menu a .menu-icon {
+    margin: 0;
+}
+
+/* Sidebar toggle button */
+.sidebar-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 30px;
+    height: 60px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    z-index: 10;
+}
+
+.sidebar-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-toggle .toggle-icon {
+    font-size: 0.8rem;
+    color: var(--sidebar-text);
+    transition: transform var(--transition-fast);
+}
+
+.admin-sidebar.collapsed .sidebar-toggle .toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* Main content adjustment when sidebar collapsed */
+.admin-main.sidebar-collapsed {
+    margin-left: 70px;
 }
 
 .admin-sidebar::-webkit-scrollbar {

@@ -188,6 +188,57 @@ function toggleSidebar() {
     }
 }
 
+// Desktop Sidebar Toggle (Collapse/Expand)
+function toggleSidebarDesktop() {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.querySelector('.admin-main');
+    const toggleBtn = document.getElementById('sidebarToggle');
+    
+    if (sidebar) {
+        sidebar.classList.toggle('collapsed');
+        
+        // Adjust main content
+        if (main) {
+            main.classList.toggle('sidebar-collapsed');
+        }
+        
+        // Save state to localStorage
+        const isCollapsed = sidebar.classList.contains('collapsed');
+        localStorage.setItem('sidebar_collapsed', isCollapsed);
+        
+        // Update toggle icon
+        if (toggleBtn) {
+            const icon = toggleBtn.querySelector('.toggle-icon');
+            if (icon) {
+                icon.textContent = isCollapsed ? '▶' : '◀';
+            }
+        }
+    }
+}
+
+// Restore sidebar state on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.querySelector('.admin-main');
+    const toggleBtn = document.getElementById('sidebarToggle');
+    
+    if (sidebar && window.innerWidth > 768) {
+        const isCollapsed = localStorage.getItem('sidebar_collapsed') === 'true';
+        if (isCollapsed) {
+            sidebar.classList.add('collapsed');
+            if (main) {
+                main.classList.add('sidebar-collapsed');
+            }
+            if (toggleBtn) {
+                const icon = toggleBtn.querySelector('.toggle-icon');
+                if (icon) {
+                    icon.textContent = '▶';
+                }
+            }
+        }
+    }
+});
+
 // Close sidebar when clicking outside on mobile
 document.addEventListener('click', function(e) {
     const sidebar = document.getElementById('sidebar');
