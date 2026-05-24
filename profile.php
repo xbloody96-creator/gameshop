@@ -101,6 +101,9 @@ try {
                     <p class="nickname">@<?= escape($user['nickname']) ?></p>
                     <p class="email"><?= escape($user['email']) ?></p>
                 </div>
+                <div class="profile-actions">
+                    <a href="logout.php" class="btn btn-danger">🚪 Выйти из аккаунта</a>
+                </div>
             </div>
             
             <div class="profile-grid">

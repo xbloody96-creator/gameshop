@@ -1,17 +1,23 @@
-```php
+```
 # Compiled and build artifacts
 *.pyc
 __pycache__/
 *.o
 *.obj
-dist/
-build/
-target/
+*.class
+*.exe
+*.dll
+*.so
+*.a
+*.out
 
 # Dependencies
 node_modules/
-vendor/
-*.lock
+venv/
+.venv/
+.env
+.env.local
+.env.*
 
 # Logs and temp files
 *.log
@@ -19,51 +25,30 @@ vendor/
 *.swp
 *.swo
 
-# Environment
-.env
-.env.local
-.env.*
-
 # Editors
 .vscode/
 .idea/
-*.swp
-*~
-
-# OS generated files
-.DS_Store
-Thumbs.db
 
 # Coverage reports
 coverage/
 htmlcov/
 .coverage
 
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Build directories
+dist/
+build/
+target/
+.gradle/
+
 # Python specific
-*.py[cod]
-*$py.class
-*.so
-.Python
-*.egg-info/
-.eggs/
 .mypy_cache/
 .pytest_cache/
 
-# JavaScript/Node specific
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-jspm_packages/
-
-# PHP specific
-*.phar
-
-# Backup files
-*~
-*.bak
-*.backup
-
-# Compression files
+# Compressed files
 *.zip
 *.gz
 *.tar
@@ -82,8 +67,4 @@ jspm_packages/
 *.Z
 *.lz
 *.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
 ```

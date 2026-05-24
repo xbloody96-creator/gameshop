@@ -1222,6 +1222,14 @@ a:hover {
     border-radius: 50%;
 }
 
+.profile-actions {
+    margin-left: auto;
+}
+
+.profile-actions .btn {
+    white-space: nowrap;
+}
+
 .profile-avatar {
     width: 100px;
     height: 100px;

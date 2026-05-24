@@ -42,7 +42,7 @@ $last_orders = $last_orders_stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ-панель - GamesKey</title>
+    <title>Админ-панель - JustKey</title>
     <link rel="stylesheet" href="admin-style.css">
     <style>
         /* Compact Top Menu */
