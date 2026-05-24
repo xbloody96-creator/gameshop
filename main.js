@@ -279,15 +279,18 @@ async function addToCart(productId) {
         
         const data = await response.json();
         
+        console.log('Add to cart response:', data);
+        
         if (data.success) {
             updateCartBadge();
-            showNotification('Товар добавлен в корзину', 'success');
+            showNotification('Товар добавлен в корзину ✓', 'success');
         } else {
+            console.error('Cart error:', data.message);
             showNotification(data.message || 'Ошибка добавления в корзину', 'error');
         }
     } catch (error) {
-        console.error('Ошибка:', error);
-        showNotification('Ошибка добавления в корзину', 'error');
+        console.error('Add to cart error:', error);
+        showNotification('Ошибка соединения с сервером', 'error');
     }
 }
 
@@ -539,6 +542,9 @@ function showNotification(message, type = 'info') {
     `;
     
     document.body.appendChild(notification);
+    
+    // Принудительно вызываем reflow для анимации
+    void notification.offsetWidth;
     
     setTimeout(() => {
         notification.classList.add('show');

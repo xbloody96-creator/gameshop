@@ -5,12 +5,22 @@ header('Content-Type: application/json');
 
 $response = ['success' => false, 'message' => '', 'count' => 0];
 
-if (!isLoggedIn()) {
-    echo json_encode($response);
-    exit;
+// Для действия count проверяем авторизацию, но для add/remove тоже
+$action = $_GET['action'] ?? $_POST['action'] ?? '';
+
+// Для add/remove нужна авторизация
+if ($action === 'add' || $action === 'remove' || $action === 'clear' || $action === '') {
+    if (!isLoggedIn()) {
+        echo json_encode(['success' => false, 'message' => 'Требуется авторизация']);
+        exit;
+    }
 }
 
-$action = $_GET['action'] ?? $_POST['action'] ?? '';
+// Для count тоже нужна авторизация
+if ($action === 'count' && !isLoggedIn()) {
+    echo json_encode(['success' => false, 'message' => 'Требуется авторизация', 'count' => 0]);
+    exit;
+}
 
 if ($action === 'count') {
     try {
