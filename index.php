@@ -194,14 +194,15 @@ try {
                     <p class="section-subtitle">Прокрутите рулетку и получите случайную игру с эксклюзивной скидкой!</p>
                 </div>
                 
-                <div class="roulette-container">
+                <button class="btn btn-primary btn-roulette" id="spinRouletteBtn">🎲 Испытать удачу!</button>
+                
+                <div class="roulette-container" id="rouletteContainer" style="opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s ease;">
                     <div class="roulette-window">
+                        <div class="roulette-indicator"></div>
                         <div class="roulette-track" id="rouletteTrack">
                             <!-- Игры будут добавлены через JS -->
                         </div>
                     </div>
-                    <div class="roulette-indicator"></div>
-                    <button class="btn btn-primary btn-roulette" id="spinRouletteBtn">🎲 Испытать удачу!</button>
                     <div class="roulette-result" id="rouletteResult"></div>
                 </div>
             </div>

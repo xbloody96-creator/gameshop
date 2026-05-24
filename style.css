@@ -3021,6 +3021,9 @@ a:hover {
     display: flex;
     gap: 15px;
     will-change: transform;
+    position: absolute;
+    left: 20px;
+    right: 20px;
 }
 
 .roulette-card {
@@ -3081,18 +3084,18 @@ a:hover {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
 }
 
 .roulette-indicator::before {
-    top: -8px;
-    border-top: 12px solid #ff6b6b;
+    top: -6px;
+    border-top: 10px solid #ff6b6b;
 }
 
 .roulette-indicator::after {
-    bottom: -8px;
-    border-bottom: 12px solid #ff6b6b;
+    bottom: -6px;
+    border-bottom: 10px solid #ff6b6b;
 }
 
 .btn-roulette {
@@ -3106,6 +3109,9 @@ a:hover {
     transition: all 0.3s ease;
     box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
     margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .btn-roulette:hover:not(:disabled) {
