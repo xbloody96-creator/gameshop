@@ -21,8 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $rating = floatval($_POST['rating']);
             
             if ($title && $content) {
-                $stmt = $pdo->prepare("INSERT INTO news (title, content, image_url, rating, is_active) VALUES (?, ?, ?, ?, 1)");
-                $stmt->execute([$title, $content, $image_url, $rating]);
+                // Генерируем slug из заголовка
+                $slug = mb_strtolower(preg_replace('/[^a-zA-Zа-яА-Я0-9\s-]/u', '', $title));
+                $slug = preg_replace('/[\s-]+/', '-', $slug);
+                $slug = trim($slug, '-') . '-' . time(); // Добавляем время для уникальности
+                
+                $stmt = $pdo->prepare("INSERT INTO news (title, slug, content, image_url, rating, is_active) VALUES (?, ?, ?, ?, ?, 1)");
+                $stmt->execute([$title, $slug, $content, $image_url, $rating]);
                 $success = 'Новость добавлена';
             } else {
                 $error = 'Заполните заголовок и содержание';
@@ -37,8 +42,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $rating = floatval($_POST['rating']);
             $is_active = isset($_POST['is_active']) ? 1 : 0;
             
-            $stmt = $pdo->prepare("UPDATE news SET title=?, content=?, image_url=?, rating=?, is_active=? WHERE id=?");
-            $stmt->execute([$title, $content, $image_url, $rating, $is_active, $id]);
+            // Генерируем slug при редактировании
+            $slug = mb_strtolower(preg_replace('/[^a-zA-Zа-яА-Я0-9\s-]/u', '', $title));
+            $slug = preg_replace('/[\s-]+/', '-', $slug);
+            $slug = trim($slug, '-');
+            
+            $stmt = $pdo->prepare("UPDATE news SET title=?, slug=?, content=?, image_url=?, rating=?, is_active=? WHERE id=?");
+            $stmt->execute([$title, $slug, $content, $image_url, $rating, $is_active, $id]);
             $success = 'Новость обновлена';
             break;
             
@@ -51,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$stmt = $pdo->query("SELECT * FROM news ORDER BY published_at DESC");
+$stmt = $pdo->query("SELECT * FROM news ORDER BY created_at DESC");
 $news_items = $stmt->fetchAll();
 if (!is_array($news_items)) $news_items = [];
 
@@ -126,7 +136,7 @@ if (!is_array($news_items)) $news_items = [];
                         <tr>
                             <td><?= htmlspecialchars($item['title'] ?? 'Без названия') ?></td>
                             <td>⭐ <?= number_format($item['rating'] ?? 0, 1) ?></td>
-                            <td><?= isset($item['published_at']) ? date('d.m.Y', strtotime($item['published_at'])) : '-' ?></td>
+                            <td><?= isset($item['created_at']) ? date('d.m.Y', strtotime($item['created_at'])) : '-' ?></td>
                             <td>
                                 <span class="status-badge status-badge-<?= !empty($item['is_active']) ? 'active' : 'inactive' ?>">
                                     <?= !empty($item['is_active']) ? '✓' : '✗' ?>
