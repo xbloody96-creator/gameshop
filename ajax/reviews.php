@@ -50,6 +50,44 @@ if ($action === 'add') {
     } catch (PDOException $e) {
         $response['message'] = 'Ошибка добавления отзыва';
     }
+} elseif ($action === 'update') {
+    $reviewId = $_POST['review_id'] ?? 0;
+    $productId = $_POST['product_id'] ?? 0;
+    $rating = $_POST['rating'] ?? 0;
+    $comment = trim($_POST['comment'] ?? '');
+    
+    if (!$reviewId || !$productId || !$rating || !$comment) {
+        $response['message'] = 'Заполните все поля';
+        echo json_encode($response);
+        exit;
+    }
+    
+    if ($rating < 1 || $rating > 5) {
+        $response['message'] = 'Рейтинг должен быть от 1 до 5';
+        echo json_encode($response);
+        exit;
+    }
+    
+    try {
+        // Проверяем, что отзыв принадлежит текущему пользователю
+        $stmt = $pdo->prepare("SELECT id FROM reviews WHERE id = ? AND user_id = ?");
+        $stmt->execute([$reviewId, $_SESSION['user_id']]);
+        
+        if (!$stmt->fetch()) {
+            $response['message'] = 'Отзыв не найден или вы не можете его редактировать';
+            echo json_encode($response);
+            exit;
+        }
+        
+        // Обновляем отзыв (сбрасываем статус модерации)
+        $stmt = $pdo->prepare("UPDATE reviews SET rating = ?, comment = ?, is_approved = FALSE, updated_at = NOW() WHERE id = ?");
+        $stmt->execute([$rating, $comment, $reviewId]);
+        
+        $response['success'] = true;
+        $response['message'] = 'Отзыв обновлен и отправлен на повторную модерацию';
+    } catch (PDOException $e) {
+        $response['message'] = 'Ошибка обновления отзыва';
+    }
 } elseif ($action === 'get') {
     $productId = $_GET['product_id'] ?? 0;
     
