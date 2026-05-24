@@ -180,7 +180,7 @@ function filterProducts() {
     const rows = document.querySelectorAll('#productsTable tbody tr');
     
     rows.forEach(row => {
-        const name = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+        const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
         const categoryId = row.dataset.category;
         const status = row.dataset.status;
         
