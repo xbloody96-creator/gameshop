@@ -25,6 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Отправка уведомления (опционально)
             $success = 'Статус заказа обновлен';
             break;
+            
+        case 'delete_order':
+            $id = intval($_POST['id']);
+            
+            // Сначала удаляем позиции заказа
+            $stmt = $pdo->prepare("DELETE FROM order_items WHERE order_id = ?");
+            $stmt->execute([$id]);
+            
+            // Затем удаляем сам заказ
+            $stmt = $pdo->prepare("DELETE FROM orders WHERE id = ?");
+            $stmt->execute([$id]);
+            
+            $success = 'Заказ удален';
+            break;
     }
 }
 
@@ -63,10 +77,7 @@ if (!is_array($orders)) $orders = [];
         <main class="admin-main">
             <header class="admin-header">
                 <h1>🛒 Управление заказами</h1>
-                <div class="admin-user-info">
-                    <span><?= htmlspecialchars($_SESSION['login']) ?></span>
-                    <a href="../logout.php" class="btn btn-danger">Выход</a>
-                </div>
+                <?php include 'includes/theme-toggle.php'; ?>
             </header>
 
             <?php if ($success): ?>
@@ -130,6 +141,7 @@ if (!is_array($orders)) $orders = [];
                             <td class="actions actions-compact">
                                 <button class="btn-icon btn-info" style="color:var(--info);background:var(--info-bg);" onclick="viewOrder(<?= $order['id'] ?>)" title="Просмотр">👁️</button>
                                 <button class="btn-icon btn-edit" onclick="changeStatus(<?= $order['id'] ?>)" title="Изменить статус">✏️</button>
+                                <button class="btn-icon btn-danger" style="color:var(--danger);background:var(--danger-bg);" onclick="deleteOrder(<?= $order['id'] ?>)" title="Удалить">🗑️</button>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -211,6 +223,19 @@ if (!is_array($orders)) $orders = [];
         function changeStatus(orderId) {
             document.getElementById('status_order_id').value = orderId;
             document.getElementById('statusModal').classList.add('active');
+        }
+        
+        function deleteOrder(orderId) {
+            if (!confirm('Вы уверены, что хотите удалить этот заказ? Это действие нельзя отменить.')) return;
+            
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.innerHTML = `
+                <input type="hidden" name="action" value="delete_order">
+                <input type="hidden" name="id" value="${orderId}">
+            `;
+            document.body.appendChild(form);
+            form.submit();
         }
     </script>
 </body>

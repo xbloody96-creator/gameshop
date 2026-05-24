@@ -1,6 +1,6 @@
 <nav class="admin-sidebar" id="sidebar">
     <div class="admin-logo">
-        <h2><span class="logo-icon">🎮</span> GamesKey Admin</h2>
+        <h2><span class="logo-icon">🎮</span> JustKey Admin</h2>
     </div>
     
     <ul class="admin-menu">

@@ -35,7 +35,6 @@ $currentUser = isLoggedIn() ? getCurrentUser() : null;
                     🛒
                     <span id="cart-badge" class="badge" style="display: none;">0</span>
                 </a>
-                <a href="logout.php" class="btn btn-outline" title="Выйти">🚪 Выход</a>
             <?php endif; ?>
         </div>
     </div>
