@@ -1197,6 +1197,120 @@
     border: 2px solid var(--bg-surface);
 }
 
+/* Notifications Dropdown */
+.notifications-dropdown {
+    position: absolute;
+    top: 55px;
+    right: 0;
+    width: 380px;
+    max-height: 450px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    z-index: 1000;
+    overflow: hidden;
+    display: none;
+}
+
+.notifications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: var(--primary);
+    color: white;
+    border-bottom: 1px solid var(--border);
+}
+
+.notifications-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.close-notifications {
+    cursor: pointer;
+    font-size: 1.2rem;
+    opacity: 0.8;
+    transition: opacity var(--transition-fast);
+}
+
+.close-notifications:hover {
+    opacity: 1;
+}
+
+.notifications-content {
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.notification-section {
+    padding: 10px 15px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.notification-item {
+    display: block;
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-light);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: background var(--transition-fast);
+    border-radius: var(--radius);
+    margin-bottom: 5px;
+}
+
+.notification-item:hover {
+    background: var(--bg-hover);
+}
+
+.notif-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.notif-info strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.notif-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.no-notifications {
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.notifications-footer {
+    padding: 12px 20px;
+    background: var(--bg-surface-2);
+    text-align: center;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+}
+
+.view-all-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+}
+
+.view-all-link:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
 /* ===== Charts Placeholder ===== */
 .chart-container {
     background: var(--bg-surface);
