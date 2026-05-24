@@ -745,21 +745,23 @@ function initRoulette() {
     if (!spinBtn) return;
     
     spinBtn.addEventListener('click', function() {
-        // Если рулетка еще не инициализирована, показываем контейнер
+        // Показываем контейнер рулетки
+        const container = document.getElementById('rouletteContainer');
+        if (container) {
+            container.style.opacity = '1';
+            container.style.visibility = 'visible';
+        }
+        
+        // Инициализируем дорожку с карточками если еще не инициализирована
         if (!rouletteInitialized) {
-            const container = document.getElementById('rouletteContainer');
-            if (container) {
-                container.style.opacity = '1';
-                container.style.visibility = 'visible';
-            }
-            rouletteInitialized = true;
             setupRouletteTrack();
+            rouletteInitialized = true;
         }
         
         // Запускаем прокрутку с небольшой задержкой после появления
         setTimeout(() => {
             spinRoulette();
-        }, 500);
+        }, 600);
     });
 }
 
@@ -782,10 +784,11 @@ function setupRouletteTrack() {
     }
     track.innerHTML = html;
     
-    // Устанавливаем начальную позицию (середина первого набора)
+    // Устанавливаем начальную позицию - первый набор игр
     const cardWidth = 195; // 180px + 15px gap
     const cardsPerSet = rouletteGames.length;
-    track.style.transform = `translateX(${-cardsPerSet * cardWidth}px)`;
+    // Начинаем с первой позиции, чтобы карточки были видны сразу
+    track.style.transform = `translateX(0px)`;
 }
 
 function spinRoulette() {
@@ -809,18 +812,11 @@ function spinRoulette() {
     // Позиция остановки (карточка в третьем повторении массива)
     const cardWidth = 195; // 180px + 15px gap
     const cardsPerSet = rouletteGames.length;
-    // Начинаем с позиции второго набора, останавливаемся на третьем
-    const startPosition = -cardsPerSet * cardWidth;
-    const targetPosition = -(cardsPerSet * 3 + winningIndex) * cardWidth;
+    // Стартовая позиция - первый набор, целевая - третий набор с выигрышной карточкой
+    const startPosition = 0;
+    const targetPosition = -(cardsPerSet * 2 + winningIndex) * cardWidth;
     
-    // Сбрасываем transition для мгновенного перемещения на стартовую позицию
-    track.style.transition = 'none';
-    track.style.transform = `translateX(${startPosition}px)`;
-    
-    // Принудительная перерисовка (reflow) для применения сброса позиции
-    track.offsetHeight;
-    
-    // Небольшая задержка перед анимацией
+    // Небольшая задержка перед анимацией для плавности
     setTimeout(() => {
         // Анимация прокрутки
         track.style.transition = 'transform 4s cubic-bezier(0.15, 0, 0.2, 1)';
@@ -854,14 +850,8 @@ function spinRoulette() {
             spinBtn.textContent = '🎲 Испытать удачу ещё раз!';
             isSpinning = false;
             
-            // Сброс позиции через небольшую задержку (для плавности)
-            setTimeout(() => {
-                track.style.transition = 'none';
-                track.style.transform = `translateX(${-cardsPerSet * 2 - winningIndex * cardWidth}px)`;
-            }, 1500);
-            
         }, 4000);
-    }, 50);
+    }, 100);
 }
 
 // Экспорт функций для глобального использования
