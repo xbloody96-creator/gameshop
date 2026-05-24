@@ -46,7 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 }
 
 // Получение списка товаров
-$stmt = $pdo->query("SELECT p.*, c.name as category_name FROM products p 
+$stmt = $pdo->query("SELECT p.*, c.name as category_name, 
+                     COALESCE(NULLIF(p.name, ''), p.title) as display_name FROM products p 
                      LEFT JOIN categories c ON p.category_id = c.id 
                      ORDER BY p.created_at DESC");
 $products = $stmt->fetchAll();
@@ -147,7 +148,7 @@ if (!is_array($products)) $products = [];
                                     <div class="no-image no-image-small">No img</div>
                 <?php endif; ?>
                             </td>
-                            <td><strong><?= htmlspecialchars($product['name'] ?? 'Без названия') ?></strong></td>
+                            <td><strong><?= htmlspecialchars($product['display_name'] ?? 'Без названия') ?></strong></td>
                             <td><?= htmlspecialchars($product['category_name'] ?? 'Без категории') ?></td>
                             <td><?= number_format($product['price'] ?? 0, 2) ?> ₽</td>
                             <td><?= $product['stock'] ?? 0 ?></td>
