@@ -49,7 +49,7 @@ if ($action === 'count') {
         exit;
     }
     
-    error_log('Add to cart - User ID: ' . $_SESSION['user_id'] . ', Product ID: ' . $productId);
+    error_log('Add to cart - User ID: ' . $_SESSION['user_id'] . ', Product ID: ' . $productId . ', Data: ' . print_r($data, true));
     
     try {
         // Проверка наличия товара

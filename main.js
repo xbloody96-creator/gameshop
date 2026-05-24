@@ -274,6 +274,7 @@ async function addToCart(productId) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                action: 'add',
                 product_id: productId
             })
         });

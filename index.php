@@ -40,217 +40,245 @@ try {
     <?php include 'includes/header.php'; ?>
     
     <main>
-        <!-- Hero Section with Slider -->
-        <section class="hero">
-            <div class="container">
-                <div class="slider">
-                    <?php if (!empty($popularProducts)): ?>
-                        <?php foreach ($popularProducts as $index => $product): ?>
-                            <div class="slide <?= $index === 0 ? 'active' : '' ?>">
-                                <div class="slide-overlay"></div>
-                                <img src="images/uploads/<?= escape($product['image']) ?>" alt="<?= escape($product['title']) ?>" class="slide-image" onerror="this.src='https://via.placeholder.com/1200x500?text=<?= urlencode($product['title']) ?>'">
-                                <div class="slide-content">
-                                    <h2 class="slide-title"><?= escape($product['title']) ?></h2>
-                                    <p class="slide-description"><?= escape($product['short_description'] ?? mb_substr($product['description'], 0, 150) . '...') ?></p>
-                                    <div class="slide-price"><?= formatPrice($product['price']) ?></div>
-                                    <a href="product.php?id=<?= $product['id'] ?>" class="btn btn-primary">Подробнее</a>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                        
-                        <div class="slider-controls">
-                            <button id="slider-prev" class="slider-btn">◀</button>
-                            <button id="slider-next" class="slider-btn">▶</button>
+        <!-- Hero Section with Modern Design -->
+        <section class="hero-modern">
+            <div class="hero-bg-overlay"></div>
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <span class="hero-badge">🔥 Лучшие цены 2025</span>
+                    <h1 class="hero-title">Игровые ключи<br><span class="gradient-text">со скидкой до 70%</span></h1>
+                    <p class="hero-description">Мгновенная доставка, гарантия качества и поддержка 24/7. Покупайте любимые игры по лучшим ценам!</p>
+                    <div class="hero-buttons">
+                        <a href="products.php" class="btn btn-primary btn-lg">🛒 В каталог</a>
+                        <a href="#about" class="btn btn-outline btn-lg">ℹ️ О нас</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">10K+</span>
+                            <span class="stat-label">Довольных клиентов</span>
                         </div>
-                        
-                        <div class="slider-indicators">
-                            <?php foreach ($popularProducts as $index => $product): ?>
-                                <span class="indicator <?= $index === 0 ? 'active' : '' ?>"></span>
-                            <?php endforeach; ?>
+                        <div class="stat-item">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Игр в каталоге</span>
                         </div>
-                    <?php else: ?>
-                        <div class="slide active">
-                            <div class="slide-overlay"></div>
-                            <img src="https://via.placeholder.com/1200x500?text=JustKey.ru" alt="Welcome" class="slide-image">
-                            <div class="slide-content">
-                                <h2 class="slide-title">Добро пожаловать в JustKey</h2>
-                                <p class="slide-description">Лучшие игры по лучшим ценам! Мгновенная доставка ключей.</p>
-                                <a href="products.php" class="btn btn-primary">Смотреть каталог</a>
-                            </div>
+                        <div class="stat-item">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">Поддержка</span>
                         </div>
-                    <?php endif; ?>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="floating-card card-1">
+                        <img src="https://via.placeholder.com/150x200?text=Game+1" alt="Game">
+                        <span class="float-badge">-50%</span>
+                    </div>
+                    <div class="floating-card card-2">
+                        <img src="https://via.placeholder.com/150x200?text=Game+2" alt="Game">
+                        <span class="float-badge">NEW</span>
+                    </div>
+                    <div class="floating-card card-3">
+                        <img src="https://via.placeholder.com/150x200?text=Game+3" alt="Game">
+                        <span class="float-badge">HOT</span>
+                    </div>
                 </div>
             </div>
         </section>
         
         <!-- Search Section -->
-        <section id="search" class="search-section">
+        <section id="search" class="search-section-modern">
             <div class="container">
-                <div class="search-bar">
+                <div class="search-bar-modern">
                     <span class="search-icon">🔍</span>
-                    <input type="text" id="search-input" class="search-input" placeholder="Поиск игр, новостей..." autocomplete="off">
-                    <button class="btn btn-primary search-btn">Поиск</button>
+                    <input type="text" id="search-input" class="search-input-modern" placeholder="Поиск игр, новостей..." autocomplete="off">
+                    <button class="btn btn-primary search-btn-modern">Найти</button>
                     <div id="search-suggestions" class="search-suggestions"></div>
                 </div>
             </div>
         </section>
         
-        <!-- Products Section -->
-        <section class="section">
+        <!-- Categories Quick Access -->
+        <section class="categories-section">
             <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Популярные товары</h2>
-                    <p class="section-subtitle">Лучшие игры по версии наших покупателей</p>
-                </div>
-                
-                <div class="products-grid">
-                    <?php foreach (array_slice($popularProducts, 0, 4) as $product): ?>
-                        <div class="product-card" onclick="window.location.href='product.php?id=<?= $product['id'] ?>'">
-                            <?php 
-                            $discount = calculateDiscount($product['price'], $product['old_price']);
-                            if ($discount > 0): ?>
-                                <span class="product-badge discount">-<?= $discount ?>%</span>
-                            <?php endif; ?>
-                            
-                            <div class="product-image-wrapper">
-                                <img src="images/uploads/<?= escape($product['image']) ?>" alt="<?= escape($product['title']) ?>" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=<?= urlencode($product['title']) ?>'">
-                                <div class="product-actions">
-                                    <?php if (isLoggedIn()): ?>
-                                        <button class="product-action-btn" data-favorite="<?= $product['id'] ?>" onclick="event.stopPropagation(); toggleFavorite(<?= $product['id'] ?>)">🤍</button>
-                                    <?php endif; ?>
-                                    <button class="product-action-btn" onclick="event.stopPropagation(); addToCart(<?= $product['id'] ?>)">🛒</button>
-                                </div>
-                            </div>
-                            
-                            <div class="product-info">
-                                <div class="product-category">Игры</div>
-                                <h3 class="product-title"><?= escape($product['title']) ?></h3>
-                                <p class="product-description"><?= escape($product['short_description'] ?? mb_substr($product['description'], 0, 80) . '...') ?></p>
-                                
-                                <div class="product-rating">
-                                    <span class="stars"><?= str_repeat('★', round($product['rating'])) ?><?= str_repeat('☆', 5 - round($product['rating'])) ?></span>
-                                    <span class="rating-value"><?= number_format($product['rating'], 1) ?></span>
-                                </div>
-                                
-                                <div class="product-footer">
-                                    <div class="product-price">
-                                        <span class="price-current"><?= formatPrice($product['price']) ?></span>
-                                        <?php if ($product['old_price']): ?>
-                                            <span class="price-old"><?= formatPrice($product['old_price']) ?></span>
-                                        <?php endif; ?>
-                                    </div>
-                                    <button class="btn btn-primary" onclick="event.stopPropagation(); addToCart(<?= $product['id'] ?>)">В корзину</button>
-                                </div>
-                            </div>
-                        </div>
+                <div class="categories-grid">
+                    <?php foreach (array_slice($categories, 0, 6) as $category): ?>
+                        <a href="products.php?category=<?= $category['id'] ?>" class="category-card">
+                            <span class="category-icon">🎮</span>
+                            <span class="category-name"><?= escape($category['name']) ?></span>
+                        </a>
                     <?php endforeach; ?>
                 </div>
+            </div>
+        </section>
+        
+        <!-- Popular Products Section -->
+        <section class="section section-popular">
+            <div class="container">
+                <div class="section-header-modern">
+                    <h2 class="section-title">🔥 Популярные товары</h2>
+                    <p class="section-subtitle">Выбор наших покупателей этой недели</p>
+                    <a href="products.php?sort=popular" class="btn btn-link">Смотреть все →</a>
+                </div>
                 
-                <div style="text-align: center; margin-top: 3rem;">
-                    <a href="products.php" class="btn btn-outline">Смотреть все товары</a>
-                </div>
-            </div>
-        </section>
-        
-        <!-- About Section -->
-        <section id="about" class="about-section">
-            <div class="container">
-                <div class="about-content">
-                    <div class="about-text">
-                        <h2>О нас</h2>
-                        <p><strong>JustKey</strong> — это современный магазин цифровых ключей для игр. Мы работаем на рынке с 2020 года и за это время заслужили доверие тысяч покупателей.</p>
-                        <p>Наша миссия — предоставить геймерам быстрый и надежный доступ к любимым играм по лучшим ценам.</p>
-                        
-                        <div class="features-grid">
-                            <div class="feature-item">
-                                <div class="feature-icon">⚡</div>
-                                <div class="feature-text">
-                                    <h4>Мгновенная доставка</h4>
-                                    <p>Ключи приходят сразу после оплаты</p>
+                <?php if (!empty($popularProducts)): ?>
+                    <div class="products-grid-modern">
+                        <?php foreach (array_slice($popularProducts, 0, 4) as $product): ?>
+                            <?php 
+                            $discount = calculateDiscount($product['price'], $product['old_price']);
+                            ?>
+                            <div class="product-card-modern" onclick="window.location.href='product.php?id=<?= $product['id'] ?>'">
+                                <?php if ($discount > 0): ?>
+                                    <span class="product-badge-modern discount">-<?= $discount ?>%</span>
+                                <?php endif; ?>
+                                
+                                <div class="product-image-wrapper-modern">
+                                    <img src="images/uploads/<?= escape($product['image']) ?>" alt="<?= escape($product['title']) ?>" class="product-image-modern" onerror="this.src='https://via.placeholder.com/300x200?text=<?= urlencode($product['title']) ?>'">
+                                    <div class="product-actions-modern">
+                                        <?php if (isLoggedIn()): ?>
+                                            <button class="product-action-btn-modern" data-favorite="<?= $product['id'] ?>" onclick="event.stopPropagation(); toggleFavorite(<?= $product['id'] ?>)">🤍</button>
+                                        <?php endif; ?>
+                                        <button class="product-action-btn-modern primary" onclick="event.stopPropagation(); addToCart(<?= $product['id'] ?>)">🛒</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="product-info-modern">
+                                    <div class="product-category-modern">Игры</div>
+                                    <h3 class="product-title-modern"><?= escape($product['title']) ?></h3>
+                                    
+                                    <div class="product-rating-modern">
+                                        <span class="stars"><?= str_repeat('★', round($product['rating'])) ?><?= str_repeat('☆', 5 - round($product['rating'])) ?></span>
+                                        <span class="rating-value">(<?= number_format($product['rating'], 1) ?>)</span>
+                                    </div>
+                                    
+                                    <div class="product-footer-modern">
+                                        <div class="product-price-modern">
+                                            <span class="price-current"><?= formatPrice($product['price']) ?></span>
+                                            <?php if ($product['old_price']): ?>
+                                                <span class="price-old"><?= formatPrice($product['old_price']) ?></span>
+                                            <?php endif; ?>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary" onclick="event.stopPropagation(); addToCart(<?= $product['id'] ?>)">В корзину</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">🔒</div>
-                                <div class="feature-text">
-                                    <h4>Гарантия качества</h4>
-                                    <p>Только официальные ключи</p>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">💳</div>
-                                <div class="feature-text">
-                                    <h4>Безопасная оплата</h4>
-                                    <p>Платежная система NicePay</p>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">🎧</div>
-                                <div class="feature-text">
-                                    <h4>Поддержка 24/7</h4>
-                                    <p>Всегда на связи</p>
-                                </div>
-                            </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
-                    <img src="https://via.placeholder.com/600x400?text=JustKey.ru" alt="О JustKey" class="about-image">
+                    
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <a href="products.php" class="btn btn-outline btn-lg">📦 Весь каталог</a>
+                    </div>
+                <?php else: ?>
+                    <div class="empty-state">
+                        <span class="empty-icon">📦</span>
+                        <h3>Популярные товары скоро появятся</h3>
+                        <p>Заходите позже, мы постоянно обновляем ассортимент!</p>
+                        <a href="products.php" class="btn btn-primary">Смотреть все товары</a>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </section>
+        
+        <!-- About Section - Redesigned -->
+        <section id="about" class="about-section-modern">
+            <div class="container">
+                <div class="about-header-modern">
+                    <h2>Почему выбирают <span class="gradient-text">JustKey</span></h2>
+                    <p>Мы создали лучший сервис для покупки игровых ключей</p>
+                </div>
+                
+                <div class="features-grid-modern">
+                    <div class="feature-card-modern">
+                        <div class="feature-icon-modern">⚡</div>
+                        <h3>Мгновенная доставка</h3>
+                        <p>Ключи приходят сразу после оплаты на почту и в личный кабинет</p>
+                    </div>
+                    <div class="feature-card-modern">
+                        <div class="feature-icon-modern">🔒</div>
+                        <h3>Гарантия качества</h3>
+                        <p>Только официальные ключи от прямых поставщиков</p>
+                    </div>
+                    <div class="feature-card-modern">
+                        <div class="feature-icon-modern">💳</div>
+                        <h3>Безопасная оплата</h3>
+                        <p>Платежная система NicePay с защитой данных</p>
+                    </div>
+                    <div class="feature-card-modern">
+                        <div class="feature-icon-modern">🎧</div>
+                        <h3>Поддержка 24/7</h3>
+                        <p>Всегда на связи и готовы помочь в любое время</p>
+                    </div>
                 </div>
             </div>
         </section>
         
-        <!-- Promotions Section -->
-        <section id="promotions" class="section" style="background: var(--bg-secondary);">
+        <!-- Promotions Section - Redesigned -->
+        <section id="promotions" class="section section-promotions-modern">
             <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Акции</h2>
+                <div class="section-header-modern">
+                    <h2 class="section-title">🎁 Акции и скидки</h2>
                     <p class="section-subtitle">Не пропустите выгодные предложения</p>
                 </div>
                 
                 <?php if (!empty($promotions)): ?>
-                    <div class="products-grid">
+                    <div class="promotions-grid-modern">
                         <?php foreach ($promotions as $promotion): ?>
-                            <div class="product-card" style="background: var(--gradient-primary); color: white;">
-                                <div class="product-info" style="padding: 2rem;">
-                                    <h3 class="product-title" style="color: white;"><?= escape($promotion['title']) ?></h3>
-                                    <p style="margin: 1rem 0;"><?= escape($promotion['description']) ?></p>
-                                    <div style="font-size: 3rem; font-weight: bold;">-<?= $promotion['discount_percent'] ?>%</div>
-                                    <p>до <?= date('d.m.Y', strtotime($promotion['end_date'])) ?></p>
+                            <div class="promotion-card-modern">
+                                <div class="promotion-badge">-<?= $promotion['discount_percent'] ?>%</div>
+                                <div class="promotion-content">
+                                    <h3><?= escape($promotion['title']) ?></h3>
+                                    <p><?= escape($promotion['description']) ?></p>
+                                    <div class="promotion-timer">
+                                        <span class="timer-label">До конца акции:</span>
+                                        <span class="timer-date"><?= date('d.m.Y', strtotime($promotion['end_date'])) ?></span>
+                                    </div>
                                 </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
                 <?php else: ?>
-                    <p style="text-align: center; color: var(--text-secondary);">В данный момент акций нет</p>
+                    <div class="empty-state">
+                        <span class="empty-icon">🎁</span>
+                        <h3>Сейчас акций нет</h3>
+                        <p>Но скоро будут! Следите за обновлениями</p>
+                    </div>
                 <?php endif; ?>
             </div>
         </section>
         
-        <!-- News Section -->
-        <section class="section">
+        <!-- News Section - Redesigned -->
+        <section class="section section-news-modern">
             <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Новости</h2>
+                <div class="section-header-modern">
+                    <h2 class="section-title">📰 Новости</h2>
                     <p class="section-subtitle">Последние события из мира игр</p>
+                    <a href="news.php" class="btn btn-link">Все новости →</a>
                 </div>
                 
-                <div class="products-grid">
-                    <?php foreach ($news as $item): ?>
-                        <div class="product-card">
-                            <div class="product-image-wrapper">
-                                <img src="images/uploads/<?= escape($item['image']) ?>" alt="<?= escape($item['title']) ?>" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=News'">
-                            </div>
-                            <div class="product-info">
-                                <div class="product-category">Новость</div>
-                                <h3 class="product-title"><?= escape($item['title']) ?></h3>
-                                <p class="product-description"><?= escape($item['short_content'] ?? mb_substr($item['content'], 0, 100) . '...') ?></p>
-                                <div class="product-rating">
-                                    <span class="stars"><?= str_repeat('★', round($item['rating'])) ?><?= str_repeat('☆', 5 - round($item['rating'])) ?></span>
-                                    <span class="rating-value"><?= number_format($item['rating'], 1) ?></span>
+                <?php if (!empty($news)): ?>
+                    <div class="news-grid-modern">
+                        <?php foreach (array_slice($news, 0, 3) as $item): ?>
+                            <div class="news-card-modern">
+                                <div class="news-image-wrapper">
+                                    <img src="images/uploads/<?= escape($item['image']) ?>" alt="<?= escape($item['title']) ?>" class="news-image" onerror="this.src='https://via.placeholder.com/400x250?text=News'">
+                                    <span class="news-category">Новость</span>
                                 </div>
-                                <a href="news-item.php?id=<?= $item['id'] ?>" class="btn btn-outline btn-block">Читать далее</a>
+                                <div class="news-content">
+                                    <h3><?= escape($item['title']) ?></h3>
+                                    <p><?= escape($item['short_content'] ?? mb_substr($item['content'], 0, 120) . '...') ?></p>
+                                    <div class="news-meta">
+                                        <span class="news-date"><?= date('d.m.Y', strtotime($item['published_at'])) ?></span>
+                                        <a href="news-item.php?id=<?= $item['id'] ?>" class="news-link">Читать далее →</a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <div class="empty-state">
+                        <span class="empty-icon">📰</span>
+                        <h3>Новостей пока нет</h3>
+                        <p>Заходите позже!</p>
+                    </div>
+                <?php endif; ?>
             </div>
         </section>
     </main>
