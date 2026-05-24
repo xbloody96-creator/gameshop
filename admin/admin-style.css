@@ -128,8 +128,12 @@
 
 .admin-sidebar.collapsed .admin-logo h2 .logo-text,
 .admin-sidebar.collapsed .admin-menu a:not(.active) span:not(.menu-icon),
-.admin-sidebar.collapsed .admin-menu .badge,
-.admin-sidebar.collapsed .sidebar-toggle .toggle-icon {
+.admin-sidebar.collapsed .admin-menu .badge {
+    display: none;
+}
+
+/* Hide toggle button inside logo when collapsed */
+.admin-sidebar.collapsed .admin-logo .sidebar-toggle {
     display: none;
 }
 
@@ -142,14 +146,34 @@
     justify-content: center;
 }
 
-.admin-sidebar.collapsed .sidebar-toggle {
-    right: 50%;
-    transform: translateX(50%);
+/* Show expand button on the left edge when collapsed */
+.sidebar-expand-btn {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--sidebar-bg);
+    border: none;
+    width: 20px;
+    height: 60px;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-fast);
 }
 
-.admin-sidebar.collapsed .sidebar-toggle .toggle-icon {
-    display: inline-block;
-    transform: rotate(180deg);
+.sidebar-expand-btn:hover {
+    width: 25px;
+    background: var(--primary);
+}
+
+.sidebar-expand-btn span {
+    color: var(--sidebar-text);
+    font-size: 0.7rem;
 }
 
 .admin-sidebar.collapsed .admin-menu a {
