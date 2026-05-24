@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initFavorites();
     initMobileMenu();
     initTooltips();
+    initRoulette();
 });
 
 // ===========================
@@ -799,6 +800,9 @@ function spinRoulette() {
     track.style.transition = 'none';
     track.style.transform = `translateX(${startPosition}px)`;
     
+    // Принудительная перерисовка (reflow) для применения сброса позиции
+    track.offsetHeight;
+    
     // Небольшая задержка перед анимацией
     setTimeout(() => {
         // Анимация прокрутки
@@ -843,11 +847,6 @@ function spinRoulette() {
     }, 50);
 }
 
-// Инициализация рулетки при загрузке
-document.addEventListener('DOMContentLoaded', function() {
-    initRoulette();
-});
-
 // Экспорт функций для глобального использования
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
@@ -858,3 +857,4 @@ window.applyFilters = applyFilters;
 window.sortProducts = sortProducts;
 window.validateForm = validateForm;
 window.showNotification = showNotification;
+window.spinRoulette = spinRoulette;

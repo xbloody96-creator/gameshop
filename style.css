@@ -3014,23 +3014,25 @@ a:hover {
     position: relative;
     margin-bottom: 20px;
     max-width: 100%;
+    height: 220px;
 }
 
 .roulette-track {
     display: flex;
     gap: 15px;
-    transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
     will-change: transform;
 }
 
 .roulette-card {
     min-width: 180px;
+    width: 180px;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     border-radius: 12px;
     padding: 20px;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex-shrink: 0;
 }
 
 .roulette-card:hover {
@@ -3062,16 +3064,35 @@ a:hover {
 
 .roulette-indicator {
     position: absolute;
-    top: -10px;
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-top: 25px solid #ff6b6b;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #ff6b6b, #ee5a6f);
     z-index: 10;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.8);
+    border-radius: 2px;
+}
+
+.roulette-indicator::before,
+.roulette-indicator::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+}
+
+.roulette-indicator::before {
+    top: -8px;
+    border-top: 12px solid #ff6b6b;
+}
+
+.roulette-indicator::after {
+    bottom: -8px;
+    border-bottom: 12px solid #ff6b6b;
 }
 
 .btn-roulette {
@@ -3138,6 +3159,11 @@ a:hover {
 @keyframes bounce {
     from { transform: translateY(0); }
     to { transform: translateY(-10px); }
+}
+
+@keyframes spinRoulette {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-7800px); }
 }
 
 @media (max-width: 768px) {
