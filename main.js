@@ -265,19 +265,29 @@ function initCart() {
 }
 
 async function addToCart(productId) {
+    console.log('Adding to cart:', productId);
+    
     try {
-        const response = await fetch('ajax/cart.php', {
+        const response = await fetch('ajax/cart.php?action=add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                action: 'add',
                 product_id: productId
             })
         });
         
-        const data = await response.json();
+        const contentType = response.headers.get('content-type');
+        let data;
+        
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+        } else {
+            const text = await response.text();
+            console.error('Non-JSON response:', text);
+            throw new Error('Сервер вернул не JSON ответ');
+        }
         
         console.log('Add to cart response:', data);
         
@@ -290,7 +300,7 @@ async function addToCart(productId) {
         }
     } catch (error) {
         console.error('Add to cart error:', error);
-        showNotification('Ошибка соединения с сервером', 'error');
+        showNotification('Ошибка соединения с сервером: ' + error.message, 'error');
     }
 }
 

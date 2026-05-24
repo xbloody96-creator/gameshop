@@ -198,30 +198,33 @@ try {
                         <?php endif; ?>
                         
                         <script>
+                        let viewHistoryExpanded = false;
+                        let sessionsExpanded = false;
+                        
                         async function toggleViewHistory() {
                             const btn = document.getElementById('toggle-history-btn');
                             const container = document.querySelector('.view-history-list');
                             
-                            if (btn.dataset.expanded === 'true') {
+                            if (viewHistoryExpanded) {
                                 // Свернуть - загрузить только 3
                                 try {
                                     const response = await fetch('ajax/profile.php?action=view_history&limit=3');
                                     const data = await response.json();
                                     if (data.success) {
                                         renderViewHistory(data.items);
-                                        btn.textContent = `Показать все (${<?= $viewHistoryTotal - 3 ?>} еще)`;
-                                        btn.dataset.expanded = 'false';
+                                        btn.textContent = `Показать все (${data.total - 3} еще)`;
+                                        viewHistoryExpanded = false;
                                     }
                                 } catch (e) { location.reload(); }
                             } else {
                                 // Развернуть - показать все
                                 try {
-                                    const response = await fetch('ajax/profile.php?action=view_history&limit=<?= $viewHistoryTotal ?>');
+                                    const response = await fetch('ajax/profile.php?action=view_history&limit=100');
                                     const data = await response.json();
                                     if (data.success) {
                                         renderViewHistory(data.items);
                                         btn.textContent = 'Свернуть';
-                                        btn.dataset.expanded = 'true';
+                                        viewHistoryExpanded = true;
                                     }
                                 } catch (e) { location.reload(); }
                             }
@@ -243,6 +246,69 @@ try {
                             });
                             container.innerHTML = html;
                         }
+                        
+                        async function toggleSessions() {
+                            const btn = document.getElementById('toggle-sessions-btn');
+                            const container = document.getElementById('sessions-container');
+                            
+                            if (sessionsExpanded) {
+                                // Свернуть - загрузить только 5
+                                try {
+                                    const response = await fetch('ajax/profile.php?action=sessions&limit=5');
+                                    const data = await response.json();
+                                    if (data.success) {
+                                        renderSessions(data.items);
+                                        btn.textContent = `Показать все (${data.total - 5} еще)`;
+                                        sessionsExpanded = false;
+                                    }
+                                } catch (e) { location.reload(); }
+                            } else {
+                                // Развернуть - показать все
+                                try {
+                                    const response = await fetch('ajax/profile.php?action=sessions&limit=100');
+                                    const data = await response.json();
+                                    if (data.success) {
+                                        renderSessions(data.items);
+                                        btn.textContent = 'Свернуть';
+                                        sessionsExpanded = true;
+                                    }
+                                } catch (e) { location.reload(); }
+                            }
+                        }
+                        
+                        function renderSessions(items) {
+                            const container = document.getElementById('sessions-container');
+                            let html = '<table class="sessions-table"><thead><tr><th>Дата входа</th><th>IP адрес</th><th>Устройство</th></tr></thead><tbody>';
+                            items.forEach(session => {
+                                const date = new Date(session.login_time).toLocaleString('ru-RU', {day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit'});
+                                html += `
+                                    <tr>
+                                        <td>${date}</td>
+                                        <td>${session.ip_address}</td>
+                                        <td>${session.user_agent.substring(0, 50)}...</td>
+                                    </tr>
+                                `;
+                            });
+                            html += '</tbody></table>';
+                            container.innerHTML = html;
+                        }
+                        
+                        async function clearSessions() {
+                            if (!confirm('Вы уверены, что хотите очистить историю входов?')) return;
+                            
+                            try {
+                                const response = await fetch('ajax/profile.php?action=clear_sessions');
+                                const data = await response.json();
+                                if (data.success) {
+                                    showNotification(data.message, 'success');
+                                    setTimeout(() => location.reload(), 1000);
+                                } else {
+                                    showNotification(data.message || 'Ошибка очистки', 'error');
+                                }
+                            } catch (e) {
+                                showNotification('Ошибка соединения', 'error');
+                            }
+                        }
                         </script>
                     <?php else: ?>
                         <p class="no-data">Вы еще ничего не смотрели</p>
@@ -251,26 +317,48 @@ try {
                 
                 <!-- Сессии -->
                 <section class="profile-section">
-                    <h2>История входов</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h2 style="margin-bottom: 0;">История входов</h2>
+                        <?php if (count($sessions) > 0): ?>
+                            <button class="btn btn-outline btn-sm" onclick="clearSessions()" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
+                                🗑 Очистить
+                            </button>
+                        <?php endif; ?>
+                    </div>
                     <?php if (!empty($sessions)): ?>
-                        <table class="sessions-table">
-                            <thead>
-                                <tr>
-                                    <th>Дата входа</th>
-                                    <th>IP адрес</th>
-                                    <th>Устройство</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($sessions as $session): ?>
+                        <div id="sessions-container">
+                            <table class="sessions-table">
+                                <thead>
                                     <tr>
-                                        <td><?= date('d.m.Y H:i', strtotime($session['login_time'])) ?></td>
-                                        <td><?= escape($session['ip_address']) ?></td>
-                                        <td><?= escape(substr($session['user_agent'], 0, 50)) ?>...</td>
+                                        <th>Дата входа</th>
+                                        <th>IP адрес</th>
+                                        <th>Устройство</th>
                                     </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    $sessionLimit = 5;
+                                    $sessionCount = 0;
+                                    foreach ($sessions as $session): 
+                                        if ($sessionCount >= $sessionLimit) break;
+                                        $sessionCount++;
+                                    ?>
+                                        <tr>
+                                            <td><?= date('d.m.Y H:i', strtotime($session['login_time'])) ?></td>
+                                            <td><?= escape($session['ip_address']) ?></td>
+                                            <td><?= escape(substr($session['user_agent'], 0, 50)) ?>...</td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <?php if (count($sessions) > $sessionLimit): ?>
+                            <div style="margin-top: 1rem; text-align: center;">
+                                <button class="btn btn-outline" onclick="toggleSessions()" id="toggle-sessions-btn">
+                                    Показать все (<?= count($sessions) - $sessionLimit ?> еще)
+                                </button>
+                            </div>
+                        <?php endif; ?>
                     <?php else: ?>
                         <p class="no-data">Нет данных о сессиях</p>
                     <?php endif; ?>
