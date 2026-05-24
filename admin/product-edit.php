@@ -22,10 +22,14 @@ if ($id > 0) {
     $product = $stmt->fetch();
     
     if (!$product) {
+        error_log("Товар с ID $id не найден");
         header('Location: products.php?error=not_found');
         exit;
     }
+    error_log("Товар найден: " . print_r($product, true));
     $is_edit = true;
+} else {
+    error_log("ID товара не указан или равен 0");
 }
 
 // Обработка формы
@@ -77,14 +81,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($error)) {
         if ($name && $price > 0 && $category_id) {
             if ($is_edit) {
-                // Обновляем и image_url, и image для совместимости
-                $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, price=?, category_id=?, platform=?, stock=?, image_url=?, image=?, is_active=? WHERE id=?");
-                $stmt->execute([$name, $description, $price, $category_id, $platform, $stock, $image_url, basename($image_url), $is_active, $id]);
+                // Обновляем и image_url, и image для совместимости, а также title
+                $stmt = $pdo->prepare("UPDATE products SET name=?, title=?, description=?, price=?, category_id=?, platform=?, stock=?, image_url=?, image=?, is_active=? WHERE id=?");
+                $stmt->execute([$name, $name, $description, $price, $category_id, $platform, $stock, $image_url, basename($image_url), $is_active, $id]);
+                error_log("Товар обновлен: ID=$id, name=$name, title=$name");
                 header('Location: products.php?success=updated');
                 exit;
             } else {
-                $stmt = $pdo->prepare("INSERT INTO products (name, description, price, category_id, platform, stock, image_url, image, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)");
-                $stmt->execute([$name, $description, $price, $category_id, $platform, $stock, $image_url, basename($image_url)]);
+                $stmt = $pdo->prepare("INSERT INTO products (name, title, description, price, category_id, platform, stock, image_url, image, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)");
+                $stmt->execute([$name, $name, $description, $price, $category_id, $platform, $stock, $image_url, basename($image_url)]);
                 header('Location: products.php?success=added');
                 exit;
             }
@@ -140,7 +145,7 @@ $categories = $stmt->fetchAll();
                 <div class="form-row">
                     <div class="form-group">
                         <label>Название товара *</label>
-                        <input type="text" name="name" value="<?= htmlspecialchars($product['name'] ?? '') ?>" required placeholder="Например: The Witcher 3: Wild Hunt">
+                        <input type="text" name="name" value="<?= htmlspecialchars($product['name'] ?? $product['title'] ?? '') ?>" required placeholder="Например: The Witcher 3: Wild Hunt">
                     </div>
                 </div>
                 

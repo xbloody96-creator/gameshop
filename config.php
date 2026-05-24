@@ -33,8 +33,15 @@ try {
     ];
     $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
 } catch (PDOException $e) {
+    error_log("Ошибка подключения к базе данных: " . $e->getMessage());
     die("Ошибка подключения к базе данных: " . $e->getMessage());
 }
+
+// Настройка логирования ошибок
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/logs/error.log');
 
 // Старт сессии
 if (session_status() === PHP_SESSION_NONE) {
