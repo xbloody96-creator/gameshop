@@ -95,11 +95,11 @@ if (!$product) {
             
             <div class="product-detail">
                 <div class="product-gallery">
-                    <img src="images/uploads/<?= escape($product['image']) ?>" alt="<?= escape($product['title']) ?>" class="main-image" onerror="this.src='https://via.placeholder.com/600x400?text=<?= urlencode($product['title']) ?>'">
+                    <?php $imgSrc = !empty($product['image_url']) ? $product['image_url'] : (!empty($product['image']) ? 'images/uploads/' . $product['image'] : 'https://via.placeholder.com/600x400?text=' . urlencode($product['title'])); ?><img src="<?= escape($imgSrc) ?>" alt="<?= escape($product['name'] ?: $product['title']) ?>" class="main-image onerror="this.src='https://via.placeholder.com/600x400?text=<?= urlencode($product['title']) ?>'">
                 </div>
                 
                 <div class="product-info-detail">
-                    <h1><?= escape($product['title']) ?></h1>
+                    <h1><?= escape($product['name'] ?: $product['title']) ?></h1>
                     
                     <div class="product-meta">
                         <span class="product-category"><?= escape($product['category_name'] ?? 'Игры') ?></span>
