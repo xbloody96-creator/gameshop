@@ -192,8 +192,7 @@ function toggleSidebar() {
 function toggleSidebarDesktop() {
     const sidebar = document.getElementById('sidebar');
     const main = document.querySelector('.admin-main');
-    const toggleBtn = document.getElementById('sidebarToggle');
-    const expandBtn = document.getElementById('sidebarExpandBtn');
+    const toggleBtn = document.getElementById('sidebarToggleTop');
     
     if (sidebar) {
         sidebar.classList.toggle('collapsed');
@@ -207,20 +206,11 @@ function toggleSidebarDesktop() {
         const isCollapsed = sidebar.classList.contains('collapsed');
         localStorage.setItem('sidebar_collapsed', isCollapsed);
         
-        // Update toggle icon
+        // Update toggle icon rotation
         if (toggleBtn) {
-            const icon = toggleBtn.querySelector('.toggle-icon');
+            const icon = toggleBtn.querySelector('.toggle-icon-top');
             if (icon) {
-                icon.textContent = isCollapsed ? '▶' : '◀';
-            }
-        }
-        
-        // Handle expand button visibility via JS as backup
-        if (expandBtn) {
-            if (isCollapsed) {
-                expandBtn.style.display = 'flex';
-            } else {
-                expandBtn.style.display = 'none';
+                icon.style.transform = isCollapsed ? 'rotate(180deg)' : 'rotate(0deg)';
             }
         }
     }
@@ -230,8 +220,7 @@ function toggleSidebarDesktop() {
 document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const main = document.querySelector('.admin-main');
-    const toggleBtn = document.getElementById('sidebarToggle');
-    const expandBtn = document.getElementById('sidebarExpandBtn');
+    const toggleBtn = document.getElementById('sidebarToggleTop');
     
     if (sidebar && window.innerWidth > 768) {
         const isCollapsed = localStorage.getItem('sidebar_collapsed') === 'true';
@@ -241,14 +230,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 main.classList.add('sidebar-collapsed');
             }
             if (toggleBtn) {
-                const icon = toggleBtn.querySelector('.toggle-icon');
+                const icon = toggleBtn.querySelector('.toggle-icon-top');
                 if (icon) {
-                    icon.textContent = '▶';
+                    icon.style.transform = 'rotate(180deg)';
                 }
-            }
-            // Show expand button if sidebar is collapsed on load
-            if (expandBtn) {
-                expandBtn.style.display = 'flex';
             }
         }
     }
