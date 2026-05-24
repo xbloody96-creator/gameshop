@@ -200,7 +200,18 @@ try {
                                     <?php endif; ?>
                                     
                                     <div class="product-image-wrapper">
-                                        <img src="images/uploads/<?= escape($product['image']) ?>" alt="<?= escape($product['title']) ?>" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=<?= urlencode($product['title']) ?>'">
+                                        <?php 
+                                        // Используем image_url если есть, иначе image с префиксом
+                                        $imgSrc = '';
+                                        if (!empty($product['image_url'])) {
+                                            $imgSrc = $product['image_url'];
+                                        } elseif (!empty($product['image'])) {
+                                            $imgSrc = 'images/uploads/' . $product['image'];
+                                        } else {
+                                            $imgSrc = 'https://via.placeholder.com/300x200?text=' . urlencode($product['title']);
+                                        }
+                                        ?>
+                                        <img src="<?= escape($imgSrc) ?>" alt="<?= escape($product['title']) ?>" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=<?= urlencode($product['title']) ?>'">
                                         <div class="product-actions">
                                             <?php if (isLoggedIn()): ?>
                                                 <button class="product-action-btn" data-favorite="<?= $product['id'] ?>" onclick="event.stopPropagation(); toggleFavorite(<?= $product['id'] ?>)">🤍</button>
@@ -211,7 +222,7 @@ try {
                                     
                                     <div class="product-info">
                                         <div class="product-category"><?= escape($product['category_name'] ?? 'Игры') ?></div>
-                                        <h3 class="product-title"><?= escape($product['title']) ?></h3>
+                                        <h3 class="product-title"><?= escape($product['name'] ?: $product['title']) ?></h3>
                                         <p class="product-description"><?= escape($product['short_description'] ?? mb_substr($product['description'], 0, 80) . '...') ?></p>
                                         
                                         <div class="product-rating">

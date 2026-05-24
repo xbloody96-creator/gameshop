@@ -77,13 +77,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($error)) {
         if ($name && $price > 0 && $category_id) {
             if ($is_edit) {
-                $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, price=?, category_id=?, platform=?, stock=?, image_url=?, is_active=? WHERE id=?");
-                $stmt->execute([$name, $description, $price, $category_id, $platform, $stock, $image_url, $is_active, $id]);
+                // Обновляем и image_url, и image для совместимости
+                $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, price=?, category_id=?, platform=?, stock=?, image_url=?, image=?, is_active=? WHERE id=?");
+                $stmt->execute([$name, $description, $price, $category_id, $platform, $stock, $image_url, basename($image_url), $is_active, $id]);
                 header('Location: products.php?success=updated');
                 exit;
             } else {
-                $stmt = $pdo->prepare("INSERT INTO products (name, description, price, category_id, platform, stock, image_url, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, 1)");
-                $stmt->execute([$name, $description, $price, $category_id, $platform, $stock, $image_url]);
+                $stmt = $pdo->prepare("INSERT INTO products (name, description, price, category_id, platform, stock, image_url, image, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)");
+                $stmt->execute([$name, $description, $price, $category_id, $platform, $stock, $image_url, basename($image_url)]);
                 header('Location: products.php?success=added');
                 exit;
             }
