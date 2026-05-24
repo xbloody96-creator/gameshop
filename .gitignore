@@ -1,1 +1,1 @@
-Nothing needs to be added to .gitignore since the changes only include PHP source files in the admin directory, which are legitimate code files that should be tracked by git. No build artifacts, dependencies, temporary files, or other ignorable content was detected in the file changes.
+Nothing needs to be added to .gitignore since the only modified file is a PHP source file (`admin/products.php`) which should not be ignored.
