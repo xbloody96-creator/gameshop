@@ -4,6 +4,7 @@
 __pycache__/
 *.o
 *.obj
+*.class
 *.exe
 *.dll
 *.so
@@ -18,6 +19,13 @@ venv/
 .env.local
 .env.*
 
+# Build directories
+dist/
+build/
+target/
+*.min.js
+*.min.css
+
 # Logs and temp files
 *.log
 *.tmp
@@ -27,25 +35,31 @@ venv/
 # Editors
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # System files
 .DS_Store
 Thumbs.db
+*.DS_Store
+.DS_Store?
+._*
 
-# Coverage
+# Coverage reports
 coverage/
 htmlcov/
 .coverage
 
-# Build directories
-dist/
-build/
-target/
-.gradle/
-
 # Python specific
-.mypy_cache/
-.pytest_cache/
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+*.so
+.Python
+*.egg-info/
+.eggs/
 
 # Compressed files
 *.zip

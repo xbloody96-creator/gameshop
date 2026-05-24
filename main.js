@@ -1,5 +1,5 @@
 // ===========================
-// GamesKey Store - Main JavaScript
+// JustKey Store - Main JavaScript
 // ===========================
 
 // Глобальные переменные
@@ -743,6 +743,10 @@ function initRoulette() {
     
     if (!track || !spinBtn) return;
     
+    // Скрываем трек до первого спина (игры не видны списком)
+    track.style.display = 'flex';
+    track.style.overflow = 'hidden';
+    
     // Заполняем рулетку играми (дублируем для бесконечного эффекта)
     let html = '';
     for (let i = 0; i < 5; i++) {
@@ -757,6 +761,11 @@ function initRoulette() {
         });
     }
     track.innerHTML = html;
+    
+    // Устанавливаем начальную позицию (середина первого набора)
+    const cardWidth = 195; // 180px + 15px gap
+    const cardsPerSet = rouletteGames.length;
+    track.style.transform = `translateX(${-cardsPerSet * cardWidth}px)`;
     
     spinBtn.addEventListener('click', spinRoulette);
 }
@@ -773,52 +782,65 @@ function spinRoulette() {
     
     resultDiv.innerHTML = '';
     spinBtn.disabled = true;
+    spinBtn.textContent = '🎲 Прокрутка...';
     
     // Случайный выбор игры
     const winningIndex = Math.floor(Math.random() * rouletteGames.length);
     const winningGame = rouletteGames[winningIndex];
     
     // Позиция остановки (карточка в третьем повторении массива)
-    const cardWidth = 200; // ширина карточки + отступ
+    const cardWidth = 195; // 180px + 15px gap
     const cardsPerSet = rouletteGames.length;
-    const targetPosition = -(cardsPerSet * 2 + winningIndex) * cardWidth;
+    // Начинаем с позиции второго набора, останавливаемся на третьем
+    const startPosition = -cardsPerSet * cardWidth;
+    const targetPosition = -(cardsPerSet * 3 + winningIndex) * cardWidth;
     
-    // Анимация прокрутки
-    track.style.transition = 'transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)';
-    track.style.transform = `translateX(${targetPosition}px)`;
+    // Сбрасываем transition для мгновенного перемещения на стартовую позицию
+    track.style.transition = 'none';
+    track.style.transform = `translateX(${startPosition}px)`;
     
-    // Звук прокрутки (опционально)
-    let clickCount = 0;
-    const clickInterval = setInterval(() => {
-        clickCount++;
-        track.style.filter = `brightness(${1 + Math.sin(clickCount) * 0.1})`;
-    }, 100);
-    
+    // Небольшая задержка перед анимацией
     setTimeout(() => {
-        clearInterval(clickInterval);
-        track.style.filter = 'brightness(1)';
+        // Анимация прокрутки
+        track.style.transition = 'transform 4s cubic-bezier(0.15, 0, 0.2, 1)';
+        track.style.transform = `translateX(${targetPosition}px)`;
         
-        // Показываем результат
-        resultDiv.innerHTML = `
-            <div class="result-card">
-                <div class="result-emoji">🎉</div>
-                <h3>Выпала игра:</h3>
-                <div class="result-game">${winningGame.title}</div>
-                <div class="result-genre">${winningGame.genre}</div>
-                <a href="products.php?q=${encodeURIComponent(winningGame.title)}" class="btn btn-primary">Купить сейчас</a>
-            </div>
-        `;
+        // Эффект "щёлканья" во время прокрутки
+        let clickCount = 0;
+        const clickInterval = setInterval(() => {
+            clickCount++;
+            if (clickCount % 5 === 0) {
+                track.style.filter = `brightness(${1 + Math.sin(clickCount) * 0.15})`;
+            }
+        }, 80);
         
-        spinBtn.disabled = false;
-        isSpinning = false;
-        
-        // Сброс позиции через небольшую задержку
         setTimeout(() => {
-            track.style.transition = 'none';
-            track.style.transform = `translateX(${-winningIndex * cardWidth}px)`;
-        }, 1000);
-        
-    }, 4000);
+            clearInterval(clickInterval);
+            track.style.filter = 'brightness(1)';
+            
+            // Показываем результат
+            resultDiv.innerHTML = `
+                <div class="result-card">
+                    <div class="result-emoji">🎉</div>
+                    <h3>Вам выпала:</h3>
+                    <div class="result-game">${winningGame.title}</div>
+                    <div class="result-genre">${winningGame.genre} проект</div>
+                    <a href="products.php?search=${encodeURIComponent(winningGame.title)}" class="btn btn-primary">Купить сейчас</a>
+                </div>
+            `;
+            
+            spinBtn.disabled = false;
+            spinBtn.textContent = '🎲 Испытать удачу ещё раз!';
+            isSpinning = false;
+            
+            // Сброс позиции через небольшую задержку (для плавности)
+            setTimeout(() => {
+                track.style.transition = 'none';
+                track.style.transform = `translateX(${-cardsPerSet * 2 - winningIndex * cardWidth}px)`;
+            }, 1500);
+            
+        }, 4000);
+    }, 50);
 }
 
 // Инициализация рулетки при загрузке

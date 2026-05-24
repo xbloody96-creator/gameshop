@@ -190,8 +190,8 @@ try {
         <section class="section section-roulette">
             <div class="container">
                 <div class="section-header-modern">
-                    <h2 class="section-title">🎰 Испытай удачу!</h2>
-                    <p class="section-subtitle">Крути рулетку и получи случайную игру со скидкой</p>
+                    <h2 class="section-title">🎰 Не нашли нужную игру?</h2>
+                    <p class="section-subtitle">Прокрутите рулетку и получите случайную игру с эксклюзивной скидкой!</p>
                 </div>
                 
                 <div class="roulette-container">
@@ -201,7 +201,7 @@ try {
                         </div>
                     </div>
                     <div class="roulette-indicator"></div>
-                    <button class="btn btn-primary btn-roulette" id="spinRouletteBtn">🎲 Крутить рулетку!</button>
+                    <button class="btn btn-primary btn-roulette" id="spinRouletteBtn">🎲 Испытать удачу!</button>
                     <div class="roulette-result" id="rouletteResult"></div>
                 </div>
             </div>
