@@ -196,7 +196,7 @@ try {
                 
                 <button class="btn btn-primary btn-roulette" id="spinRouletteBtn">🎲 Испытать удачу!</button>
                 
-                <div class="roulette-container" id="rouletteContainer" style="opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s ease;">
+                <div class="roulette-container" id="rouletteContainer">
                     <div class="roulette-window">
                         <div class="roulette-indicator"></div>
                         <div class="roulette-track" id="rouletteTrack">

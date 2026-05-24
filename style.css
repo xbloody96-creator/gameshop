@@ -3003,6 +3003,9 @@ a:hover {
     margin: 0 auto;
     text-align: center;
     z-index: 100;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
 .roulette-window {
@@ -3024,8 +3027,8 @@ a:hover {
     position: absolute;
     left: 0;
     top: 20px;
-    right: 0;
     white-space: nowrap;
+    width: max-content;
 }
 
 .roulette-card {
