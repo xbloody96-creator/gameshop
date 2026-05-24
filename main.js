@@ -437,7 +437,9 @@ async function submitReview(productId) {
     }
 }
 
-async function updateReview(reviewId, productId) {
+window.updateReview = function(reviewId, productId) {
+    console.log('updateReview вызвана:', { reviewId, productId });
+    
     const rating = document.querySelector('input[name="edit-rating"]:checked');
     const comment = document.getElementById('edit-review-comment');
     
@@ -446,21 +448,27 @@ async function updateReview(reviewId, productId) {
         return;
     }
     
-    try {
-        const formData = new FormData();
-        formData.append('action', 'update');
-        formData.append('review_id', reviewId);
-        formData.append('product_id', productId);
-        formData.append('rating', rating.value);
-        formData.append('comment', comment.value.trim());
-        
-        const response = await fetch('ajax/reviews.php', {
-            method: 'POST',
-            body: formData
-        });
-        
-        const data = await response.json();
-        
+    console.log('Данные для отправки:', {
+        review_id: reviewId,
+        product_id: productId,
+        rating: rating.value,
+        comment: comment.value.trim()
+    });
+    
+    const formData = new FormData();
+    formData.append('action', 'update');
+    formData.append('review_id', reviewId);
+    formData.append('product_id', productId);
+    formData.append('rating', rating.value);
+    formData.append('comment', comment.value.trim());
+    
+    fetch('ajax/reviews.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Ответ сервера:', data);
         if (data.success) {
             showNotification('Отзыв обновлен и отправлен на повторную модерацию', 'success');
             // Перезагрузить страницу через 1 секунду
@@ -468,32 +476,39 @@ async function updateReview(reviewId, productId) {
         } else {
             showNotification(data.message || 'Ошибка обновления отзыва', 'error');
         }
-    } catch (error) {
+    })
+    .catch(error => {
         console.error('Ошибка:', error);
         showNotification('Ошибка обновления отзыва', 'error');
-    }
-}
+    });
+};
 
-// Функции для отображения/скрытия формы редактирования
-function showEditForm() {
+// Функции для отображения/скрытия формы редактирования - делаем глобальными
+window.showEditForm = function() {
+    console.log('showEditForm вызвана');
     const editForm = document.getElementById('edit-form-container');
     const reviewDisplay = document.querySelector('.user-review-display');
     
     if (editForm && reviewDisplay) {
         reviewDisplay.style.display = 'none';
         editForm.style.display = 'block';
+    } else {
+        console.error('Элементы не найдены:', { editForm, reviewDisplay });
     }
-}
+};
 
-function hideEditForm() {
+window.hideEditForm = function() {
+    console.log('hideEditForm вызвана');
     const editForm = document.getElementById('edit-form-container');
     const reviewDisplay = document.querySelector('.user-review-display');
     
     if (editForm && reviewDisplay) {
         editForm.style.display = 'none';
         reviewDisplay.style.display = 'block';
+    } else {
+        console.error('Элементы не найдены:', { editForm, reviewDisplay });
     }
-}
+};
 
 async function rateNews(newsId, rating) {
     try {
@@ -607,9 +622,9 @@ function initTooltips() {
 }
 
 // ===========================
-// Уведомления
+// Уведомления - делаем глобальной
 // ===========================
-function showNotification(message, type = 'info') {
+window.showNotification = function(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     
@@ -640,7 +655,7 @@ function showNotification(message, type = 'info') {
             notification.remove();
         }, 300);
     }, 3000);
-}
+};
 
 // ===========================
 // Фильтры и сортировка
@@ -977,6 +992,9 @@ window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.toggleFavorite = toggleFavorite;
 window.submitReview = submitReview;
+window.updateReview = updateReview;
+window.showEditForm = showEditForm;
+window.hideEditForm = hideEditForm;
 window.rateNews = rateNews;
 window.applyFilters = applyFilters;
 window.sortProducts = sortProducts;
