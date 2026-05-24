@@ -5,21 +5,18 @@ header('Content-Type: application/json');
 
 $response = ['success' => false, 'message' => '', 'count' => 0];
 
-// Для действия count проверяем авторизацию, но для add/remove тоже
+// Получаем action из GET или POST
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 
-// Для add/remove нужна авторизация
-if ($action === 'add' || $action === 'remove' || $action === 'clear' || $action === '') {
+error_log('Cart action: ' . $action . ', Session user_id: ' . (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'not set'));
+
+// Для add/remove/count нужна авторизация
+if (in_array($action, ['add', 'remove', 'clear', 'count', ''])) {
     if (!isLoggedIn()) {
+        error_log('Not logged in');
         echo json_encode(['success' => false, 'message' => 'Требуется авторизация']);
         exit;
     }
-}
-
-// Для count тоже нужна авторизация
-if ($action === 'count' && !isLoggedIn()) {
-    echo json_encode(['success' => false, 'message' => 'Требуется авторизация', 'count' => 0]);
-    exit;
 }
 
 if ($action === 'count') {
@@ -33,14 +30,26 @@ if ($action === 'count') {
         $response['message'] = 'Ошибка базы данных';
     }
 } elseif ($action === 'add') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    $productId = $data['product_id'] ?? 0;
+    $input = file_get_contents('php://input');
+    $data = json_decode($input, true);
     
-    if (!$productId) {
-        $response['message'] = 'Неверный ID товара';
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        $response['message'] = 'Неверный формат данных: ' . json_last_error_msg();
+        error_log('JSON Error: ' . json_last_error_msg() . ', Input: ' . $input);
         echo json_encode($response);
         exit;
     }
+    
+    $productId = isset($data['product_id']) ? (int)$data['product_id'] : 0;
+    
+    if (!$productId) {
+        $response['message'] = 'Неверный ID товара. Получено: ' . print_r($data, true);
+        error_log('Add to cart - Invalid product ID. Data: ' . print_r($data, true));
+        echo json_encode($response);
+        exit;
+    }
+    
+    error_log('Add to cart - User ID: ' . $_SESSION['user_id'] . ', Product ID: ' . $productId);
     
     try {
         // Проверка наличия товара
@@ -50,6 +59,7 @@ if ($action === 'count') {
         
         if (!$product) {
             $response['message'] = 'Товар недоступен';
+            error_log('Product not found or not available: ' . $productId);
             echo json_encode($response);
             exit;
         }
@@ -59,10 +69,12 @@ if ($action === 'count') {
                                ON DUPLICATE KEY UPDATE quantity = quantity + 1");
         $stmt->execute([$_SESSION['user_id'], $productId]);
         
+        error_log('Successfully added to cart');
         $response['success'] = true;
         $response['message'] = 'Товар добавлен в корзину';
     } catch (PDOException $e) {
-        $response['message'] = 'Ошибка добавления в корзину';
+        $response['message'] = 'Ошибка добавления в корзину: ' . $e->getMessage();
+        error_log('Cart add error: ' . $e->getMessage());
     }
 } elseif ($action === 'remove') {
     $data = json_decode(file_get_contents('php://input'), true);
