@@ -179,9 +179,22 @@ if (!$product) {
                         </form>
                     </div>
                 <?php elseif ($userReview): ?>
-                    <div class="review-edit-wrapper">
+                    <div class="user-review-display">
                         <h3>Ваш отзыв</h3>
-                        <p class="review-status">Статус: <?= $userReview['is_approved'] ? '✓ Одобрено' : '⏳ На модерации' ?></p>
+                        <div class="review-status-block">
+                            <p class="review-status">Статус: <?= $userReview['is_approved'] ? '✓ Одобрено' : '⏳ На модерации' ?></p>
+                            <div class="review-content-preview">
+                                <div class="review-rating-display">
+                                    <?= str_repeat('★', $userReview['rating']) ?><?= str_repeat('☆', 5 - $userReview['rating']) ?>
+                                </div>
+                                <p class="review-comment-preview"><?= nl2br(escape($userReview['comment'])) ?></p>
+                            </div>
+                            <button type="button" class="btn btn-outline" onclick="showEditForm()">✏️ Редактировать</button>
+                        </div>
+                    </div>
+                    
+                    <div class="review-edit-wrapper" id="edit-form-container" style="display: none;">
+                        <h3>Редактирование отзыва</h3>
                         <form class="review-form" onsubmit="event.preventDefault(); updateReview(<?= $userReview['id'] ?>, <?= $product['id'] ?>);">
                             <div class="rating-input">
                                 <label>Ваша оценка:</label>
@@ -194,7 +207,10 @@ if (!$product) {
                                 </div>
                             </div>
                             <textarea id="edit-review-comment" placeholder="Напишите ваш отзыв..." rows="4" required><?= escape($userReview['comment']) ?></textarea>
-                            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                                <button type="button" class="btn btn-outline" onclick="hideEditForm()">Отмена</button>
+                            </div>
                         </form>
                     </div>
                 <?php endif; ?>
