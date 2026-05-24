@@ -474,6 +474,27 @@ async function updateReview(reviewId, productId) {
     }
 }
 
+// Функции для отображения/скрытия формы редактирования
+function showEditForm() {
+    const editForm = document.getElementById('edit-form-container');
+    const reviewDisplay = document.querySelector('.user-review-display');
+    
+    if (editForm && reviewDisplay) {
+        reviewDisplay.style.display = 'none';
+        editForm.style.display = 'block';
+    }
+}
+
+function hideEditForm() {
+    const editForm = document.getElementById('edit-form-container');
+    const reviewDisplay = document.querySelector('.user-review-display');
+    
+    if (editForm && reviewDisplay) {
+        editForm.style.display = 'none';
+        reviewDisplay.style.display = 'block';
+    }
+}
+
 async function rateNews(newsId, rating) {
     try {
         const response = await fetch('ajax/news.php', {
