@@ -15,7 +15,7 @@
     
     <!-- Notifications Bell -->
     <div class="notifications-panel">
-        <div class="notification-bell" title="Уведомления">
+        <div class="notification-bell" id="notificationBell" title="Уведомления" style="cursor: pointer; position: relative;">
             <span class="bell-icon">🔔</span>
             <?php
             // Подсчет уведомлений (заказы, отзывы и т.д.)
@@ -29,6 +29,81 @@
                 }
             } catch(Exception $e) {}
             ?>
+        </div>
+        
+        <!-- Dropdown Panel for Notifications -->
+        <div class="notifications-dropdown" id="notificationsDropdown" style="display: none;">
+            <div class="notifications-header">
+                <h4>Уведомления</h4>
+                <span class="close-notifications" onclick="toggleNotifications()">✕</span>
+            </div>
+            <div class="notifications-content">
+                <?php
+                try {
+                    $has_notifications = false;
+                    
+                    // Pending Orders
+                    $pending_orders_stmt = $pdo->query("SELECT o.id, o.total_amount, o.created_at, u.full_name as user_name 
+                        FROM orders o 
+                        LEFT JOIN users u ON o.user_id = u.id 
+                        WHERE o.status = 'pending' 
+                        ORDER BY o.created_at DESC 
+                        LIMIT 5");
+                    $pending_orders_list = $pending_orders_stmt->fetchAll(PDO::FETCH_ASSOC);
+                    
+                    if (count($pending_orders_list) > 0) {
+                        $has_notifications = true;
+                        echo '<div class="notification-section"><strong>📋 Новые заказы:</strong></div>';
+                        foreach ($pending_orders_list as $order) {
+                            $name = htmlspecialchars($order['user_name'] ?? 'Гость');
+                            $amount = number_format($order['total_amount'], 0, '.', ' ');
+                            $date = date('d.m.Y H:i', strtotime($order['created_at']));
+                            echo "<a href='orders.php' class='notification-item'>
+                                    <div class='notif-info'>
+                                        <div><strong>Заказ #{$order['id']}</strong> от {$name}</div>
+                                        <div class='notif-meta'>{$amount} ₽ • {$date}</div>
+                                    </div>
+                                  </a>";
+                        }
+                    }
+                    
+                    // Pending Reviews
+                    $pending_reviews_stmt = $pdo->query("SELECT r.id, r.comment, r.created_at, u.full_name as user_name 
+                        FROM reviews r 
+                        LEFT JOIN users u ON r.user_id = u.id 
+                        WHERE r.is_approved = 0 
+                        ORDER BY r.created_at DESC 
+                        LIMIT 5");
+                    $pending_reviews_list = $pending_reviews_stmt->fetchAll(PDO::FETCH_ASSOC);
+                    
+                    if (count($pending_reviews_list) > 0) {
+                        $has_notifications = true;
+                        echo '<div class="notification-section" style="margin-top: 15px;"><strong>💬 Отзывы на модерации:</strong></div>';
+                        foreach ($pending_reviews_list as $review) {
+                            $name = htmlspecialchars($review['user_name'] ?? 'Аноним');
+                            $date = date('d.m.Y H:i', strtotime($review['created_at']));
+                            $comment = htmlspecialchars(mb_substr($review['comment'], 0, 50)) . '...';
+                            echo "<a href='reviews.php' class='notification-item'>
+                                    <div class='notif-info'>
+                                        <div><strong>{$name}</strong>: {$comment}</div>
+                                        <div class='notif-meta'>{$date}</div>
+                                    </div>
+                                  </a>";
+                        }
+                    }
+                    
+                    if (!$has_notifications) {
+                        echo '<div class="no-notifications">Нет новых уведомлений</div>';
+                    }
+                } catch(Exception $e) {
+                    echo '<div class="no-notifications">Ошибка загрузки уведомлений</div>';
+                }
+                ?>
+            </div>
+            <div class="notifications-footer">
+                <a href="orders.php" class="view-all-link">Все заказы</a> | 
+                <a href="reviews.php" class="view-all-link">Все отзывы</a>
+            </div>
         </div>
     </div>
     
@@ -126,6 +201,39 @@ document.addEventListener('click', function(e) {
                 hamburger.textContent = '☰';
             }
         }
+    }
+});
+
+// Toggle Notifications Dropdown
+function toggleNotifications() {
+    const dropdown = document.getElementById('notificationsDropdown');
+    if (dropdown) {
+        if (dropdown.style.display === 'none') {
+            dropdown.style.display = 'block';
+        } else {
+            dropdown.style.display = 'none';
+        }
+    }
+}
+
+// Close notifications when clicking outside
+document.addEventListener('click', function(e) {
+    const bell = document.getElementById('notificationBell');
+    const dropdown = document.getElementById('notificationsDropdown');
+    
+    if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.style.display = 'none';
+    }
+});
+
+// Add click event to notification bell
+document.addEventListener('DOMContentLoaded', function() {
+    const bell = document.getElementById('notificationBell');
+    if (bell) {
+        bell.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleNotifications();
+        });
     }
 });
 
