@@ -179,7 +179,24 @@ if (!$product) {
                         </form>
                     </div>
                 <?php elseif ($userReview): ?>
-                    <p class="review-status">Ваш отзыв находится на модерации</p>
+                    <div class="review-edit-wrapper">
+                        <h3>Ваш отзыв</h3>
+                        <p class="review-status">Статус: <?= $userReview['is_approved'] ? '✓ Одобрено' : '⏳ На модерации' ?></p>
+                        <form class="review-form" onsubmit="event.preventDefault(); updateReview(<?= $userReview['id'] ?>, <?= $product['id'] ?>);">
+                            <div class="rating-input">
+                                <label>Ваша оценка:</label>
+                                <div class="stars-input">
+                                    <input type="radio" name="edit-rating" value="5" id="edit-star5" <?= $userReview['rating'] == 5 ? 'checked' : '' ?>><label for="edit-star5">★</label>
+                                    <input type="radio" name="edit-rating" value="4" id="edit-star4" <?= $userReview['rating'] == 4 ? 'checked' : '' ?>><label for="edit-star4">★</label>
+                                    <input type="radio" name="edit-rating" value="3" id="edit-star3" <?= $userReview['rating'] == 3 ? 'checked' : '' ?>><label for="edit-star3">★</label>
+                                    <input type="radio" name="edit-rating" value="2" id="edit-star2" <?= $userReview['rating'] == 2 ? 'checked' : '' ?>><label for="edit-star2">★</label>
+                                    <input type="radio" name="edit-rating" value="1" id="edit-star1" <?= $userReview['rating'] == 1 ? 'checked' : '' ?>><label for="edit-star1">★</label>
+                                </div>
+                            </div>
+                            <textarea id="edit-review-comment" placeholder="Напишите ваш отзыв..." rows="4" required><?= escape($userReview['comment']) ?></textarea>
+                            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                        </form>
+                    </div>
                 <?php endif; ?>
                 
                 <div class="reviews-list">

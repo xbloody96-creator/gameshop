@@ -437,6 +437,43 @@ async function submitReview(productId) {
     }
 }
 
+async function updateReview(reviewId, productId) {
+    const rating = document.querySelector('input[name="edit-rating"]:checked');
+    const comment = document.getElementById('edit-review-comment');
+    
+    if (!rating || !comment.value.trim()) {
+        showNotification('Пожалуйста, поставьте оценку и напишите отзыв', 'warning');
+        return;
+    }
+    
+    try {
+        const formData = new FormData();
+        formData.append('action', 'update');
+        formData.append('review_id', reviewId);
+        formData.append('product_id', productId);
+        formData.append('rating', rating.value);
+        formData.append('comment', comment.value.trim());
+        
+        const response = await fetch('ajax/reviews.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification('Отзыв обновлен и отправлен на повторную модерацию', 'success');
+            // Перезагрузить страницу через 1 секунду
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showNotification(data.message || 'Ошибка обновления отзыва', 'error');
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
+        showNotification('Ошибка обновления отзыва', 'error');
+    }
+}
+
 async function rateNews(newsId, rating) {
     try {
         const response = await fetch('ajax/news.php', {
