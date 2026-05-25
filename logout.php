@@ -2,14 +2,14 @@
 /**
  * Страница выхода из аккаунта
  */
-session_start();
+require_once 'config.php';
 
 // Уничтожаем все данные сессии
 $_SESSION = array();
 
 // Удаляем cookie сессии
 if (isset($_COOKIE[session_name()])) {
-    setcookie(session_name(), '', time() - 3600, '/');
+    setcookie(session_name(), '', time() - 3600, '/', SITE_DOMAIN, true, true);
 }
 
 // Уничтожаем сессию
