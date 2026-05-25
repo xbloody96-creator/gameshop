@@ -18,6 +18,14 @@ define('SUPPORT_EMAIL', 'support@justkey.ru');
 define('SESSION_LIFETIME', 3600 * 24 * 7); // 7 дней
 define('PASSWORD_MIN_LENGTH', 6);
 
+// Настройка сессии перед запуском
+ini_set('session.cookie_lifetime', SESSION_LIFETIME);
+ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
+ini_set('session.cookie_secure', 1); // Только HTTPS
+ini_set('session.cookie_httponly', 1); // Защита от XSS
+ini_set('session.cookie_samesite', 'Lax'); // Защита от CSRF
+ini_set('session.use_strict_mode', 1); // Строгий режим сессий
+
 // Настройки загрузки файлов
 define('UPLOAD_DIR', 'images/uploads/');
 define('MAX_FILE_SIZE', 5242880); // 5MB
@@ -43,9 +51,23 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/logs/error.log');
 
-// Старт сессии
+// Старт сессии с настройками
 if (session_status() === PHP_SESSION_NONE) {
+    // Устанавливаем параметры cookie перед стартом сессии
+    session_set_cookie_params([
+        'lifetime' => SESSION_LIFETIME,
+        'path' => '/',
+        'domain' => SITE_DOMAIN,
+        'secure' => true, // Только HTTPS
+        'httponly' => true, // Защита от XSS
+        'samesite' => 'Lax' // Защита от CSRF
+    ]);
     session_start();
+    
+    // Продлеваем время жизни сессии при каждом запросе авторизованного пользователя
+    if (isset($_SESSION['user_id'])) {
+        $_SESSION['last_activity'] = time();
+    }
 }
 
 // Функция для защиты от XSS

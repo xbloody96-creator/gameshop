@@ -1,1 +1,43 @@
-Nothing should be ignored based on the provided file changes. The modification of 'config.php' is a source code file that should not be added to .gitignore. Since there are no build artifacts, dependencies, or temporary files in the changes, no additional ignore rules are needed.
+```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+
+# Dependencies
+vendor/
+node_modules/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Editors
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*~
+*.bak
+*.backup
+
+# PHP specific
+*.php~
+.php_cs.cache
+
+# Session files
+sess_*
+
+# Cache directories
+cache/
+tmp/
+```
