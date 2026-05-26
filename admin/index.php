@@ -322,37 +322,37 @@ $last_orders = $last_orders_stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- Компактное верхнее меню с иконками -->
         <nav class="compact-top-menu">
             <a href="products.php" class="compact-menu-item" title="Товары">
-                <span class="compact-menu-icon">📦</span>
+                <svg class="compact-menu-icon svg-icon"><use href="../assets/icons.svg#icon-box"></use></svg>
                 <span class="compact-menu-label">Товары</span>
                 <span class="tooltip">Управление товарами</span>
             </a>
             <a href="news.php" class="compact-menu-item" title="Новости">
-                <span class="compact-menu-icon">📰</span>
+                <svg class="compact-menu-icon svg-icon"><use href="../assets/icons.svg#icon-news"></use></svg>
                 <span class="compact-menu-label">Новости</span>
                 <span class="tooltip">Лента новостей</span>
             </a>
             <a href="services.php" class="compact-menu-item" title="Услуги">
-                <span class="compact-menu-icon">🔧</span>
+                <svg class="compact-menu-icon svg-icon"><use href="../assets/icons.svg#icon-settings"></use></svg>
                 <span class="compact-menu-label">Услуги</span>
                 <span class="tooltip">Список услуг</span>
             </a>
             <a href="promotions.php" class="compact-menu-item" title="Акции">
-                <span class="compact-menu-icon">🎁</span>
+                <svg class="compact-menu-icon svg-icon"><use href="../assets/icons.svg#icon-gift"></use></svg>
                 <span class="compact-menu-label">Акции</span>
                 <span class="tooltip">Акционные предложения</span>
             </a>
             <a href="users.php" class="compact-menu-item" title="Пользователи">
-                <span class="compact-menu-icon">👥</span>
+                <svg class="compact-menu-icon svg-icon"><use href="../assets/icons.svg#icon-users"></use></svg>
                 <span class="compact-menu-label">Пользователи</span>
                 <span class="tooltip">База пользователей</span>
             </a>
             <a href="reviews.php" class="compact-menu-item" title="Отзывы">
-                <span class="compact-menu-icon">💬</span>
+                <svg class="compact-menu-icon svg-icon"><use href="../assets/icons.svg#icon-chat"></use></svg>
                 <span class="compact-menu-label">Отзывы</span>
                 <span class="tooltip">Модерация отзывов</span>
             </a>
             <a href="orders.php" class="compact-menu-item active" title="Заказы">
-                <span class="compact-menu-icon">🛒</span>
+                <svg class="compact-menu-icon svg-icon"><use href="../assets/icons.svg#icon-cart"></use></svg>
                 <span class="compact-menu-label">Заказы</span>
                 <span class="tooltip">Все заказы</span>
             </a>
@@ -363,7 +363,7 @@ $last_orders = $last_orders_stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="stat-card-mini primary">
                 <div class="stat-card-header-mini">
                     <p class="stat-card-title">Продажи за день</p>
-                    <div class="stat-card-icon-mini">💰</div>
+                    <svg class="stat-card-icon-mini svg-icon"><use href="../assets/icons.svg#icon-ruble"></use></svg>
                 </div>
                 <h3 class="stat-card-value"><?= number_format($sales_today, 0, '.', ' ') ?> ₽</h3>
                 <p class="stat-card-subtitle">на текущий момент</p>
@@ -372,7 +372,7 @@ $last_orders = $last_orders_stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="stat-card-mini success">
                 <div class="stat-card-header-mini">
                     <p class="stat-card-title">Новые заказы</p>
-                    <div class="stat-card-icon-mini">📋</div>
+                    <svg class="stat-card-icon-mini svg-icon"><use href="../assets/icons.svg#icon-list"></use></svg>
                 </div>
                 <h3 class="stat-card-value"><?= $new_orders ?></h3>
                 <p class="stat-card-subtitle">за сегодня</p>
@@ -381,7 +381,7 @@ $last_orders = $last_orders_stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="stat-card-mini warning">
                 <div class="stat-card-header-mini">
                     <p class="stat-card-title">Всего пользователей</p>
-                    <div class="stat-card-icon-mini">👥</div>
+                    <svg class="stat-card-icon-mini svg-icon"><use href="../assets/icons.svg#icon-users"></use></svg>
                 </div>
                 <h3 class="stat-card-value"><?= $stats['users'] ?></h3>
                 <p class="stat-card-subtitle">зарегистрировано</p>
@@ -390,7 +390,7 @@ $last_orders = $last_orders_stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="stat-card-mini danger">
                 <div class="stat-card-header-mini">
                     <p class="stat-card-title">Отзывы на модерации</p>
-                    <div class="stat-card-icon-mini">⏳</div>
+                    <svg class="stat-card-icon-mini svg-icon"><use href="../assets/icons.svg#icon-time"></use></svg>
                 </div>
                 <h3 class="stat-card-value"><?= $stats['reviews_pending'] ?></h3>
                 <p class="stat-card-subtitle">требуют проверки</p>
@@ -449,46 +449,48 @@ $last_orders = $last_orders_stmt->fetchAll(PDO::FETCH_ASSOC);
         
         <!-- Блок быстрых ссылок -->
         <div class="quick-links-block">
-            <h2 class="section-title">🔗 Быстрые ссылки</h2>
+            <h2 class="section-title">
+                <svg class="svg-icon svg-sm"><use href="../assets/icons.svg#icon-link"></use></svg> Быстрые ссылки
+            </h2>
             <div class="quick-links-grid">
                 <a href="products.php" class="quick-link-item">
-                    <span class="quick-link-icon">📦</span>
+                    <svg class="quick-link-icon svg-icon"><use href="../assets/icons.svg#icon-box"></use></svg>
                     <span>Все товары</span>
                 </a>
                 <a href="product-edit.php?action=add" class="quick-link-item">
-                    <span class="quick-link-icon">➕</span>
+                    <svg class="quick-link-icon svg-icon"><use href="../assets/icons.svg#icon-plus"></use></svg>
                     <span>Добавить товар</span>
                 </a>
                 <a href="orders.php" class="quick-link-item">
-                    <span class="quick-link-icon">🛒</span>
+                    <svg class="quick-link-icon svg-icon"><use href="../assets/icons.svg#icon-cart"></use></svg>
                     <span>Все заказы</span>
                 </a>
                 <a href="users.php" class="quick-link-item">
-                    <span class="quick-link-icon">👥</span>
+                    <svg class="quick-link-icon svg-icon"><use href="../assets/icons.svg#icon-users"></use></svg>
                     <span>Пользователи</span>
                 </a>
                 <a href="news.php" class="quick-link-item">
-                    <span class="quick-link-icon">📰</span>
+                    <svg class="quick-link-icon svg-icon"><use href="../assets/icons.svg#icon-news"></use></svg>
                     <span>Новости</span>
                 </a>
                 <a href="news.php?action=add" class="quick-link-item">
-                    <span class="quick-link-icon">✏️</span>
+                    <svg class="quick-link-icon svg-icon"><use href="../assets/icons.svg#icon-edit"></use></svg>
                     <span>Добавить новость</span>
                 </a>
                 <a href="services.php" class="quick-link-item">
-                    <span class="quick-link-icon">🔧</span>
+                    <svg class="quick-link-icon svg-icon"><use href="../assets/icons.svg#icon-settings"></use></svg>
                     <span>Услуги</span>
                 </a>
                 <a href="promotions.php" class="quick-link-item">
-                    <span class="quick-link-icon">🎁</span>
+                    <svg class="quick-link-icon svg-icon"><use href="../assets/icons.svg#icon-gift"></use></svg>
                     <span>Акции</span>
                 </a>
                 <a href="reviews.php" class="quick-link-item">
-                    <span class="quick-link-icon">💬</span>
+                    <svg class="quick-link-icon svg-icon"><use href="../assets/icons.svg#icon-chat"></use></svg>
                     <span>Отзывы</span>
                 </a>
                 <a href="../index.php" target="_blank" class="quick-link-item">
-                    <span class="quick-link-icon">🌐</span>
+                    <svg class="quick-link-icon svg-icon"><use href="../assets/icons.svg#icon-rocket"></use></svg>
                     <span>На сайт</span>
                 </a>
             </div>

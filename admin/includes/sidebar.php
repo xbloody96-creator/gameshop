@@ -22,7 +22,7 @@
         </li>
         <li>
             <a href="news.php" class="<?= basename($_SERVER['PHP_SELF']) == 'news.php' ? 'active' : '' ?>">
-                <span class="menu-icon">📰</span>
+                <svg class="menu-icon svg-icon"><use href="assets/icons.svg#icon-news"></use></svg>
                 Новости
             </a>
         </li>

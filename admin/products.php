@@ -68,7 +68,7 @@ if (!is_array($products)) $products = [];
         
 <main class="admin-main">
 <header class="admin-header">
-<h1>🎮 Управление товарами</h1>
+<h1><svg class="svg-icon svg-md"><use href="assets/icons.svg#icon-gamepad"></use></svg> Управление товарами</h1>
         <?php include 'includes/theme-toggle.php'; ?>
 </header>
 
@@ -157,11 +157,15 @@ if (!is_array($products)) $products = [];
                                 </span>
                             </td>
                             <td class="actions actions-compact">
-                                <a href="product-edit.php?id=<?= $product['id'] ?>" class="btn-icon btn-edit" title="Редактировать">✏️</a>
+                                <a href="product-edit.php?id=<?= $product['id'] ?>" class="btn-icon btn-edit" title="Редактировать">
+                                    <svg class="svg-icon svg-sm"><use href="assets/icons.svg#icon-edit"></use></svg>
+                                </a>
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить товар?')">
                                     <input type="hidden" name="action" value="delete_product">
                                     <input type="hidden" name="id" value="<?= $product['id'] ?>">
-                                    <button type="submit" class="btn-icon btn-delete" title="Удалить">🗑️</button>
+                                    <button type="submit" class="btn-icon btn-delete" title="Удалить">
+                                        <svg class="svg-icon svg-sm"><use href="assets/icons.svg#icon-cross"></use></svg>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
