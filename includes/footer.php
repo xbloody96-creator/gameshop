@@ -19,7 +19,7 @@
                 <ul class="footer-links">
                     <li><a href="tel:<?= str_replace([' ', '(', ')', '-', '+'], '', SUPPORT_PHONE) ?>" class="footer-link">📞 <?= SUPPORT_PHONE ?></a></li>
                     <li><a href="mailto:<?= SUPPORT_EMAIL ?>" class="footer-link">✉️ <?= SUPPORT_EMAIL ?></a></li>
-                    <li><span class="footer-link">📍 Россия, Москва</span></li>
+                    <li><span class="footer-link">📍 Россия, Стерлитамак</span></li>
                 </ul>
             </div>
             
@@ -49,7 +49,7 @@
             <div class="footer-section">
                 <h4>🗺️ Мы на карте</h4>
                 <div class="map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.5!2d37.6173!3d55.7558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a50b315e573:0xa886bf5a3d9b2e68!2sRed+Square!5e0!3m2!1sen!2sru!4v1600000000000" 
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d91630.5716366728!2d55.9719!3d53.4261!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x43d2b9c0f3e37f6f:0x6b4b0a0e3d1f1e1!2sSterlitamak!5e0!3m2!1sen!2sru!4v1600000000000" 
                             width="100%" height="200" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>

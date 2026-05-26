@@ -45,7 +45,7 @@ try {
             <div class="hero-bg-overlay"></div>
             <div class="container hero-container">
                 <div class="hero-content">
-                    <span class="hero-badge">🔥 Лучшие цены 2025</span>
+                    <span class="hero-badge">🔥 Лучшие цены <?= date('Y') ?></span>
                     <h1 class="hero-title">Игровые ключи<br><span class="gradient-text">со скидкой до 70%</span></h1>
                     <p class="hero-description">Мгновенная доставка, гарантия качества и поддержка 24/7. Покупайте любимые игры по лучшим ценам!</p>
                     <div class="hero-buttons">
