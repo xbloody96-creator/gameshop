@@ -3270,26 +3270,30 @@ a:hover {
 }
 
 .info-title {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 800;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 1rem;
-    animation: fadeInDown 0.8s ease;
+    animation: fadeInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .info-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     color: var(--text-secondary);
     max-width: 600px;
     margin: 0 auto;
-    animation: fadeInUp 0.8s ease 0.2s backwards;
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s backwards;
+    line-height: 1.5;
 }
 
 .info-content {
-    animation: fadeInUp 0.8s ease 0.4s backwards;
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s backwards;
 }
 
 /* Info Cards Grid */
@@ -3306,9 +3310,10 @@ a:hover {
     padding: 2.5rem;
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border-color);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    max-width: 100%;
 }
 
 .info-card::before {
@@ -3320,7 +3325,7 @@ a:hover {
     height: 4px;
     background: var(--gradient-primary);
     transform: scaleX(0);
-    transition: transform 0.4s ease;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .info-card:hover {
@@ -3356,8 +3361,11 @@ a:hover {
 
 .info-card-text {
     color: var(--text-secondary);
-    line-height: 1.8;
-    font-size: 1rem;
+    line-height: 1.7;
+    font-size: 0.95rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 
 .info-card-list {
@@ -3412,7 +3420,7 @@ a:hover {
     object-fit: cover;
     border-radius: 20px;
     box-shadow: var(--shadow-xl);
-    transition: transform 0.4s ease;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .info-feature:hover .info-feature-image {
@@ -3450,7 +3458,7 @@ a:hover {
     border-radius: 20px;
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .info-stat:hover {
@@ -3701,7 +3709,7 @@ a:hover {
     content: '+';
     font-size: 1.5rem;
     color: var(--primary-color);
-    transition: transform 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .faq-item.active .faq-question::after {
@@ -3711,12 +3719,12 @@ a:hover {
 .faq-answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0 2rem;
 }
 
 .faq-item.active .faq-answer {
-    max-height: 500px;
+    max-height: 600px;
     padding: 0 2rem 1.5rem;
 }
 
@@ -3833,7 +3841,7 @@ a:hover {
 
 @media (max-width: 768px) {
     .info-title {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
     }
     
     .info-cards {
@@ -3850,6 +3858,14 @@ a:hover {
     
     .social-links-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .info-card {
+        padding: 1.5rem;
+    }
+    
+    .info-feature {
+        padding: 2rem;
     }
 }
 
