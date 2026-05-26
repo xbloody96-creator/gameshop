@@ -49,7 +49,7 @@ try {
                     <h1 class="hero-title">Игровые ключи<br><span class="gradient-text">со скидкой до 70%</span></h1>
                     <p class="hero-description">Мгновенная доставка, гарантия качества и поддержка 24/7. Покупайте любимые игры по лучшим ценам!</p>
                     <div class="hero-buttons">
-                        <a href="products.php" class="btn btn-primary btn-lg">🛒 В каталог</a>
+                        <a href="products.php" class="btn btn-primary btn-lg"><svg class="btn-icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> В каталог</a>
                         <a href="#about" class="btn btn-outline btn-lg">ℹ️ О нас</a>
                     </div>
                     <div class="hero-stats">
@@ -88,7 +88,7 @@ try {
         <section id="search" class="search-section-modern">
             <div class="container">
                 <div class="search-bar-modern">
-                    <span class="search-icon">🔍</span>
+                    <span class="search-icon"><svg class="icon-svg-inline" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
                     <input type="text" id="search-input" class="search-input-modern" placeholder="Поиск игр, новостей..." autocomplete="off">
                     <button class="btn btn-primary search-btn-modern">Найти</button>
                     <div id="search-suggestions" class="search-suggestions"></div>
@@ -156,7 +156,7 @@ try {
                                         <?php if (isLoggedIn()): ?>
                                             <button class="product-action-btn-modern" data-favorite="<?= $product['id'] ?>" onclick="event.stopPropagation(); toggleFavorite(<?= $product['id'] ?>)">🤍</button>
                                         <?php endif; ?>
-                                        <button class="product-action-btn-modern primary" onclick="event.stopPropagation(); addToCart(<?= $product['id'] ?>)">🛒</button>
+                                        <button class="product-action-btn-modern primary" onclick="event.stopPropagation(); addToCart(<?= $product['id'] ?>)"><svg class="icon-svg-inline" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></button>
                                     </div>
                                 </div>
                                 
@@ -229,7 +229,7 @@ try {
                 
                 <div class="features-grid-modern">
                     <div class="feature-card-modern">
-                        <div class="feature-icon-modern">⚡</div>
+                        <div class="feature-icon-modern"><svg class="feature-icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
                         <h3>Мгновенная доставка</h3>
                         <p>Ключи приходят сразу после оплаты на почту и в личный кабинет</p>
                     </div>
@@ -239,12 +239,12 @@ try {
                         <p>Только официальные ключи от прямых поставщиков</p>
                     </div>
                     <div class="feature-card-modern">
-                        <div class="feature-icon-modern">💳</div>
+                        <div class="feature-icon-modern"><svg class="feature-icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
                         <h3>Безопасная оплата</h3>
                         <p>Платежная система NicePay с защитой данных</p>
                     </div>
                     <div class="feature-card-modern">
-                        <div class="feature-icon-modern">🎧</div>
+                        <div class="feature-icon-modern"><svg class="feature-icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
                         <h3>Поддержка 24/7</h3>
                         <p>Всегда на связи и готовы помочь в любое время</p>
                     </div>
@@ -256,7 +256,7 @@ try {
         <section id="promotions" class="section section-promotions-modern">
             <div class="container">
                 <div class="section-header-modern">
-                    <h2 class="section-title">🎁 Акции и скидки</h2>
+                    <h2 class="section-title"><svg class="section-title-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> Акции и скидки</h2>
                     <p class="section-subtitle">Не пропустите выгодные предложения</p>
                 </div>
                 
@@ -278,7 +278,7 @@ try {
                     </div>
                 <?php else: ?>
                     <div class="empty-state">
-                        <span class="empty-icon">🎁</span>
+                        <span class="empty-icon"><svg class="icon-svg-inline" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></span>
                         <h3>Сейчас акций нет</h3>
                         <p>Но скоро будут! Следите за обновлениями</p>
                     </div>

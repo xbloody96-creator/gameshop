@@ -1,0 +1,82 @@
+
+/* SVG Icon Styles */
+.icon-svg,
+.icon-svg-inline,
+.logo-icon-svg,
+.btn-icon-svg,
+.feature-icon-svg,
+.info-card-icon-svg,
+.contact-icon-svg,
+.payment-method-icon-svg,
+.payment-status-icon-svg,
+.section-title-icon-svg {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.icon-svg-inline {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.125em;
+}
+
+.logo-icon-svg {
+    width: 32px;
+    height: 32px;
+}
+
+.btn-icon-svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.feature-icon-svg,
+.info-card-icon-svg {
+    width: 48px;
+    height: 48px;
+}
+
+.contact-icon-svg {
+    width: 32px;
+    height: 32px;
+}
+
+.payment-method-icon-svg {
+    width: 32px;
+    height: 32px;
+}
+
+.payment-status-icon-svg {
+    width: 64px;
+    height: 64px;
+}
+
+.section-title-icon-svg {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+    vertical-align: -0.25em;
+}
+
+/* Update existing icon containers to work with SVG */
+.info-card-icon-svg,
+.contact-icon-svg,
+.payment-method-icon-svg,
+.feature-icon-svg {
+    color: var(--primary-color);
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.info-card:hover .info-card-icon-svg,
+.contact-item:hover .contact-icon-svg,
+.payment-method:hover .payment-method-icon-svg {
+    transform: scale(1.1);
+    color: var(--accent-color);
+}
+
+/* Fix for feature cards */
+.feature-card-modern:hover .feature-icon-svg {
+    transform: translateY(-5px) scale(1.05);
+}

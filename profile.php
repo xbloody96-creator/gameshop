@@ -134,7 +134,7 @@ try {
                                         <?php if ($order['can_cancel']): ?>
                                             <p class="cancel-timer">⏱ Можно отменить в течение <?= ceil($order['hours_left']) ?> ч.</p>
                                             <button class="btn btn-danger btn-sm cancel-order-btn" data-order-id="<?= $order['id'] ?>" data-order-number="<?= escape($order['order_number']) ?>">
-                                                ❌ Отменить заказ
+                                                <svg class="icon-svg-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Отменить заказ
                                             </button>
                                         <?php elseif ($order['status'] === 'pending'): ?>
                                             <p class="cancel-expired">⚠️ Срок отмены истёк (прошло более 24 часов)</p>
