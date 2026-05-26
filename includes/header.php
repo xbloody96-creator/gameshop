@@ -16,10 +16,10 @@ $currentUser = isLoggedIn() ? getCurrentUser() : null;
                 <?php else: ?>
                     <li><a href="profile.php" class="nav-link">Личный кабинет</a></li>
                 <?php endif; ?>
-                <li><a href="#about" class="nav-link">О нас</a></li>
-                <li><a href="#promotions" class="nav-link">Акции</a></li>
-                <li><a href="#search" class="nav-link">Поиск</a></li>
-                <li><a href="#footer" class="nav-link">Контакты</a></li>
+                <li><a href="about.php" class="nav-link">О нас</a></li>
+                <li><a href="promotions.php" class="nav-link">Акции</a></li>
+                <li><a href="search.php" class="nav-link">Поиск</a></li>
+                <li><a href="contacts.php" class="nav-link">Контакты</a></li>
             </ul>
         </nav>
         
