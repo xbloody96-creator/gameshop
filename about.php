@@ -78,51 +78,6 @@ require_once 'config.php';
                     </div>
                     <img src="https://images.unsplash.com/photo-1556438064-2d764616693e?w=600" alt="Наша миссия" class="info-feature-image">
                 </div>
-                
-                <!-- Timeline -->
-                <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.5rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Наш путь</h2>
-                <div class="info-timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-year">2020</div>
-                            <h3 class="timeline-title">Основание компании</h3>
-                            <p class="timeline-text">Start JustKey с небольшой командой энтузиастов</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-year">2021</div>
-                            <h3 class="timeline-title">Первые успехи</h3>
-                            <p class="timeline-text">Преодолели отметку в 1000 довольных клиентов</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-year">2022</div>
-                            <h3 class="timeline-title">Расширение ассортимента</h3>
-                            <p class="timeline-text">Добавили новые категории товаров и платежные методы</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-year">2023</div>
-                            <h3 class="timeline-title">10,000 клиентов</h3>
-                            <p class="timeline-text">Достигли важной вехи в 10 тысяч довольных покупателей</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-year">2024</div>
-                            <h3 class="timeline-title">Продолжаем расти</h3>
-                            <p class="timeline-text">Развиваемся, улучшаем сервис и радуем клиентов</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </main>
