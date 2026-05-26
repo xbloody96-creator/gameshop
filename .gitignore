@@ -1,1 +1,10 @@
-(empty)
+# Icons - preserving as they are part of the project assets
+!assets/icons/*.svg
+
+# Source code files - preserving as they are part of the project
+!about.php
+!style.css
+
+# Configuration and data files - preserving as they are part of the project  
+!README.md
+!config.json
