@@ -14,31 +14,129 @@ require_once 'config.php';
     
     <main class="info-page">
         <div class="container">
-            <h1>О компании <?= SITE_NAME ?></h1>
+            <div class="info-header">
+                <h1 class="info-title">О компании <?= SITE_NAME ?></h1>
+                <p class="info-subtitle">Ваш надежный партнер в мире цифровых развлечений</p>
+            </div>
+            
             <div class="info-content">
-                <p><?= SITE_NAME ?> — это современный магазин цифровых ключей для игр. Мы работаем на рынке с 2020 года и за это время обслужили более 10 000 довольных клиентов.</p>
+                <!-- Stats Section -->
+                <div class="info-stats">
+                    <div class="info-stat">
+                        <div class="info-stat-number">10,000+</div>
+                        <div class="info-stat-label">Довольных клиентов</div>
+                    </div>
+                    <div class="info-stat">
+                        <div class="info-stat-number">50,000+</div>
+                        <div class="info-stat-label">Проданных ключей</div>
+                    </div>
+                    <div class="info-stat">
+                        <div class="info-stat-number">24/7</div>
+                        <div class="info-stat-label">Поддержка</div>
+                    </div>
+                    <div class="info-stat">
+                        <div class="info-stat-number">4+</div>
+                        <div class="info-stat-label">Года на рынке</div>
+                    </div>
+                </div>
                 
-                <h2>Наши преимущества</h2>
-                <ul>
-                    <li>Мгновенная доставка ключей после оплаты</li>
-                    <li>Только официальные ключи от прямых поставщиков</li>
-                    <li>Безопасная оплата через платежную систему NicePay</li>
-                    <li>Поддержка 24/7</li>
-                    <li>Гарантия возврата средств</li>
-                </ul>
+                <!-- About Cards -->
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="info-card-icon">🚀</div>
+                        <h3 class="info-card-title">Мгновенная доставка</h3>
+                        <p class="info-card-text">Ключи приходят сразу после оплаты на email и в личный кабинет</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon">🔒</div>
+                        <h3 class="info-card-title">Официальные ключи</h3>
+                        <p class="info-card-text">Работаем только с прямыми поставщиками и официальными дистрибьюторами</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon">💳</div>
+                        <h3 class="info-card-title">Безопасная оплата</h3>
+                        <p class="info-card-text">Платежная система NicePay с защитой всех ваших данных</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon">🎧</div>
+                        <h3 class="info-card-title">Поддержка 24/7</h3>
+                        <p class="info-card-text">Наша команда всегда готова помочь с любым вопросом</p>
+                    </div>
+                </div>
                 
-                <h2>Наша миссия</h2>
-                <p>Мы стремимся сделать покупку игровых ключей максимально простой, безопасной и выгодной для наших клиентов.</p>
+                <!-- Mission Feature -->
+                <div class="info-feature">
+                    <div class="info-feature-content">
+                        <h2>Наша миссия</h2>
+                        <p>Мы стремимся сделать покупку игровых ключей максимально простой, безопасной и выгодной для наших клиентов.</p>
+                        <p>Каждый день мы работаем над улучшением сервиса, расширением ассортимента и повышением качества обслуживания.</p>
+                        <ul class="info-card-list">
+                            <li>Честные цены без скрытых комиссий</li>
+                            <li>Гарантия возврата средств</li>
+                            <li>Постоянное обновление ассортимента</li>
+                        </ul>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1556438064-2d764616693e?w=600" alt="Наша миссия" class="info-feature-image">
+                </div>
                 
-                <h2>Контакты</h2>
-                <p>Адрес: Россия, Стерлитамак</p>
-                <p>Телефон: <?= SUPPORT_PHONE ?></p>
-                <p>Email: <?= SUPPORT_EMAIL ?></p>
+                <!-- Timeline -->
+                <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.5rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Наш путь</h2>
+                <div class="info-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">2020</div>
+                            <h3 class="timeline-title">Основание компании</h3>
+                            <p class="timeline-text">Start JustKey с небольшой командой энтузиастов</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">2021</div>
+                            <h3 class="timeline-title">Первые успехи</h3>
+                            <p class="timeline-text">Преодолели отметку в 1000 довольных клиентов</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">2022</div>
+                            <h3 class="timeline-title">Расширение ассортимента</h3>
+                            <p class="timeline-text">Добавили новые категории товаров и платежные методы</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">2023</div>
+                            <h3 class="timeline-title">10,000 клиентов</h3>
+                            <p class="timeline-text">Достигли важной вехи в 10 тысяч довольных покупателей</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">2024</div>
+                            <h3 class="timeline-title">Продолжаем расти</h3>
+                            <p class="timeline-text">Развиваемся, улучшаем сервис и радуем клиентов</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
     
     <?php include 'includes/footer.php'; ?>
     <script src="main.js"></script>
+    <script>
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const item = question.parentElement;
+            item.classList.toggle('active');
+        });
+    });
+    </script>
 </body>
 </html>
