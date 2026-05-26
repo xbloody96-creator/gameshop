@@ -74,6 +74,62 @@ if ($action === 'view_history') {
     } catch (PDOException $e) {
         $response['message'] = 'Ошибка очистки истории';
     }
+} elseif ($action === 'cancel_order') {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        $response['message'] = 'Неверный метод запроса';
+        echo json_encode($response);
+        exit;
+    }
+    
+    $input = json_decode(file_get_contents('php://input'), true);
+    $orderId = (int)($input['order_id'] ?? 0);
+    
+    if ($orderId <= 0) {
+        $response['message'] = 'Некорректный ID заказа';
+        echo json_encode($response);
+        exit;
+    }
+    
+    try {
+        // Получаем заказ и проверяем принадлежность пользователю
+        $stmt = $pdo->prepare("SELECT * FROM orders WHERE id = ? AND user_id = ?");
+        $stmt->execute([$orderId, $_SESSION['user_id']]);
+        $order = $stmt->fetch();
+        
+        if (!$order) {
+            $response['message'] = 'Заказ не найден';
+            echo json_encode($response);
+            exit;
+        }
+        
+        // Проверяем статус - можно отменять только pending
+        if ($order['status'] !== 'pending') {
+            $response['message'] = 'Нельзя отменить заказ со статусом: ' . $order['status'];
+            echo json_encode($response);
+            exit;
+        }
+        
+        // Проверяем время - не более 24 часов
+        $createdAt = strtotime($order['created_at']);
+        $now = time();
+        $hoursDiff = ($now - $createdAt) / 3600;
+        
+        if ($hoursDiff > 24) {
+            $response['message'] = 'Прошло более 24 часов с момента оформления заказа. Отмена невозможна.';
+            echo json_encode($response);
+            exit;
+        }
+        
+        // Отменяем заказ
+        $stmt = $pdo->prepare("UPDATE orders SET status = 'cancelled', updated_at = NOW() WHERE id = ?");
+        $stmt->execute([$orderId]);
+        
+        $response['success'] = true;
+        $response['message'] = 'Заказ #' . $order['order_number'] . ' успешно отменён';
+        
+    } catch (PDOException $e) {
+        $response['message'] = 'Ошибка отмены заказа';
+    }
 }
 
 echo json_encode($response);

@@ -34,6 +34,16 @@ try {
     $stmt->execute([$user['id']]);
     $currentOrders = $stmt->fetchAll();
     
+    // Проверка возможности отмены для каждого заказа (24 часа)
+    foreach ($currentOrders as &$order) {
+        $createdAt = strtotime($order['created_at']);
+        $now = time();
+        $hoursDiff = ($now - $createdAt) / 3600;
+        $order['can_cancel'] = ($hoursDiff <= 24 && $order['status'] === 'pending');
+        $order['hours_left'] = max(0, 24 - $hoursDiff);
+    }
+    unset($order);
+    
     // Получение истории заказов
     $stmt = $pdo->prepare("
         SELECT o.*, GROUP_CONCAT(oi.product_title) as products 
@@ -121,6 +131,14 @@ try {
                                     <div class="order-details">
                                         <p>Товары: <?= escape($order['products']) ?></p>
                                         <p class="order-total">Сумма: <?= formatPrice($order['total_amount']) ?></p>
+                                        <?php if ($order['can_cancel']): ?>
+                                            <p class="cancel-timer">⏱ Можно отменить в течение <?= ceil($order['hours_left']) ?> ч.</p>
+                                            <button class="btn btn-danger btn-sm cancel-order-btn" data-order-id="<?= $order['id'] ?>" data-order-number="<?= escape($order['order_number']) ?>">
+                                                ❌ Отменить заказ
+                                            </button>
+                                        <?php elseif ($order['status'] === 'pending'): ?>
+                                            <p class="cancel-expired">⚠️ Срок отмены истёк (прошло более 24 часов)</p>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -373,5 +391,37 @@ try {
     <?php include 'includes/footer.php'; ?>
     
     <script src="main.js"></script>
+    <script>
+    // Обработка отмены заказа
+    document.querySelectorAll('.cancel-order-btn').forEach(btn => {
+        btn.addEventListener('click', async function() {
+            const orderId = this.dataset.orderId;
+            const orderNumber = this.dataset.orderNumber;
+            
+            if (!confirm(`Вы уверены, что хотите отменить заказ #${orderNumber}?\n\nОтмена возможна только в течение 24 часов после оформления.`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('ajax/profile.php?action=cancel_order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ order_id: orderId })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showNotification(data.message || 'Ошибка отмены заказа', 'error');
+                }
+            } catch (e) {
+                showNotification('Ошибка соединения с сервером', 'error');
+            }
+        });
+    });
+    </script>
 </body>
 </html>
