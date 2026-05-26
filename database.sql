@@ -334,3 +334,7 @@ INSERT IGNORE INTO products (title, name, slug, description, short_description, 
 INSERT IGNORE INTO reviews (product_id, user_id, rating, comment, is_approved) VALUES
 (1, 1, 5, 'Отличная игра! Рекомендую всем.', TRUE),
 (2, 1, 4, 'Хорошая графика и сюжет.', FALSE);
+
+-- Добавляем поля для сброса пароля если их нет
+ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token VARCHAR(255) DEFAULT NULL;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token_expires DATETIME DEFAULT NULL;
