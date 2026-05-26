@@ -3925,3 +3925,145 @@ a:hover {
     overflow-wrap: break-word;
     word-break: break-word;
 }
+
+/* ===========================
+   SVG Icon Styles
+   =========================== */
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+}
+
+.icon-sm {
+    width: 18px;
+    height: 18px;
+}
+
+.icon-lg {
+    width: 32px;
+    height: 32px;
+}
+
+.icon-xl {
+    width: 48px;
+    height: 48px;
+}
+
+/* Icon in cards */
+.info-card .icon,
+.info-feature .icon,
+.contact-item .icon,
+.social-card .icon {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+    padding: 10px;
+    color: var(--primary-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.info-card:hover .icon,
+.info-feature:hover .icon,
+.contact-item:hover .icon,
+.social-card:hover .icon {
+    background: var(--gradient-primary);
+    color: white;
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* Stats icons */
+.info-stat .icon {
+    width: 40px;
+    height: 40px;
+    background: var(--bg-tertiary);
+    border-radius: 10px;
+    padding: 8px;
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+}
+
+/* Timeline icons */
+.timeline-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--bg-tertiary);
+    border-radius: 50%;
+    padding: 8px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* FAQ icons */
+.faq-question .icon {
+    width: 24px;
+    height: 24px;
+    color: var(--primary-color);
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-item.active .faq-question .icon {
+    transform: rotate(180deg);
+}
+
+/* Button icons */
+.btn .icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 0.5rem;
+}
+
+/* Header icons */
+.header-nav a .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+}
+
+/* Product card icons */
+.product-actions button .icon,
+.wishlist-btn .icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Cart icons */
+.cart-item-image,
+.cart-summary .icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* Profile icons */
+.profile-nav a .icon,
+.order-status .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+}
+
+/* Footer icons */
+.footer-social a .icon {
+    width: 20px;
+    height: 20px;
+}
+
+.payment-methods img,
+.payment-methods .icon {
+    height: 30px;
+    width: auto;
+}
