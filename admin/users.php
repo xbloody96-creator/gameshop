@@ -104,7 +104,7 @@ if (!is_array($users)) $users = [];
         
         <main class="admin-main">
             <header class="admin-header">
-                <h1>👥 Управление пользователями</h1>
+                <h1><svg class="icon-svg icon-sm" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Управление пользователями</h1>
                 <?php include 'includes/theme-toggle.php'; ?>
             </header>
 
@@ -136,7 +136,7 @@ if (!is_array($users)) $users = [];
 
             <!-- Список пользователей -->
             <div class="admin-form">
-                <h2>📋 Пользователи (<?= count($users) ?>)</h2>
+                <h2><svg class="icon-svg icon-sm" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Пользователи (<?= count($users) ?>)</h2>
                 <table class="admin-table admin-table-compact">
                     <thead>
                         <tr>
@@ -171,13 +171,13 @@ if (!is_array($users)) $users = [];
                                 </span>
                             </td>
                             <td class="actions actions-compact">
-                                <button class="btn-icon btn-edit" onclick="editUser(<?= htmlspecialchars(json_encode($user)) ?>)">✏️</button>
-                                <button class="btn-icon btn-info" style="color:var(--info);background:var(--info-bg);" onclick="viewUser(<?= $user['id'] ?>)">👁️</button>
+                                <button class="btn-icon btn-edit" onclick="editUser(<?= htmlspecialchars(json_encode($user)) ?>)"><svg class="icon-svg icon-sm" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                                <button class="btn-icon btn-info" style="color:var(--info);background:var(--info-bg);" onclick="viewUser(<?= $user['id'] ?>)"><svg class="icon-svg icon-sm" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
                                 <?php if ($user['id'] != $_SESSION['user_id']): ?>
                                     <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить пользователя?')">
                                         <input type="hidden" name="action" value="delete_user">
                                         <input type="hidden" name="id" value="<?= $user['id'] ?>">
-                                        <button type="submit" class="btn-icon btn-delete">🗑️</button>
+                                        <button type="submit" class="btn-icon btn-delete"><svg class="icon-svg icon-sm" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
                                     </form>
                                 <?php endif; ?>
                             </td>

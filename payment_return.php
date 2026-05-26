@@ -150,7 +150,7 @@ if (!$user) {
             <?php elseif ($status === 'PENDING' || $status === 'PROCESSING'): ?>
                 
                 <div class="payment-result pending">
-                    <div class="payment-icon">⏳</div>
+                    <div class="payment-icon"><svg class="payment-status-icon-svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
                     <h1>Оплата в обработке</h1>
                     <p>
                         Ваш платеж находится в обработке. 
@@ -175,7 +175,7 @@ if (!$user) {
             <?php else: ?>
                 
                 <div class="payment-result error">
-                    <div class="payment-icon">⚠️</div>
+                    <div class="payment-icon"><svg class="payment-status-icon-svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
                     <h1>Статус платежа неизвестен</h1>
                     <p>
                         Не удалось определить статус вашего платежа.
