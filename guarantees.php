@@ -23,7 +23,7 @@ require_once 'config.php';
                 <!-- Guarantee Cards -->
                 <div class="info-cards">
                     <div class="info-card">
-                        <div class="info-card-icon">✅</div>
+                        <svg class="info-card-icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="8 11 12 15 16 11"/></svg>
                         <h3 class="info-card-title">100% работоспособность</h3>
                         <p class="info-card-text">Все ключи проверяются перед продажей и гарантированно работают</p>
                         <ul class="info-card-list">
@@ -33,7 +33,7 @@ require_once 'config.php';
                         </ul>
                     </div>
                     <div class="info-card">
-                        <div class="info-card-icon">🏆</div>
+                        <svg class="info-card-icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
                         <h3 class="info-card-title">Официальные ключи</h3>
                         <p class="info-card-text">Работаем только с официальными поставщиками и дистрибьюторами</p>
                         <ul class="info-card-list">
@@ -43,7 +43,7 @@ require_once 'config.php';
                         </ul>
                     </div>
                     <div class="info-card">
-                        <div class="info-card-icon">💰</div>
+                        <svg class="info-card-icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H9"/><line x1="12" y1="18" x2="12" y2="22"/></svg>
                         <h3 class="info-card-title">Возврат средств</h3>
                         <p class="info-card-text">Если ключ не работает, вернем деньги в течение 30 дней</p>
                         <ul class="info-card-list">
@@ -53,7 +53,7 @@ require_once 'config.php';
                         </ul>
                     </div>
                     <div class="info-card">
-                        <div class="info-card-icon">🔐</div>
+                        <svg class="info-card-icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                         <h3 class="info-card-title">Безопасность данных</h3>
                         <p class="info-card-text">Ваши персональные данные надежно защищены и не передаются третьим лицам</p>
                         <ul class="info-card-list">
@@ -63,7 +63,7 @@ require_once 'config.php';
                         </ul>
                     </div>
                     <div class="info-card">
-                        <div class="info-card-icon">🎧</div>
+                        <svg class="info-card-icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
                         <h3 class="info-card-title">Поддержка 24/7</h3>
                         <p class="info-card-text">Наша команда поддержки всегда готова помочь с любым вопросом</p>
                         <ul class="info-card-list">
@@ -73,7 +73,7 @@ require_once 'config.php';
                         </ul>
                     </div>
                     <div class="info-card">
-                        <div class="info-card-icon">⚡</div>
+                        <svg class="info-card-icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                         <h3 class="info-card-title">Мгновенная доставка</h3>
                         <p class="info-card-text">Ключи приходят сразу после подтверждения оплаты</p>
                         <ul class="info-card-list">

@@ -95,7 +95,7 @@ if (!$user) {
             <?php if ($status === 'SUCCESS' || $status === 'COMPLETED' || $status === 'PAID'): ?>
                 
                 <div class="payment-result success">
-                    <div class="payment-icon">✅</div>
+                    <div class="payment-icon"><svg class="payment-status-icon-svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="8 11 12 15 16 11"/></svg></div>
                     <h1>Оплата прошла успешно!</h1>
                     <p>
                         Спасибо за покупку! Ваш заказ оплачен и уже обрабатывается.
@@ -120,7 +120,7 @@ if (!$user) {
             <?php elseif ($status === 'FAILED' || $status === 'CANCELLED' || $status === 'DECLINED'): ?>
                 
                 <div class="payment-result error">
-                    <div class="payment-icon">❌</div>
+                    <div class="payment-icon"><svg class="payment-status-icon-svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
                     <h1>Оплата не прошла</h1>
                     <p>
                         К сожалению, оплата вашего заказа не была завершена.
