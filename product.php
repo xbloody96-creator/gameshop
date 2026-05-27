@@ -141,7 +141,7 @@ if (!$product) {
                         <?php endif; ?>
                         
                         <?php if (isLoggedIn()): ?>
-                            <button class="btn btn-outline btn-lg" onclick="toggleFavorite(<?= $product['id'] ?>)">
+                            <button class="btn btn-outline btn-lg" onclick="toggleFavorite(<?= $product['id'] ?>, 'product')">
                                 ❤️ В избранное
                             </button>
                         <?php endif; ?>

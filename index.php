@@ -154,7 +154,7 @@ try {
                                     <img src="<?= escape($imgSrc) ?>" alt="<?= escape($product['name'] ?: $product['title']) ?>" class="product-image-modern" onerror="this.src='https://via.placeholder.com/300x200?text=<?= urlencode($product['title']) ?>'">
                                     <div class="product-actions-modern">
                                         <?php if (isLoggedIn()): ?>
-                                            <button class="product-action-btn-modern" data-favorite="<?= $product['id'] ?>" onclick="event.stopPropagation(); toggleFavorite(<?= $product['id'] ?>)">🤍</button>
+                                            <button class="product-action-btn-modern" data-favorite="<?= $product['id'] ?>" onclick="event.stopPropagation(); toggleFavorite(<?= $product['id'] ?>, 'product')">🤍</button>
                                         <?php endif; ?>
                                         <button class="product-action-btn-modern primary" onclick="event.stopPropagation(); addToCart(<?= $product['id'] ?>)"><svg class="icon-svg-inline" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></button>
                                     </div>

@@ -27,19 +27,17 @@ target/
 .idea/
 *.swp
 *.swo
+*.tmp
 
-# System and environment
+# System files
 .DS_Store
 Thumbs.db
 .env
 .env.local
 *.env.*
 
-# Logs and temporary files
+# Logs and coverage
 *.log
-*.tmp
-
-# Coverage reports
 coverage/
 htmlcov/
 .coverage
