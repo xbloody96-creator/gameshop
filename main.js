@@ -621,6 +621,29 @@ function initMobileMenu() {
             menuToggle.classList.toggle('active');
         });
     }
+    
+    // Mobile filter toggle functionality
+    initMobileFilter();
+}
+
+// ===========================
+// Mobile Filter Toggle
+// ===========================
+function initMobileFilter() {
+    const filterToggle = document.querySelector('.mobile-filter-toggle');
+    const filtersSidebar = document.querySelector('.filters-sidebar-modern');
+    
+    if (filterToggle && filtersSidebar) {
+        filterToggle.addEventListener('click', () => {
+            filtersSidebar.classList.toggle('active');
+            filterToggle.classList.toggle('active');
+            
+            // Scroll to filters when opened
+            if (filtersSidebar.classList.contains('active')) {
+                filtersSidebar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    }
 }
 
 // ===========================
