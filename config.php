@@ -111,7 +111,7 @@ function sendEmail($to, $subject, $message) {
 
 // Функция для форматирования цены
 function formatPrice($price) {
-    return number_format($price, 0, ',', ' ') . ' ₴';
+    return number_format($price, 0, ',', ' ') . ' ₽';
 }
 
 // Функция для расчета скидки
