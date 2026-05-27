@@ -355,6 +355,9 @@ function initFavorites() {
 }
 
 async function toggleFavorite(productId, type = 'product') {
+    if (event) {
+        event.stopPropagation();
+    }
     try {
         const response = await fetch('ajax/favorites.php', {
             method: 'POST',
@@ -378,10 +381,10 @@ async function toggleFavorite(productId, type = 'product') {
             if (btn) {
                 // Обновляем текст кнопки или иконку
                 if (data.is_favorite) {
-                    btn.innerHTML = '❤️ В избранном';
+                    btn.innerHTML = '<svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>';
                     btn.classList.add('active');
                 } else {
-                    btn.innerHTML = '🤍 В избранное';
+                    btn.innerHTML = '<svg class="icon-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>';
                     btn.classList.remove('active');
                 }
             }
