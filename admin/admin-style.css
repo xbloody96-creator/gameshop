@@ -611,6 +611,49 @@
     font-size: 1.1rem;
 }
 
+/* ===== SVG Icons - аналогично emoji стилям ===== */
+.svg-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+
+.svg-sm {
+    width: 0.875em;
+    height: 0.875em;
+}
+
+.svg-md {
+    width: 1.25em;
+    height: 1.25em;
+}
+
+.svg-lg {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+/* Специфичные классы для админки */
+.compact-menu-icon.svg-icon {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+.stat-card-icon-mini.svg-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.quick-link-icon.svg-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
 /* ===== Search & Filter Bar ===== */
 .search-filter-bar {
     display: flex;
