@@ -171,13 +171,19 @@ if (!is_array($users)) $users = [];
                                 </span>
                             </td>
                             <td class="actions actions-compact">
-                                <button class="btn-icon btn-edit" onclick="editUser(<?= htmlspecialchars(json_encode($user)) ?>)"><svg class="icon-svg icon-sm" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-                                <button class="btn-icon btn-info" style="color:var(--info);background:var(--info-bg);" onclick="viewUser(<?= $user['id'] ?>)"><svg class="icon-svg icon-sm" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                                <a href="user-edit.php?id=<?= $user['id'] ?>" class="btn-icon btn-edit" title="Редактировать">
+                                    <svg class="svg-icon svg-sm"><use href="../assets/icons.svg#icon-edit"></use></svg>
+                                </a>
+                                <button class="btn-icon btn-info" style="color:var(--info);background:var(--info-bg);" onclick="viewUser(<?= $user['id'] ?>)" title="Просмотр">
+                                    <svg class="svg-icon svg-sm"><use href="../assets/icons.svg#icon-eye"></use></svg>
+                                </button>
                                 <?php if ($user['id'] != $_SESSION['user_id']): ?>
                                     <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить пользователя?')">
                                         <input type="hidden" name="action" value="delete_user">
                                         <input type="hidden" name="id" value="<?= $user['id'] ?>">
-                                        <button type="submit" class="btn-icon btn-delete"><svg class="icon-svg icon-sm" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
+                                        <button type="submit" class="btn-icon btn-delete" title="Удалить">
+                                            <svg class="svg-icon svg-sm"><use href="../assets/icons.svg#icon-cross"></use></svg>
+                                        </button>
                                     </form>
                                 <?php endif; ?>
                             </td>
@@ -187,84 +193,6 @@ if (!is_array($users)) $users = [];
                 </table>
             </div>
         </main>
-    </div>
-
-    <!-- Modal для редактирования -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Редактировать пользователя</h3>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
-            </div>
-            <form method="POST">
-                <input type="hidden" name="action" value="edit_user">
-                <input type="hidden" name="id" id="edit_id">
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Логин *</label>
-                        <input type="text" name="login" id="edit_login" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email *</label>
-                        <input type="email" name="email" id="edit_email" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>ФИО</label>
-                        <input type="text" name="fullname" id="edit_fullname">
-                    </div>
-                    <div class="form-group">
-                        <label>Никнейм</label>
-                        <input type="text" name="nickname" id="edit_nickname">
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Пол</label>
-                        <select name="gender" id="edit_gender">
-                            <option value="male">Мужской</option>
-                            <option value="female">Женский</option>
-                            <option value="other">Другой</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Роль</label>
-                        <select name="role" id="edit_role">
-                            <option value="user">Пользователь</option>
-                            <option value="admin">Администратор</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" name="is_active" id="edit_is_active"> Активен
-                    </label>
-                </div>
-                
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                    <button type="button" class="btn btn-danger" onclick="closeModal()">Отмена</button>
-                </div>
-            </form>
-            
-            <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
-            
-            <h4>Сброс пароля</h4>
-            <form method="POST">
-                <input type="hidden" name="action" value="reset_password">
-                <input type="hidden" name="id" id="reset_id">
-                <div class="form-group">
-                    <label>Новый пароль</label>
-                    <input type="password" name="new_password" minlength="6" required>
-                </div>
-                <button type="submit" class="btn btn-warning">Сбросить пароль</button>
-            </form>
-        </div>
     </div>
 
     <!-- Modal для просмотра деталей -->
@@ -279,19 +207,6 @@ if (!is_array($users)) $users = [];
     </div>
 
     <script>
-        function editUser(user) {
-            document.getElementById('edit_id').value = user.id;
-            document.getElementById('reset_id').value = user.id;
-            document.getElementById('edit_login').value = user.login;
-            document.getElementById('edit_email').value = user.email;
-            document.getElementById('edit_fullname').value = user.fullname || '';
-            document.getElementById('edit_nickname').value = user.nickname || '';
-            document.getElementById('edit_gender').value = user.gender || 'male';
-            document.getElementById('edit_role').value = user.role;
-            document.getElementById('edit_is_active').checked = user.is_active == 1;
-            document.getElementById('editModal').classList.add('active');
-        }
-        
         function viewUser(userId) {
             fetch('ajax/user_details.php?id=' + userId)
                 .then(r => r.json())
@@ -312,14 +227,6 @@ if (!is_array($users)) $users = [];
                     document.getElementById('viewModal').classList.add('active');
                 });
         }
-        
-        function closeModal() {
-            document.getElementById('editModal').classList.remove('active');
-        }
-        
-        document.getElementById('editModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
     </script>
 </body>
 </html>

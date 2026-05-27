@@ -138,9 +138,19 @@ if (!is_array($orders)) $orders = [];
                             </td>
                             <td><?= date('d.m.Y', strtotime($order['created_at'])) ?></td>
                             <td class="actions actions-compact">
-                                <button class="btn-icon btn-info" style="color:var(--info);background:var(--info-bg);" onclick="viewOrder(<?= $order['id'] ?>)" title="Просмотр">👁️</button>
-                                <button class="btn-icon btn-edit" onclick="changeStatus(<?= $order['id'] ?>)" title="Изменить статус">✏️</button>
-                                <button class="btn-icon btn-danger" style="color:var(--danger);background:var(--danger-bg);" onclick="deleteOrder(<?= $order['id'] ?>)" title="Удалить">🗑️</button>
+                                <a href="order-edit.php?id=<?= $order['id'] ?>" class="btn-icon btn-info" style="color:var(--info);background:var(--info-bg);" title="Просмотр/Редактировать">
+                                    <svg class="svg-icon svg-sm"><use href="../assets/icons.svg#icon-eye"></use></svg>
+                                </a>
+                                <button class="btn-icon btn-edit" onclick="changeStatus(<?= $order['id'] ?>)" title="Быстро изменить статус">
+                                    <svg class="svg-icon svg-sm"><use href="../assets/icons.svg#icon-edit"></use></svg>
+                                </button>
+                                <form method="POST" style="display:inline;" onsubmit="return confirm('Удалить заказ?')">
+                                    <input type="hidden" name="action" value="delete_order">
+                                    <input type="hidden" name="id" value="<?= $order['id'] ?>">
+                                    <button type="submit" class="btn-icon btn-danger" style="color:var(--danger);background:var(--danger-bg);" title="Удалить">
+                                        <svg class="svg-icon svg-sm"><use href="../assets/icons.svg#icon-cross"></use></svg>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -148,17 +158,6 @@ if (!is_array($orders)) $orders = [];
                 </table>
             </div>
         </main>
-    </div>
-
-    <!-- Modal просмотра заказа -->
-    <div id="viewModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Информация о заказе</h3>
-                <button class="modal-close" onclick="document.getElementById('viewModal').classList.remove('active')">&times;</button>
-            </div>
-            <div id="viewContent">Загрузка...</div>
-        </div>
     </div>
 
     <!-- Modal изменения статуса -->
@@ -189,36 +188,6 @@ if (!is_array($orders)) $orders = [];
     </div>
 
     <script>
-        function viewOrder(orderId) {
-            fetch('ajax/order_details.php?id=' + orderId)
-                .then(r => r.json())
-                .then(data => {
-                    if (data.error) {
-                        document.getElementById('viewContent').innerHTML = '<p style="color:red">' + data.error + '</p>';
-                    } else {
-                        let itemsHtml = data.items.map(item => 
-                            `<li>${item.product_name} × ${item.quantity} = ${item.price * item.quantity} ₽</li>`
-                        ).join('');
-                        
-                        let html = `
-                            <p><strong>ID:</strong> #${data.id}</p>
-                            <p><strong>Клиент:</strong> ${data.login} (${data.email})</p>
-                            <p><strong>Телефон:</strong> ${data.phone || '-'}</p>
-                            <p><strong>Адрес доставки:</strong> ${data.delivery_address || '-'}</p>
-                            <p><strong>Способ оплаты:</strong> ${data.payment_method || '-'}</p>
-                            <p><strong>Статус:</strong> ${data.status}</p>
-                            <p><strong>Сумма:</strong> <strong>${data.total} ₽</strong></p>
-                            <p><strong>Дата:</strong> ${data.created_at}</p>
-                            <hr>
-                            <p><strong>Товары:</strong></p>
-                            <ul>${itemsHtml}</ul>
-                        `;
-                        document.getElementById('viewContent').innerHTML = html;
-                    }
-                    document.getElementById('viewModal').classList.add('active');
-                });
-        }
-        
         function changeStatus(orderId) {
             document.getElementById('status_order_id').value = orderId;
             document.getElementById('statusModal').classList.add('active');
