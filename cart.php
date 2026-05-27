@@ -282,7 +282,7 @@ try {
                                     <p class="cart-item-quantity">Количество: <?= $item['quantity'] ?></p>
                                     <p class="cart-item-total">Итого: <?= formatPrice($item['total_price']) ?></p>
                                 </div>
-                                <button class="btn btn-danger" onclick="event.stopPropagation(); removeFromCart(<?= $item['product_id'] ?>)">🗑️ Удалить</button>
+                                <button class="btn btn-danger" onclick="removeFromCart(<?= $item['product_id'] ?>, event)">🗑️ Удалить</button>
                             </div>
                         <?php endforeach; ?>
                     </div>
