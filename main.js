@@ -306,7 +306,8 @@ async function addToCart(productId) {
     }
 }
 
-async function removeFromCart(productId) {
+async function removeFromCart(productId, evt) {
+    if (evt) evt.stopPropagation();
     try {
         const response = await fetch('ajax/cart.php', {
             method: 'POST',
@@ -354,9 +355,9 @@ function initFavorites() {
     // Инициализация избранного
 }
 
-async function toggleFavorite(productId, type = 'product') {
-    if (event) {
-        event.stopPropagation();
+async function toggleFavorite(productId, type = 'product', evt = null) {
+    if (evt) {
+        evt.stopPropagation();
     }
     try {
         const response = await fetch('ajax/favorites.php', {
@@ -377,7 +378,7 @@ async function toggleFavorite(productId, type = 'product') {
             // Ищем кнопку по нескольким возможным селекторам
             const btn = document.querySelector(`[data-favorite="${productId}"]`) || 
                         document.querySelector(`button[onclick*="toggleFavorite(${productId})"]`) ||
-                        event?.target?.closest('button');
+                        (evt && evt.target && evt.target.closest('button'));
             if (btn) {
                 // Обновляем текст кнопки или иконку
                 if (data.is_favorite) {
