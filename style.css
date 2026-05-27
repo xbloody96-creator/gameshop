@@ -4381,7 +4381,10 @@ a:hover {
     font-size: 0.8125rem;
 }
 
-.btn-icon,
+.btn-icon {
+    flex-shrink: 0;
+}
+
 .btn-icon-sm {
     flex-shrink: 0;
     width: 16px;
@@ -4546,6 +4549,11 @@ a:hover {
     box-shadow: var(--shadow-lg);
     transition: all 0.3s ease;
     color: var(--text-primary);
+}
+
+.product-action-btn-modern svg {
+    width: 20px;
+    height: 20px;
 }
 
 .product-action-btn-modern:hover {
