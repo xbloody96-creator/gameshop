@@ -241,7 +241,7 @@ function displaySuggestions(results) {
                 <img src="${item.image}" alt="${item.title}" class="suggestion-image">
                 <div class="suggestion-info">
                     <div class="suggestion-title">${item.title}</div>
-                    <div class="suggestion-price">${item.price} ₴</div>
+                    <div class="suggestion-price">${item.price} ₽</div>
                 </div>
             </div>
         `;
